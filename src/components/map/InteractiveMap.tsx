@@ -335,7 +335,7 @@ export const InteractiveMap: React.FC = () => {
                           <span className="truncate">{place.name}</span>
                         </span>
                         <span className="text-[10px] opacity-70 shrink-0">
-                          {place.category === 'ceremony' ? 'Chiesa' : place.category === 'reception' ? 'Villa' : place.food_type ? place.food_type : place.category}
+                          {place.category === 'ceremony' ? 'Chiesa' : place.category === 'reception' ? 'Cascina' : place.food_type ? place.food_type : place.category}
                         </span>
                       </button>
                     ))}
