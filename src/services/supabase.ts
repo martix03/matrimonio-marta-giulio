@@ -139,6 +139,19 @@ export const weddingApi = {
     return false;
   },
 
+  async hasSentGiftMessage(senderName: string): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('gift_messages')
+        .select('id')
+        .eq('sender_name', senderName)
+        .limit(1);
+      if (data && data.length > 0) return true;
+    }
+    const localSent = localStorage.getItem(`gift_sent_${senderName}`);
+    return localSent === 'true';
+  },
+
   async saveGiftMessage(senderName: string, amountNote: string, wishes: string): Promise<boolean> {
     if (isSupabaseConfigured && supabase) {
       const { error } = await supabase
@@ -148,10 +161,12 @@ export const weddingApi = {
         console.error('Error saving gift message', error);
         return false;
       }
+      localStorage.setItem(`gift_sent_${senderName}`, 'true');
       return true;
     }
     // Mock fallback: just simulate success
     console.log('Saved message locally:', { senderName, amountNote, wishes });
+    localStorage.setItem(`gift_sent_${senderName}`, 'true');
     return true;
   },
 

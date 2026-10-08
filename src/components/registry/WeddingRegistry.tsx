@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Gift, Copy, Check, Heart, Plane, Send, Sparkles } from 'lucide-react';
 import { weddingConfig } from '../../config/wedding.config';
 import { mockRegistryStages } from '../../services/mockData';
@@ -12,9 +12,16 @@ interface WeddingRegistryProps {
 export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => {
   const [copiedIban, setCopiedIban] = useState<boolean>(false);
   const [transferSentMessage, setTransferSentMessage] = useState<boolean>(false);
+  const [hasSentAlready, setHasSentAlready] = useState<boolean>(false);
   const [senderName, setSenderName] = useState<string>(cluster?.family_name || '');
   const [amountNote, setAmountNote] = useState<string>('');
   const [wishes, setWishes] = useState<string>('');
+
+  useEffect(() => {
+    if (senderName) {
+      weddingApi.hasSentGiftMessage(senderName).then(setHasSentAlready);
+    }
+  }, [senderName]);
 
   const handleCopyIban = () => {
     navigator.clipboard.writeText(weddingConfig.registry.iban);
@@ -26,6 +33,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
     e.preventDefault();
     await weddingApi.saveGiftMessage(senderName, amountNote, wishes);
     setTransferSentMessage(true);
+    setHasSentAlready(true);
     setTimeout(() => {
       setAmountNote('');
       setWishes('');
@@ -163,7 +171,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                 Se vuoi farci una sorpresa o scriverci una dedica speciale legata al tuo dono:
               </p>
 
-              {transferSentMessage ? (
+              {transferSentMessage || hasSentAlready ? (
                 <div className="p-4 rounded-2xl bg-blush-soft text-burgundy text-xs border border-blush/40 text-center animate-fade-in">
                   <Sparkles className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
                   <span className="font-semibold block">Grazie di cuore!</span>
