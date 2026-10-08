@@ -16,8 +16,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [categories, setCategories] = useState<any[]>([]);
   const [foodCategories, setFoodCategories] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterFamily, setFilterFamily] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  
+  const [placeSearchQuery, setPlaceSearchQuery] = useState('');
+  const [placeCategoryFilter, setPlaceCategoryFilter] = useState<string>('all');
 
   const [newFamilyName, setNewFamilyName] = useState('');
   const [newGuests, setNewGuests] = useState<{ firstName: string, lastName: string, isChild: boolean }[]>([{ firstName: '', lastName: '', isChild: false }]);
@@ -107,16 +109,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const pending = guests.filter(g => g.is_attending === null);
 
   const filteredGuests = guests.filter(g => {
-    // Search filter
     const s = searchQuery.toLowerCase();
     const nameMatch = `${g.first_name} ${g.last_name}`.toLowerCase().includes(s);
     const familyMatch = g.clusters?.family_name?.toLowerCase().includes(s);
     if (!nameMatch && !familyMatch) return false;
 
-    // Family filter
-    if (filterFamily !== 'all' && g.clusters?.family_name !== filterFamily) return false;
-
-    // Status filter
     if (filterStatus === 'confirmed' && g.is_attending !== true) return false;
     if (filterStatus === 'declined' && g.is_attending !== false) return false;
     if (filterStatus === 'pending' && g.is_attending !== null) return false;
@@ -124,7 +121,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     return true;
   });
 
-  const uniqueFamilies = Array.from(new Set(guests.map(g => g.clusters?.family_name).filter(Boolean))).sort();
+  const filteredPlaces = places.filter(p => {
+    const s = placeSearchQuery.toLowerCase();
+    const nameMatch = p.name.toLowerCase().includes(s);
+    const addressMatch = p.address.toLowerCase().includes(s);
+    if (!nameMatch && !addressMatch) return false;
+
+    if (placeCategoryFilter !== 'all' && p.category !== placeCategoryFilter) return false;
+
+    return true;
+  });
 
   const downloadCSV = (filename: string, rows: string[][]) => {
     const csvContent = "data:text/csv;charset=utf-8," 
@@ -228,12 +234,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
                     <input type="text" placeholder="Cerca per nome o famiglia..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
                   </div>
-                  <select value={filterFamily} onChange={e => setFilterFamily(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
-                    <option value="all">Tutte le Famiglie</option>
-                    {uniqueFamilies.map((fam: any) => (
-                      <option key={fam} value={fam}>{fam}</option>
-                    ))}
-                  </select>
                   <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
                     <option value="all">Tutti gli Stati</option>
                     <option value="confirmed">Confermati</option>
@@ -321,8 +321,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         {activeTab === 'places' && (
           <div className="space-y-8 animate-fade-in">
             <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
-              <div className="p-4 border-b border-blush/20 bg-cream/50">
-                <h3 className="font-serif text-xl font-medium">Lista Luoghi Mappa</h3>
+              <div className="p-4 border-b border-blush/20 bg-cream/50 flex flex-col lg:flex-row items-center justify-between gap-4">
+                <h3 className="font-serif text-xl font-medium shrink-0">Lista Luoghi Mappa</h3>
+                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                  <div className="relative flex-1 sm:w-64">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+                    <input type="text" placeholder="Cerca luogo o indirizzo..." value={placeSearchQuery} onChange={e => setPlaceSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
+                  </div>
+                  <select value={placeCategoryFilter} onChange={e => setPlaceCategoryFilter(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
+                    <option value="all">Tutte le Categorie</option>
+                    {categories.map(c => (
+                      <option key={c.id} value={c.id}>{c.label}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm whitespace-nowrap">
@@ -334,7 +346,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-blush/20">
-                    {places.map(p => (
+                    {filteredPlaces.map(p => (
                       <tr key={p.id} className="hover:bg-cream/30 transition-colors">
                         <td className="p-4 font-medium flex items-center gap-2">
                           {p.is_primary && <MapPin className="w-4 h-4 text-burgundy" />}
@@ -348,7 +360,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         <td className="p-4 opacity-80 text-xs">{p.address}</td>
                       </tr>
                     ))}
-                    {places.length === 0 && (
+                    {filteredPlaces.length === 0 && (
                       <tr>
                         <td colSpan={3} className="p-8 text-center opacity-60">Nessun luogo trovato.</td>
                       </tr>
