@@ -98,7 +98,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 </span>
               ) : (
                 <span className="block mt-1 text-burgundy/80">
-                  Vi chiediamo gentilmente di confermare la presenza entro il 30 Giugno 2026.
+                  Vi chiediamo gentilmente di confermare la presenza entro il 15 marzo.
                 </span>
               )}
             </p>
