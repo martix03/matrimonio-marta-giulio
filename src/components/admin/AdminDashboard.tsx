@@ -9,7 +9,7 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add_guest' | 'places'>('guests');
+  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add' | 'places'>('guests');
   const [guests, setGuests] = useState<any[]>([]);
   const [gifts, setGifts] = useState<any[]>([]);
   const [places, setPlaces] = useState<any[]>([]);
@@ -168,14 +168,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <button onClick={() => setActiveTab('guests')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'guests' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <Users className="w-4 h-4 inline-block mr-2" /> Ospiti & Metriche
           </button>
+          <button onClick={() => setActiveTab('places')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'places' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+            <MapPin className="w-4 h-4 inline-block mr-2" /> Luoghi Mappa
+          </button>
           <button onClick={() => setActiveTab('gifts')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'gifts' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <Gift className="w-4 h-4 inline-block mr-2" /> Messaggi Regali
           </button>
-          <button onClick={() => setActiveTab('add_guest')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add_guest' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
-            + Aggiungi Ospiti
-          </button>
-          <button onClick={() => setActiveTab('places')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'places' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
-            <MapPin className="w-4 h-4 inline-block mr-2" /> Gestione Luoghi
+          <button onClick={() => setActiveTab('add')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+            + Aggiungi Dati
           </button>
         </div>
 
@@ -318,36 +318,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           </div>
         )}
 
-        {activeTab === 'add_guest' && (
-          <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm animate-fade-in max-w-2xl mx-auto">
-            <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Nuova Famiglia</h2>
-            <form onSubmit={handleSaveGuests} className="space-y-6">
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome Famiglia o Gruppo</label>
-                <input type="text" required value={newFamilyName} onChange={e => setNewFamilyName(e.target.value)} placeholder="es. Famiglia Rossi, Amici Uni..." className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-              </div>
-              <div className="space-y-4">
-                <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Membri (Ospiti)</label>
-                {newGuests.map((g, idx) => (
-                  <div key={idx} className="flex gap-4 items-center">
-                    <input type="text" required placeholder="Nome" value={g.firstName} onChange={e => { const updated = [...newGuests]; updated[idx].firstName = e.target.value; setNewGuests(updated); }} className="flex-1 px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-                    <input type="text" required placeholder="Cognome" value={g.lastName} onChange={e => { const updated = [...newGuests]; updated[idx].lastName = e.target.value; setNewGuests(updated); }} className="flex-1 px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-                    <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer shrink-0">
-                      <input type="checkbox" checked={g.isChild} onChange={e => { const updated = [...newGuests]; updated[idx].isChild = e.target.checked; setNewGuests(updated); }} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
-                      Bambino
-                    </label>
-                  </div>
-                ))}
-              </div>
-              <button type="button" onClick={handleAddGuestRow} className="text-xs font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity flex items-center gap-1">+ Aggiungi Ospite</button>
-              
-              <div className="pt-6 border-t border-blush/20">
-                <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva nel Database</button>
-              </div>
-            </form>
-          </div>
-        )}
-
         {activeTab === 'places' && (
           <div className="space-y-8 animate-fade-in">
             <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
@@ -387,8 +357,43 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </table>
               </div>
             </div>
+          </div>
+        )}
 
-            <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm max-w-2xl mx-auto">
+        {activeTab === 'add' && (
+          <div className="space-y-8 animate-fade-in max-w-2xl mx-auto">
+            
+            {/* Aggiungi Famiglia */}
+            <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm">
+              <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Nuova Famiglia</h2>
+              <form onSubmit={handleSaveGuests} className="space-y-6">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome Famiglia o Gruppo</label>
+                  <input type="text" required value={newFamilyName} onChange={e => setNewFamilyName(e.target.value)} placeholder="es. Famiglia Rossi, Amici Uni..." className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                </div>
+                <div className="space-y-4">
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Membri (Ospiti)</label>
+                  {newGuests.map((g, idx) => (
+                    <div key={idx} className="flex gap-4 items-center">
+                      <input type="text" required placeholder="Nome" value={g.firstName} onChange={e => { const updated = [...newGuests]; updated[idx].firstName = e.target.value; setNewGuests(updated); }} className="flex-1 px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                      <input type="text" required placeholder="Cognome" value={g.lastName} onChange={e => { const updated = [...newGuests]; updated[idx].lastName = e.target.value; setNewGuests(updated); }} className="flex-1 px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                      <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer shrink-0">
+                        <input type="checkbox" checked={g.isChild} onChange={e => { const updated = [...newGuests]; updated[idx].isChild = e.target.checked; setNewGuests(updated); }} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
+                        Bambino
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                <button type="button" onClick={handleAddGuestRow} className="text-xs font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity flex items-center gap-1">+ Aggiungi Ospite</button>
+                
+                <div className="pt-6 border-t border-blush/20">
+                  <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva nel Database</button>
+                </div>
+              </form>
+            </div>
+
+            {/* Aggiungi Luogo */}
+            <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm">
               <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Luogo Mappa</h2>
               <form onSubmit={handleSavePlace} className="space-y-4">
                 <div>
