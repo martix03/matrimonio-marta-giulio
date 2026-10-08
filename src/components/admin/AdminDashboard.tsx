@@ -15,6 +15,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [categories, setCategories] = useState<any[]>([]);
   const [foodCategories, setFoodCategories] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterFamily, setFilterFamily] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
 
   const [newFamilyName, setNewFamilyName] = useState('');
   const [newGuests, setNewGuests] = useState<{ firstName: string, lastName: string, isChild: boolean }[]>([{ firstName: '', lastName: '', isChild: false }]);
@@ -101,11 +103,24 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const pending = guests.filter(g => g.is_attending === null);
 
   const filteredGuests = guests.filter(g => {
+    // Search filter
     const s = searchQuery.toLowerCase();
     const nameMatch = `${g.first_name} ${g.last_name}`.toLowerCase().includes(s);
     const familyMatch = g.clusters?.family_name?.toLowerCase().includes(s);
-    return nameMatch || familyMatch;
+    if (!nameMatch && !familyMatch) return false;
+
+    // Family filter
+    if (filterFamily !== 'all' && g.clusters?.family_name !== filterFamily) return false;
+
+    // Status filter
+    if (filterStatus === 'confirmed' && g.is_attending !== true) return false;
+    if (filterStatus === 'declined' && g.is_attending !== false) return false;
+    if (filterStatus === 'pending' && g.is_attending !== null) return false;
+
+    return true;
   });
+
+  const uniqueFamilies = Array.from(new Set(guests.map(g => g.clusters?.family_name).filter(Boolean))).sort();
 
   return (
     <div className="min-h-screen bg-cream text-burgundy font-sans">
@@ -165,11 +180,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
             </div>
 
             <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
-              <div className="p-4 border-b border-blush/20 bg-cream/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <h3 className="font-serif text-xl font-medium">Lista Ospiti</h3>
-                <div className="relative w-full sm:w-64">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
-                  <input type="text" placeholder="Cerca per nome o famiglia..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
+              <div className="p-4 border-b border-blush/20 bg-cream/50 flex flex-col lg:flex-row items-center justify-between gap-4">
+                <h3 className="font-serif text-xl font-medium shrink-0">Lista Ospiti</h3>
+                <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+                  <div className="relative flex-1 sm:w-64">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
+                    <input type="text" placeholder="Cerca per nome o famiglia..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
+                  </div>
+                  <select value={filterFamily} onChange={e => setFilterFamily(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
+                    <option value="all">Tutte le Famiglie</option>
+                    {uniqueFamilies.map((fam: any) => (
+                      <option key={fam} value={fam}>{fam}</option>
+                    ))}
+                  </select>
+                  <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
+                    <option value="all">Tutti gli Stati</option>
+                    <option value="confirmed">Confermati</option>
+                    <option value="pending">In Attesa</option>
+                    <option value="declined">Declinati</option>
+                  </select>
                 </div>
               </div>
               <div className="overflow-x-auto">
