@@ -5,18 +5,27 @@ import { PlacePOI, PlaceCategory } from '../../types';
 import { weddingApi } from '../../services/supabase';
 
 
-const MapController: React.FC<{ activePlace: PlacePOI | null, places: PlacePOI[] }> = ({ activePlace, places }) => {
+
+const MapController: React.FC<{ effect: {type: 'fitBounds' | 'panTo', data: any} }> = ({ effect }) => {
   const map = useMap();
   useEffect(() => {
-    if (!map) return;
-    if (activePlace) {
-      map.panTo({ lat: activePlace.latitude, lng: activePlace.longitude });
+    if (!map || !window.google) return;
+    
+    if (effect.type === 'fitBounds' && effect.data.length > 0) {
+      const bounds = new window.google.maps.LatLngBounds();
+      effect.data.forEach((p: PlacePOI) => {
+        bounds.extend({ lat: p.latitude, lng: p.longitude });
+      });
+      map.fitBounds(bounds, { top: 40, right: 40, bottom: 40, left: 40 });
+      // If there's only one pin, zooming too far in might happen.
+      if (effect.data.length === 1) {
+        setTimeout(() => map.setZoom(14), 100);
+      }
+    } else if (effect.type === 'panTo' && effect.data) {
+      map.panTo({ lat: effect.data.latitude, lng: effect.data.longitude });
       map.setZoom(14);
-    } else if (places.length > 0) {
-      map.panTo({ lat: places[0].latitude, lng: places[0].longitude });
-      map.setZoom(11);
     }
-  }, [map, activePlace]);
+  }, [map, effect]);
   return null;
 };
 
@@ -25,6 +34,7 @@ export const InteractiveMap: React.FC = () => {
   const [foodSubFilter, setFoodSubFilter] = useState<string>('all_food');
   const [places, setPlaces] = useState<PlacePOI[]>([]);
   const [activePlace, setActivePlace] = useState<PlacePOI | null>(null);
+  const [mapEffect, setMapEffect] = useState<{type: 'fitBounds' | 'panTo', data: any}>({ type: 'fitBounds', data: [] });
   const [categories, setCategories] = useState<PlaceCategory[]>([]);
   const [foodCategories, setFoodCategories] = useState<any[]>([]);
   
@@ -36,7 +46,10 @@ export const InteractiveMap: React.FC = () => {
   useEffect(() => {
     weddingApi.getPlaces().then(p => {
       setPlaces(p);
-      if (p.length > 0) setActivePlace(p[0]);
+      if (p.length > 0) {
+        setActivePlace(p[0]);
+        setMapEffect({ type: 'fitBounds', data: p });
+      }
     });
     weddingApi.getPlaceCategories().then(setCategories);
     weddingApi.getFoodCategories().then(setFoodCategories);
@@ -122,6 +135,7 @@ export const InteractiveMap: React.FC = () => {
 
     if (placesInCat.length > 0) {
       setActivePlace(placesInCat[0]);
+      setMapEffect({ type: 'fitBounds', data: placesInCat });
     }
 
     
@@ -206,7 +220,7 @@ export const InteractiveMap: React.FC = () => {
                       zoomControl={true}
                       gestureHandling="greedy"
                     >
-                      <MapController activePlace={activePlace} places={places} />
+                      <MapController effect={mapEffect} />
                       {filteredPlaces.map(place => {
                         const isSelected = activePlace?.id === place.id;
                         const isPrimary = place.category === 'ceremony' || place.category === 'reception';
