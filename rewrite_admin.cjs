@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+const fs = require('fs');
+
+const code = `import React, { useState, useEffect } from 'react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { weddingApi } from '../../services/supabase';
 import { Settings, Save, Plus, Trash2, Users, Calendar, MapPin, CreditCard } from 'lucide-react';
@@ -204,3 +206,6 @@ export const AdminSettings: React.FC = () => {
     </div>
   );
 };
+`;
+
+fs.writeFileSync('src/components/admin/AdminSettings.tsx', code);
