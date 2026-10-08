@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import L from 'leaflet';
+import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
 import { MapPin, Navigation, ExternalLink, Heart, Sparkles } from 'lucide-react';
 import { PlacePOI, PlaceCategory } from '../../types';
 import { weddingApi } from '../../services/supabase';
@@ -13,6 +13,7 @@ export const InteractiveMap: React.FC = () => {
   const [foodCategories, setFoodCategories] = useState<any[]>([]);
   
   const mapContainerRef = useRef<HTMLDivElement>(null);
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyDummyKeyForDevelopmentAndDemo';
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<{ [key: string]: L.Marker }>({});
 
@@ -87,85 +88,11 @@ export const InteractiveMap: React.FC = () => {
     return place.category === selectedCategory;
   });
 
-  useEffect(() => {
-    if (!mapContainerRef.current || places.length === 0 || !activePlace) return;
-
-    if (!mapInstanceRef.current) {
-      const map = L.map(mapContainerRef.current, {
-        center: [45.075, 7.550],
-        zoom: 11,
-        zoomControl: false,
-      });
-
-      L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png', {
-        maxZoom: 20,
-        subdomains: ['a', 'b', 'c', 'd'],
-        attribution: '&copy; OpenStreetMap, &copy; CARTO',
-      }).addTo(map);
-
-      mapInstanceRef.current = map;
-
-      const initialBounds = L.latLngBounds(places.map(p => [p.latitude, p.longitude]));
-      if (initialBounds.isValid()) {
-        map.fitBounds(initialBounds, { padding: [40, 40], maxZoom: 12 });
-      }
-    }
-
-    const map = mapInstanceRef.current;
-
-    Object.values(markersRef.current).forEach(m => m.remove());
-    markersRef.current = {};
-
-    filteredPlaces.forEach(place => {
-      const isSelected = activePlace.id === place.id;
-      const isPrimary = place.category === 'ceremony' || place.category === 'reception';
-
-      const pinColor = getPinColor(place);
-      const pinSize = isSelected ? 44 : isPrimary ? 38 : 32;
-      const iconEmoji = getPlaceIcon(place);
-
-      const customIcon = L.divIcon({
-        className: 'custom-leaflet-pin-wrapper',
-        html: `
-          <div style="
-            width: ${pinSize}px;
-            height: ${pinSize}px;
-            background: ${pinColor};
-            border: 2.5px solid #ffffff;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-size: ${pinSize * 0.45}px;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-            transition: all 0.2s ease;
-          ">
-            ${iconEmoji}
-          </div>
-        `,
-        iconSize: [pinSize, pinSize],
-        iconAnchor: [pinSize / 2, pinSize / 2],
-      });
-
-      const marker = L.marker([place.latitude, place.longitude], { icon: customIcon }).addTo(map);
-
-      marker.on('click', () => {
-        setActivePlace(place);
-      });
-
-      markersRef.current[place.id] = marker;
-    });
-
-  }, [filteredPlaces, activePlace, places]);
+  
 
   const handleSelectPlace = (place: PlacePOI) => {
     setActivePlace(place);
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo([place.latitude, place.longitude], 14, { duration: 1.2 });
-    }
+    
   };
 
   const handleCategoryChange = (catId: string) => {
@@ -181,26 +108,7 @@ export const InteractiveMap: React.FC = () => {
       setActivePlace(placesInCat[0]);
     }
 
-    if (mapInstanceRef.current) {
-      if (catId === 'all') {
-        const allBounds = L.latLngBounds(places.map(p => [p.latitude, p.longitude]));
-        if (allBounds.isValid()) {
-          mapInstanceRef.current.fitBounds(allBounds, { padding: [40, 40], maxZoom: 12 });
-        }
-      } else if (catId === 'sightseeing') {
-        const sightBounds = L.latLngBounds(placesInCat.map(p => [p.latitude, p.longitude]));
-        if (sightBounds.isValid()) {
-          mapInstanceRef.current.fitBounds(sightBounds, { padding: [40, 40], maxZoom: 13 });
-        }
-      } else if (catId === 'primary') {
-        mapInstanceRef.current.flyTo([45.0707046, 7.4514925], 14, { duration: 1.2 });
-      } else if (placesInCat.length > 0) {
-        const bounds = L.latLngBounds(placesInCat.map(p => [p.latitude, p.longitude]));
-        if (bounds.isValid()) {
-          mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50], maxZoom: 14 });
-        }
-      }
-    }
+    
   };
 
   const handleFoodSubFilterChange = (subId: string) => {
@@ -208,12 +116,7 @@ export const InteractiveMap: React.FC = () => {
     const subPlaces = places.filter(p => p.category === 'food' && (subId === 'all_food' || p.food_type === subId));
     if (subPlaces.length > 0) {
       setActivePlace(subPlaces[0]);
-      if (mapInstanceRef.current) {
-        const bounds = L.latLngBounds(subPlaces.map(p => [p.latitude, p.longitude]));
-        if (bounds.isValid()) {
-          mapInstanceRef.current.fitBounds(bounds, { padding: [40, 40], maxZoom: 14 });
-        }
-      }
+      
     }
   };
 
@@ -277,7 +180,52 @@ export const InteractiveMap: React.FC = () => {
                 <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 text-xs font-semibold text-burgundy">
                   <span>📍 Mappa Google Maps (Tutti i Pin)</span>
                 </div>
-                <div ref={mapContainerRef} className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10" />
+                <div className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10">
+                  <APIProvider apiKey={googleMapsApiKey}>
+                    <Map 
+                      defaultZoom={11} 
+                      defaultCenter={{ lat: 45.075, lng: 7.550 }}
+                      center={activePlace ? { lat: activePlace.latitude, lng: activePlace.longitude } : undefined}
+                      zoom={activePlace ? 14 : 11}
+                      mapId="DEMO_MAP_ID"
+                      disableDefaultUI={true}
+                      zoomControl={true}
+                    >
+                      {filteredPlaces.map(place => {
+                        const isSelected = activePlace?.id === place.id;
+                        const isPrimary = place.category === 'ceremony' || place.category === 'reception';
+                        const pinColor = getPinColor(place);
+                        const iconEmoji = getPlaceIcon(place);
+                        const scale = isSelected ? 1.4 : isPrimary ? 1.2 : 1.0;
+
+                        return (
+                          <AdvancedMarker 
+                            key={place.id}
+                            position={{ lat: place.latitude, lng: place.longitude }}
+                            onClick={() => handleSelectPlace(place)}
+                            zIndex={isSelected ? 100 : isPrimary ? 50 : 10}
+                          >
+                            <div style={{
+                              transform: `scale(${scale})`,
+                              transition: 'transform 0.2s ease',
+                            }}>
+                              <Pin 
+                                background={pinColor} 
+                                borderColor="#ffffff" 
+                                glyphColor="#ffffff" 
+                                scale={1}
+                              >
+                                <div style={{ fontSize: '14px', lineHeight: '14px' }}>
+                                  {iconEmoji}
+                                </div>
+                              </Pin>
+                            </div>
+                          </AdvancedMarker>
+                        );
+                      })}
+                    </Map>
+                  </APIProvider>
+                </div>
               </div>
 
               {activePlace && (
