@@ -361,5 +361,29 @@ export const weddingApi = {
       return true;
     }
     return false;
+  },
+
+  async deleteGuest(guestId: string): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.from('guests').delete().eq('id', guestId);
+      if (error) {
+        console.error('Error deleting guest', error);
+        return false;
+      }
+      return true;
+    }
+    return false;
+  },
+
+  async deletePlace(placeId: string): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.from('places').delete().eq('id', placeId);
+      if (error) {
+        console.error('Error deleting place', error);
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 };

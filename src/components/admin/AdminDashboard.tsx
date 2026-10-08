@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X } from 'lucide-react';
+import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X, Trash2 } from 'lucide-react';
 import { weddingApi } from '../../services/supabase';
 import { Cluster } from '../../types';
 
@@ -84,6 +84,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     } else {
        alert('Errore durante l\'aggiornamento');
     }
+  };
+
+  const handleDeleteGuest = async (id: string) => {
+    if (!window.confirm('Sei sicuro di voler eliminare questo ospite?')) return;
+    const success = await weddingApi.deleteGuest(id);
+    if (success) fetchData();
+    else alert('Errore durante l\'eliminazione');
+  };
+
+  const handleDeletePlace = async (id: string) => {
+    if (!window.confirm('Sei sicuro di voler eliminare questo luogo?')) return;
+    const success = await weddingApi.deletePlace(id);
+    if (success) fetchData();
+    else alert('Errore durante l\'eliminazione');
   };
 
   const [newPlace, setNewPlace] = useState({
@@ -377,9 +391,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                                 </div>
                               )}
                             </td>
-                            <td className="p-4 text-center">
-                              <button onClick={() => startEditing(g)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all">
+                            <td className="p-4 text-center whitespace-nowrap">
+                              <button onClick={() => startEditing(g)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all mx-0.5">
                                 <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleDeleteGuest(g.id)} className="p-1.5 text-rose-600 opacity-60 hover:opacity-100 hover:bg-rose-50 rounded-full transition-all mx-0.5">
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             </td>
                           </>
@@ -506,9 +523,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             <td className="p-4 opacity-80 text-xs">{p.address}</td>
                             <td className="p-4 opacity-80 text-xs">{p.latitude}</td>
                             <td className="p-4 opacity-80 text-xs">{p.longitude}</td>
-                            <td className="p-4 text-center">
-                              <button onClick={() => startEditingPlace(p)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all">
+                            <td className="p-4 text-center whitespace-nowrap">
+                              <button onClick={() => startEditingPlace(p)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all mx-0.5">
                                 <Edit2 className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => handleDeletePlace(p.id)} className="p-1.5 text-rose-600 opacity-60 hover:opacity-100 hover:bg-rose-50 rounded-full transition-all mx-0.5">
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             </td>
                           </>
