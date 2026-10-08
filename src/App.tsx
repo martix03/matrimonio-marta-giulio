@@ -11,6 +11,7 @@ import { FaqSection } from './components/faq/FaqSection';
 import { Footer } from './components/Footer';
 import { MagicLinkModal } from './components/auth/MagicLinkModal';
 import { weddingConfig } from './config/wedding.config';
+import { AdminDashboard } from './components/admin/AdminDashboard';
 
 export function App() {
   const {
@@ -24,6 +25,10 @@ export function App() {
   } = useAuth();
 
   const [authModalOpen, setAuthModalOpen] = useState(false);
+
+  if (cluster?.family_name === 'Admin') {
+    return <AdminDashboard cluster={cluster} onLogout={logout} />;
+  }
 
   return (
     <div className="min-h-screen bg-cream text-burgundy font-sans selection:bg-blush/30 selection:text-burgundy flex flex-col">

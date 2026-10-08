@@ -254,5 +254,80 @@ export const weddingApi = {
 
   getRegistryStages(): RegistryStage[] {
     return mockRegistryStages;
+  },
+
+  // --- Admin Methods ---
+  async getAllGuestsAdmin(): Promise<any[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('guests')
+        .select(`*, clusters(family_name)`);
+      if (error) console.error('Error fetching admin guests', error);
+      else if (data) return data;
+    }
+    return [];
+  },
+
+  async getAllGiftMessages(): Promise<any[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase
+        .from('gift_messages')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (error) console.error('Error fetching gift messages', error);
+      else if (data) return data;
+    }
+    return [];
+  },
+
+  async createClusterAndGuests(familyName: string, guests: { firstName: string, lastName: string, isChild: boolean }[]): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      // Create cluster
+      const inviteCode = familyName.substring(0, 4).toUpperCase() + Math.floor(Math.random() * 1000);
+      const { data: clusterData, error: clusterError } = await supabase
+        .from('clusters')
+        .insert([{ family_name: familyName, invite_code: inviteCode }])
+        .select()
+        .single();
+      
+      if (clusterError || !clusterData) {
+        console.error('Error creating cluster', clusterError);
+        return false;
+      }
+
+      // Create guests
+      const guestsToInsert = guests.map(g => ({
+        cluster_id: clusterData.id,
+        first_name: g.firstName,
+        last_name: g.lastName,
+        is_child: g.isChild,
+      }));
+
+      const { error: guestsError } = await supabase
+        .from('guests')
+        .insert(guestsToInsert);
+
+      if (guestsError) {
+        console.error('Error creating guests', guestsError);
+        return false;
+      }
+
+      return true;
+    }
+    return false;
+  },
+
+  async createPlace(place: any): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase
+        .from('places')
+        .insert([place]);
+      if (error) {
+        console.error('Error creating place', error);
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 };

@@ -152,6 +152,13 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
             >
               Marta
             </button>
+            <button
+              type="button"
+              onClick={() => handleQuickDemo('Admin', 'Spaccati')}
+              className="px-3 py-1 text-xs rounded-full bg-burgundy/10 hover:bg-burgundy/20 text-burgundy font-medium border border-burgundy/30 transition-colors"
+            >
+              Admin
+            </button>
           </div>
         </div>
       </div>
