@@ -122,6 +122,34 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const uniqueFamilies = Array.from(new Set(guests.map(g => g.clusters?.family_name).filter(Boolean))).sort();
 
+  const downloadCSV = (filename: string, rows: string[][]) => {
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDownloadIntolerances = () => {
+    const rows = [["Nome", "Cognome", "Famiglia", "Intolleranze/Note Alimentari"]];
+    guests.filter(g => g.dietary_notes).forEach(g => {
+      rows.push([g.first_name, g.last_name, g.clusters?.family_name || '', `"${g.dietary_notes.replace(/"/g, '""')}"`]);
+    });
+    downloadCSV("intolleranze.csv", rows);
+  };
+
+  const handleDownloadSongs = () => {
+    const rows = [["Nome", "Cognome", "Famiglia", "Canzone Richiesta"]];
+    guests.filter(g => g.song_request).forEach(g => {
+      rows.push([g.first_name, g.last_name, g.clusters?.family_name || '', `"${g.song_request.replace(/"/g, '""')}"`]);
+    });
+    downloadCSV("canzoni.csv", rows);
+  };
+
   return (
     <div className="min-h-screen bg-cream text-burgundy font-sans">
       <nav className="bg-paper border-b border-blush/20 py-4 px-6 flex justify-between items-center sticky top-0 z-50 shadow-sm">
@@ -177,6 +205,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <div className="text-xs uppercase tracking-wider font-semibold opacity-70">Declinati</div>
                 </div>
               </div>
+            </div>
+
+            <div className="flex flex-wrap gap-4">
+              <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
+                <AlertTriangle className="w-4 h-4" /> Scarica CSV Intolleranze
+              </button>
+              <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
+                <Music className="w-4 h-4" /> Scarica CSV Canzoni
+              </button>
             </div>
 
             <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
