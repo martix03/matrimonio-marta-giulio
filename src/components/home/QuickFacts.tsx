@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Calendar, Clock, Church, Castle, Navigation, MapPin, ExternalLink } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 
-import calendarIcon from '../../assets/calendar-icon.jpg';
 
 export const QuickFacts: React.FC = () => {
   const { settings } = useSettings();
@@ -83,12 +82,8 @@ export const QuickFacts: React.FC = () => {
               >
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-4">
-                    <div className="w-10 h-10 rounded-2xl bg-blush-soft text-burgundy flex items-center justify-center shrink-0 overflow-hidden">
-                      {fact.image ? (
-                        <img src={fact.image} alt="Icon" className="w-full h-full object-cover mix-blend-multiply" />
-                      ) : (
-                        Icon && <Icon className="w-5 h-5 text-burgundy" />
-                      )}
+                    <div className="w-10 h-10 rounded-2xl bg-blush-soft text-burgundy flex items-center justify-center shrink-0">
+                      <Icon className="w-5 h-5 text-burgundy" />
                     </div>
                     <span className="text-[10px] font-semibold tracking-wider uppercase px-2.5 py-1 rounded-full bg-cream text-burgundy/80 border border-blush/20 whitespace-nowrap">
                       {fact.badge}
