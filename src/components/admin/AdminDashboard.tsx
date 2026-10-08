@@ -296,7 +296,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               {gifts.map(g => (
                 <div key={g.id} className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm flex flex-col justify-between">
                   <div>
-                    <div className="text-xs uppercase tracking-wider font-semibold opacity-60 mb-1">{new Date(g.created_at).toLocaleDateString()}</div>
+                    <div className="text-xs uppercase tracking-wider font-semibold opacity-60 mb-1">{new Date(g.created_at).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })}</div>
                     <div className="font-serif text-xl font-medium mb-3 text-emerald-800">{g.sender_name}</div>
                     {g.wishes && <div className="text-sm italic opacity-80 mb-3 line-clamp-4">"{g.wishes}"</div>}
                   </div>
