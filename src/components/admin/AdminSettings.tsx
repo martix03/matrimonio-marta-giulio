@@ -97,20 +97,7 @@ export const AdminSettings: React.FC = () => {
               <InputField label="Sposo" value={formData?.couple?.groom} onChange={(v) => handleChange('couple', 'groom', v)} />
             </div>
           </div>
-
-          {/* Dettagli Evento */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
-              <Calendar className="w-4 h-4 text-blush" /> Date & Orari
-            </h3>
-            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
-            <InputField label="Città" value={formData?.event?.city} onChange={(v) => handleChange('event', 'city', v)} />
-            <div className="grid grid-cols-2 gap-4">
-              <InputField label="Orario Cerimonia (es. ore 16:45)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
-              <InputField label="Ora del Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
-            </div>
-          </div>
-
+          
           {/* Location */}
           <div className="space-y-4">
             <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
@@ -127,6 +114,19 @@ export const AdminSettings: React.FC = () => {
               <InputField label="Nome" value={formData?.locations?.reception?.name} onChange={(v) => handleChange('locations', 'name', v, 'reception')} />
               <InputField label="Indirizzo" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
               <InputField label="URL Google Maps" value={formData?.locations?.reception?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
+            </div>
+          </div>
+
+          {/* Dettagli Evento */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+              <Calendar className="w-4 h-4 text-blush" /> Date & Orari
+            </h3>
+            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
+            <InputField label="Città" value={formData?.event?.city} onChange={(v) => handleChange('event', 'city', v)} />
+            <div className="grid grid-cols-2 gap-4">
+              <InputField label="Orario Cerimonia (es. ore 16:45)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
+              <InputField label="Ora del Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
             </div>
           </div>
 
