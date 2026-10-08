@@ -12,7 +12,6 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ cluster, onOpenAuth, onLogout }) => {
   const { settings } = useSettings();
-  const { settings } = useSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 

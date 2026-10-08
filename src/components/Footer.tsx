@@ -1,10 +1,10 @@
+import { useSettings } from '../contexts/SettingsContext';
 import React from 'react';
 import { Heart, ArrowUp } from 'lucide-react';
-import { settings } from '../config/wedding.config';
+
 import logoImg from '../assets/logo.png';
 
 export const Footer: React.FC = () => {
-  const { settings } = useSettings();
   const { settings } = useSettings();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

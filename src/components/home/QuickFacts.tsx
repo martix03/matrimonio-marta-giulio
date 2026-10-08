@@ -4,7 +4,6 @@ import { useSettings } from '../../contexts/SettingsContext';
 
 export const QuickFacts: React.FC = () => {
   const { settings } = useSettings();
-  const { settings } = useSettings();
   const [navModalPlace, setNavModalPlace] = useState<{
     name: string;
     google: string;
