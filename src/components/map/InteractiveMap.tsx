@@ -235,21 +235,24 @@ export const InteractiveMap: React.FC = () => {
                             onClick={() => handleSelectPlace(place)}
                             zIndex={isSelected ? 100 : isPrimary ? 50 : 10}
                           >
-                            <div style={{
-                              transform: `scale(${scale})`,
-                              transition: 'transform 0.2s ease',
-                            }}>
-                              <Pin 
-                                background={pinColor} 
-                                borderColor="#ffffff" 
-                                glyphColor="#ffffff" 
-                                scale={1}
-                              >
-                                <div style={{ fontSize: '14px', lineHeight: '14px' }}>
-                                  {iconEmoji}
-                                </div>
-                              </Pin>
-                            </div>
+                            
+                          <div style={{
+                            width: isSelected ? 44 : isPrimary ? 38 : 32,
+                            height: isSelected ? 44 : isPrimary ? 38 : 32,
+                            background: pinColor,
+                            border: '2.5px solid #ffffff',
+                            borderRadius: '9999px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#ffffff',
+                            fontSize: (isSelected ? 44 : isPrimary ? 38 : 32) * 0.45,
+                            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
+                            transition: 'all 0.2s ease',
+                          }}>
+                            {iconEmoji}
+                          </div>
+
                           </AdvancedMarker>
                         );
                       })}
