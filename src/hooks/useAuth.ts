@@ -29,7 +29,7 @@ export function useAuth() {
           } else {
             // If code from storage was invalid, clean it
             if (!urlCode) localStorage.removeItem(AUTH_STORAGE_KEY);
-            setError('Codice invito non trovato. Inserisci il codice o cerca con il tuo nome.');
+            setError('Invito non trovato. Prova ad accedere inserendo nome e cognome.');
           }
         } catch (err) {
           console.error(err);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, KeyRound, UserSearch, Sparkles, CheckCircle2 } from 'lucide-react';
+import { X, UserSearch, Sparkles, CheckCircle2 } from 'lucide-react';
 
 interface MagicLinkModalProps {
   isOpen: boolean;
@@ -18,30 +18,12 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
   currentFamily,
   error,
 }) => {
-  const [tab, setTab] = useState<'code' | 'name'>('code');
-  const [code, setCode] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   if (!isOpen) return null;
-
-  const handleCodeSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!code.trim()) return;
-    setIsSubmitting(true);
-    setSuccessMessage(null);
-    const success = await onLoginCode(code.trim());
-    setIsSubmitting(false);
-    if (success) {
-      setSuccessMessage('Accesso effettuato con successo!');
-      setTimeout(() => {
-        onClose();
-        setSuccessMessage(null);
-      }, 1000);
-    }
-  };
 
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,7 +42,6 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
   };
 
   const handleQuickDemo = (demoCode: string) => {
-    setCode(demoCode);
     onLoginCode(demoCode).then((ok) => {
       if (ok) {
         setSuccessMessage('Accesso demo riuscito!');
@@ -87,7 +68,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
         {/* Header */}
         <div className="text-center mb-6">
           <div className="w-12 h-12 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-3">
-            <KeyRound className="w-6 h-6 text-burgundy" />
+            <UserSearch className="w-6 h-6 text-burgundy" />
           </div>
           <h2 className="font-serif text-2xl sm:text-3xl text-burgundy">
             {currentFamily ? 'Il tuo Invito Personale' : 'Accedi al tuo Invito'}
@@ -95,36 +76,8 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <p className="text-xs sm:text-sm text-burgundy/70 mt-1">
             {currentFamily
               ? `Attualmente connesso come: ${currentFamily}`
-              : 'Inserisci il codice ricevuto su WhatsApp o cerca il tuo nome.'}
+              : 'Inserisci il tuo nome e cognome per trovare il tuo invito.'}
           </p>
-        </div>
-
-        {/* Tabs */}
-        <div className="flex border-b border-blush/40 mb-5">
-          <button
-            type="button"
-            onClick={() => setTab('code')}
-            className={`flex-1 pb-2 text-xs sm:text-sm font-medium tracking-wide transition-colors flex items-center justify-center gap-1.5 ${
-              tab === 'code'
-                ? 'border-b-2 border-burgundy text-burgundy font-semibold'
-                : 'text-burgundy/50 hover:text-burgundy'
-            }`}
-          >
-            <KeyRound className="w-4 h-4" />
-            Codice Invito
-          </button>
-          <button
-            type="button"
-            onClick={() => setTab('name')}
-            className={`flex-1 pb-2 text-xs sm:text-sm font-medium tracking-wide transition-colors flex items-center justify-center gap-1.5 ${
-              tab === 'name'
-                ? 'border-b-2 border-burgundy text-burgundy font-semibold'
-                : 'text-burgundy/50 hover:text-burgundy'
-            }`}
-          >
-            <UserSearch className="w-4 h-4" />
-            Cerca Nome
-          </button>
         </div>
 
         {/* Feedback Messages */}
@@ -140,66 +93,41 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           </div>
         )}
 
-        {/* Tab 1: Code */}
-        {tab === 'code' ? (
-          <form onSubmit={handleCodeSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1.5">
-                Codice Invito
-              </label>
-              <input
-                type="text"
-                value={code}
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                placeholder="es. ROSSI26"
-                className="w-full px-4 py-3 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 uppercase tracking-widest text-center text-lg font-semibold text-burgundy outline-none transition-all"
-                autoFocus
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting || !code.trim()}
-              className="w-full py-3.5 px-6 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold text-sm shadow-wedding hover:shadow-wedding-lg transition-all disabled:opacity-50"
-            >
-              {isSubmitting ? 'Verifica in corso...' : 'Entra nel tuo Invito'}
-            </button>
-          </form>
-        ) : (
-          /* Tab 2: Name */
-          <form onSubmit={handleNameSubmit} className="space-y-3">
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
-                Nome
-              </label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder="es. Marco"
-                className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-sm text-burgundy outline-none transition-all"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
-                Cognome
-              </label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder="es. Rossi"
-                className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-sm text-burgundy outline-none transition-all"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isSubmitting || !firstName.trim() || !lastName.trim()}
-              className="w-full mt-2 py-3.5 px-6 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold text-sm shadow-wedding hover:shadow-wedding-lg transition-all disabled:opacity-50"
-            >
-              {isSubmitting ? 'Ricerca in corso...' : 'Trova il mio Invito'}
-            </button>
-          </form>
-        )}
+        {/* Form */}
+        <form onSubmit={handleNameSubmit} className="space-y-3">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
+              Nome
+            </label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="es. Marco"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-sm text-burgundy outline-none transition-all"
+              autoFocus
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
+              Cognome
+            </label>
+            <input
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="es. Rossi"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-sm text-burgundy outline-none transition-all"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting || !firstName.trim() || !lastName.trim()}
+            className="w-full mt-4 py-3.5 px-6 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold text-sm shadow-wedding hover:shadow-wedding-lg transition-all disabled:opacity-50"
+          >
+            {isSubmitting ? 'Ricerca in corso...' : 'Trova il mio Invito'}
+          </button>
+        </form>
 
         {/* Quick Demo Selector */}
         <div className="mt-6 pt-4 border-t border-blush/30 text-center">
@@ -213,14 +141,14 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               onClick={() => handleQuickDemo('ROSSI26')}
               className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
-              Fam. Rossi (3 ospiti)
+              Fam. Rossi
             </button>
             <button
               type="button"
               onClick={() => handleQuickDemo('FERRARI26')}
               className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
-              Elena & Luca (2 ospiti)
+              Elena & Luca
             </button>
           </div>
         </div>

@@ -132,7 +132,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
             <div className="w-12 h-1 bg-blush rounded-full mx-auto my-3" />
             <p className="text-xs sm:text-sm text-burgundy/70 max-w-md mx-auto mb-8">
               Per confermare la partecipazione per te e per i componenti del tuo nucleo familiare,
-              accedi con il codice invito ricevuto su WhatsApp. <br/><br/>
+              accedi inserendo il tuo nome e cognome. <br/><br/>
               <strong className="font-semibold text-burgundy">Vi chiediamo gentilmente di confermare entro l'8 maggio.</strong>
             </p>
             <button
