@@ -15,7 +15,7 @@ export const QuickFacts: React.FC = () => {
 
   const facts = [
     {
-      image: calendarIcon,
+      icon: Calendar,
       title: 'La Data',
       main: settings.event.displayDate,
       subtitle: 'Segna la data in agenda',
