@@ -133,7 +133,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
             <p className="text-xs sm:text-sm text-burgundy/70 max-w-md mx-auto mb-8">
               Per confermare la partecipazione per te e per i componenti del tuo nucleo familiare,
               accedi inserendo il tuo nome e cognome. <br/><br/>
-              <strong className="font-semibold text-burgundy">Vi chiediamo gentilmente di confermare entro l'8 maggio.</strong>
+              <strong className="font-semibold text-burgundy">Vi chiediamo gentilmente di confermare entro il 15 marzo.</strong>
             </p>
             <button
               onClick={onOpenAuth}
@@ -162,7 +162,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
             Gruppo: <strong className="text-burgundy font-semibold">{cluster.family_name}</strong> · {cluster.guests.length} {cluster.guests.length === 1 ? 'ospite' : 'ospiti'}
           </p>
           <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2">
-            Vi chiediamo gentilmente di confermare entro l'8 maggio.
+            Vi chiediamo gentilmente di confermare entro il 15 marzo.
           </p>
         </div>
 
