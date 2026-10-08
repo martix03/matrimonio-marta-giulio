@@ -8,8 +8,11 @@ interface AdminDashboardProps {
   onLogout: () => void;
 }
 
+import { AdminSettings } from './AdminSettings';
+import { Settings } from 'lucide-react';
+
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add' | 'places'>('guests');
+  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add' | 'places' | 'settings'>('guests');
   const [guests, setGuests] = useState<any[]>([]);
   const [gifts, setGifts] = useState<any[]>([]);
   const [places, setPlaces] = useState<any[]>([]);
@@ -259,7 +262,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <button onClick={() => setActiveTab('add')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             + Aggiungi Dati
           </button>
+          <button onClick={() => setActiveTab('settings')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'settings' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+            <Settings className="w-4 h-4 inline-block mr-2" /> Impostazioni
+          </button>
         </div>
+
+        {activeTab === 'settings' && <AdminSettings />}
 
         {activeTab === 'guests' && (
           <div className="space-y-8 animate-fade-in">

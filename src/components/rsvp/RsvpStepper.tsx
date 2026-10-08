@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { Cluster, Guest, DietaryTag } from '../../types';
 import { weddingApi } from '../../services/supabase';
-import { weddingConfig } from '../../config/wedding.config';
+import { useSettings } from '../../contexts/SettingsContext';
 
 interface RsvpStepperProps {
   cluster: Cluster | null;
@@ -25,6 +25,7 @@ const DIETARY_OPTIONS: { id: DietaryTag; label: string }[] = [
 ];
 
 export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, onRsvpCompleted }) => {
+  const { settings } = useSettings();
   const [step, setStep] = useState<number>(1);
   const [declineMessage, setDeclineMessage] = useState<string>('');
   const [guestForms, setGuestForms] = useState<Guest[]>([]);
@@ -133,7 +134,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
             <p className="text-xs sm:text-sm text-burgundy/70 max-w-md mx-auto mb-8">
               Per confermare la partecipazione per te e per i componenti del tuo nucleo familiare,
               accedi inserendo il tuo nome e cognome. <br/><br/>
-              <strong className="font-semibold text-burgundy">Vi chiediamo gentilmente di confermare entro il 15 marzo.</strong>
+              <strong className="font-semibold text-burgundy">Vi chiediamo gentilmente di confermare entro il {new Date(settings.rsvp.deadline).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })}.</strong>
             </p>
             <button
               onClick={onOpenAuth}
@@ -162,7 +163,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
             Gruppo: <strong className="text-burgundy font-semibold">{cluster.family_name}</strong> · {cluster.guests.length} {cluster.guests.length === 1 ? 'ospite' : 'ospiti'}
           </p>
           <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2">
-            Vi chiediamo gentilmente di confermare entro il 15 marzo.
+            Vi chiediamo gentilmente di confermare entro il {new Date(settings.rsvp.deadline).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })}.
           </p>
         </div>
 
@@ -499,7 +500,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                         </div>
 
                         {/* Bus seat checkbox (flag-controlled) */}
-                        {weddingConfig.features.enableShuttleBuses && (
+                        {settings.features?.enableShuttleBuses && (
                           <label className="flex items-center gap-2.5 cursor-pointer pt-1">
                             <input
                               type="checkbox"
@@ -635,7 +636,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                                 Note: "{guest.dietary_notes}"
                               </div>
                             )}
-                            {weddingConfig.features.enableShuttleBuses && guest.bus_seat_reserved && (
+                            {settings.features?.enableShuttleBuses && guest.bus_seat_reserved && (
                               <div className="text-[11px] text-burgundy/80 font-medium">
                                 🚌 Posto navetta riservato
                               </div>

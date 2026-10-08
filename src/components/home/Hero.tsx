@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Calendar, ArrowDown, CheckCircle } from 'lucide-react';
-import { weddingConfig } from '../../config/wedding.config';
+import { useSettings } from '../../contexts/SettingsContext';
 import { Cluster } from '../../types';
 
 interface HeroProps {
@@ -17,6 +17,7 @@ interface TimeRemaining {
 }
 
 export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
+  const { settings } = useSettings();
   const [timeLeft, setTimeLeft] = useState<TimeRemaining>({
     days: 0,
     hours: 0,
@@ -26,7 +27,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
   });
 
   useEffect(() => {
-    const target = new Date(weddingConfig.event.date).getTime();
+    const target = new Date(settings.event.date).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -48,7 +49,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [settings.event.date]);
 
   // Check if all guests in cluster already responded
   const allResponded = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending !== null);
@@ -63,16 +64,16 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         {/* Monogram Top Pill */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-paper/80 border border-blush/50 text-burgundy shadow-sm text-xs font-semibold uppercase tracking-widest mb-6">
           <Heart className="w-3.5 h-3.5 text-blush fill-blush" />
-          <span>Save the Date · {weddingConfig.event.displayDate}</span>
+          <span>Save the Date · {settings.event.displayDate}</span>
         </div>
 
         {/* Couple Names */}
         <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl text-burgundy font-normal tracking-tight leading-[0.9] mb-4">
-          {weddingConfig.couple.bride}
+          {settings.couple.bride}
           <span className="block my-2 text-3xl sm:text-4xl md:text-5xl text-blush font-serif italic">
             &amp;
           </span>
-          {weddingConfig.couple.groom}
+          {settings.couple.groom}
         </h1>
 
         {/* Ornamental divider */}
@@ -80,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
         {/* Location & Tagline */}
         <p className="text-sm sm:text-base md:text-lg font-medium tracking-wide text-burgundy/80 uppercase mb-8">
-          {weddingConfig.event.city} · {weddingConfig.event.displayDate}
+          {settings.event.city} · {settings.event.displayDate}
         </p>
 
         {/* Contextual Welcome Card for Cluster */}
@@ -98,7 +99,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 </span>
               ) : (
                 <span className="block mt-1 text-burgundy/80">
-                  Vi chiediamo gentilmente di confermare la presenza entro il 15 marzo.
+                  Vi chiediamo gentilmente di confermare la presenza entro il {new Date(settings.rsvp.deadline).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })}.
                 </span>
               )}
             </p>

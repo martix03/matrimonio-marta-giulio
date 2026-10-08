@@ -1,9 +1,11 @@
 import React from 'react';
 import { Heart, ArrowUp } from 'lucide-react';
-import { weddingConfig } from '../config/wedding.config';
+import { settings } from '../config/wedding.config';
 import logoImg from '../assets/logo.png';
 
 export const Footer: React.FC = () => {
+  const { settings } = useSettings();
+  const { settings } = useSettings();
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -21,10 +23,10 @@ export const Footer: React.FC = () => {
         </div>
 
         <h3 className="font-serif text-2xl sm:text-3xl text-burgundy font-normal mb-1">
-          {weddingConfig.couple.bride} <span className="text-blush italic font-serif">&amp;</span> {weddingConfig.couple.groom}
+          {settings.couple.bride} <span className="text-blush italic font-serif">&amp;</span> {settings.couple.groom}
         </h3>
         <p className="text-xs uppercase tracking-widest text-burgundy/60 mb-6 font-semibold">
-          {weddingConfig.event.displayDate} · {weddingConfig.event.city}
+          {settings.event.displayDate} · {settings.event.city}
         </p>
 
         <div className="w-12 h-0.5 bg-blush/40 rounded-full mx-auto mb-6" />

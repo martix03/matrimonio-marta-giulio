@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Gift, Copy, Check, Heart, Plane, Send, Sparkles } from 'lucide-react';
-import { weddingConfig } from '../../config/wedding.config';
+import { useSettings } from '../../contexts/SettingsContext';
 import { mockRegistryStages } from '../../services/mockData';
 import { Cluster } from '../../types';
 import { weddingApi } from '../../services/supabase';
@@ -10,6 +10,7 @@ interface WeddingRegistryProps {
 }
 
 export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => {
+  const { settings } = useSettings();
   const [copiedIban, setCopiedIban] = useState<boolean>(false);
   const [transferSentMessage, setTransferSentMessage] = useState<boolean>(false);
   const [hasSentAlready, setHasSentAlready] = useState<boolean>(false);
@@ -24,7 +25,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
   }, [senderName]);
 
   const handleCopyIban = () => {
-    navigator.clipboard.writeText(weddingConfig.registry.iban);
+    navigator.clipboard.writeText(settings.registry.iban);
     setCopiedIban(true);
     setTimeout(() => setCopiedIban(false), 2500);
   };
@@ -124,7 +125,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                   Intestatario:
                 </div>
                 <div className="text-sm font-semibold text-burgundy">
-                  {weddingConfig.registry.holder}
+                  {settings.registry.holder}
                 </div>
 
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 pt-2 border-t border-blush/20">
@@ -132,7 +133,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                 </div>
                 <div className="flex items-center justify-between gap-2">
                   <span className="font-mono text-xs sm:text-sm font-bold text-burgundy break-all select-all">
-                    {weddingConfig.registry.iban}
+                    {settings.registry.iban}
                   </span>
                   <button
                     onClick={handleCopyIban}

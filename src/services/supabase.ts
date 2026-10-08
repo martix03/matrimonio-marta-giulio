@@ -385,5 +385,53 @@ export const weddingApi = {
       return true;
     }
     return false;
+  },
+
+  async getSettings(): Promise<any> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.from('wedding_settings').select('*').eq('id', 1).single();
+      if (!error && data) return data;
+    }
+    return null;
+  },
+
+  async updateSettings(config: any): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.from('wedding_settings').update({ config }).eq('id', 1);
+      return !error;
+    }
+    return false;
+  },
+
+  async getFaqs(): Promise<any[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.from('faqs').select('*').order('sort_order', { ascending: true });
+      if (!error && data) return data;
+    }
+    return [];
+  },
+
+  async createFaq(faq: any): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.from('faqs').insert([faq]);
+      return !error;
+    }
+    return false;
+  },
+
+  async updateFaq(id: string, updates: any): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.from('faqs').update(updates).eq('id', id);
+      return !error;
+    }
+    return false;
+  },
+
+  async deleteFaq(id: string): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase.from('faqs').delete().eq('id', id);
+      return !error;
+    }
+    return false;
   }
 };

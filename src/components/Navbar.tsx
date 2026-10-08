@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, UserCheck, KeyRound } from 'lucide-react';
 import { Cluster } from '../types';
-import { weddingConfig } from '../config/wedding.config';
+import { useSettings } from '../contexts/SettingsContext';
 import logoImg from '../assets/logo.png';
 
 interface NavbarProps {
@@ -11,6 +11,8 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ cluster, onOpenAuth, onLogout }) => {
+  const { settings } = useSettings();
+  const { settings } = useSettings();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -26,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({ cluster, onOpenAuth, onLogout })
     { name: 'Home', href: '#home' },
     { name: 'Info & Orari', href: '#dettagli' },
     { name: 'RSVP', href: '#rsvp' },
-    ...(weddingConfig.features.enableLogisticsHub
+    ...(settings.features.enableLogisticsHub
       ? [{ name: 'Logistica & Auto', href: '#logistica' }]
       : []),
     { name: 'Lista Nozze', href: '#lista-nozze' },

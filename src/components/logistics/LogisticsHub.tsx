@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Bus, Car, Plus, MessageCircle, Clock, MapPin, Users, CheckCircle2 } from 'lucide-react';
 import { CarpoolingPost } from '../../types';
 import { weddingApi } from '../../services/supabase';
-import { weddingConfig } from '../../config/wedding.config';
+import { useSettings } from '../../contexts/SettingsContext';
 
 export const LogisticsHub: React.FC = () => {
+  const { settings } = useSettings();
   const [carpoolingPosts, setCarpoolingPosts] = useState<CarpoolingPost[]>([]);
   const [busInfo, setBusInfo] = useState<{ total: number; reserved: number }>({ total: 50, reserved: 14 });
   const [showOfferForm, setShowOfferForm] = useState<boolean>(false);
@@ -71,9 +72,9 @@ export const LogisticsHub: React.FC = () => {
           </p>
         </div>
 
-        <div className={weddingConfig.features.enableShuttleBuses ? "grid grid-cols-1 lg:grid-cols-12 gap-8" : "max-w-3xl mx-auto space-y-4"}>
+        <div className={settings.features?.enableShuttleBuses ? "grid grid-cols-1 lg:grid-cols-12 gap-8" : "max-w-3xl mx-auto space-y-4"}>
           {/* Left Column: Shuttle Bus Counter & Details (5 cols) - Guarded by enableShuttleBuses flag */}
-          {weddingConfig.features.enableShuttleBuses && (
+          {settings.features?.enableShuttleBuses && (
             <div className="lg:col-span-5 space-y-6">
               <div className="p-6 sm:p-8 rounded-4xl bg-paper shadow-wedding border border-blush/30">
                 <div className="flex items-center gap-3 mb-4">
@@ -143,7 +144,7 @@ export const LogisticsHub: React.FC = () => {
           )}
 
           {/* Right Column / Centered: Carpooling Bulletin Board */}
-          <div className={weddingConfig.features.enableShuttleBuses ? "lg:col-span-7 space-y-4" : "w-full space-y-4"}>
+          <div className={settings.features?.enableShuttleBuses ? "lg:col-span-7 space-y-4" : "w-full space-y-4"}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Car className="w-5 h-5 text-burgundy" />

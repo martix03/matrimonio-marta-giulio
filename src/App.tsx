@@ -10,10 +10,11 @@ import { InteractiveMap } from './components/map/InteractiveMap';
 import { FaqSection } from './components/faq/FaqSection';
 import { Footer } from './components/Footer';
 import { MagicLinkModal } from './components/auth/MagicLinkModal';
-import { weddingConfig } from './config/wedding.config';
+import { useSettings } from './contexts/SettingsContext';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 
 export function App() {
+  const { settings } = useSettings();
   const {
     cluster,
     loading,
@@ -62,7 +63,7 @@ export function App() {
         />
 
         {/* Logistics Hub (Shuttle Bus & Carpooling) - Flag-controlled */}
-        {weddingConfig.features.enableLogisticsHub && <LogisticsHub />}
+        {settings?.features?.enableLogisticsHub && <LogisticsHub />}
 
         {/* Honeymoon Registry */}
         <WeddingRegistry cluster={cluster} />

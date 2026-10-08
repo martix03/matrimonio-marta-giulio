@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown, Phone, Mail, MessageCircle, Heart } from 'lucide-react';
-import { mockFaqs } from '../../services/mockData';
-import { weddingConfig } from '../../config/wedding.config';
+import { useSettings } from '../../contexts/SettingsContext';
+import { weddingApi } from '../../services/supabase';
 
 export const FaqSection: React.FC = () => {
+  const { settings } = useSettings();
+  const [faqs, setFaqs] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedTag, setSelectedTag] = useState<string>('all');
   const [openIds, setOpenIds] = useState<string[]>(['faq-dress-code']);
+
+  useEffect(() => {
+    weddingApi.getFaqs().then(setFaqs);
+  }, []);
 
   const toggleAccordion = (id: string) => {
     setOpenIds(prev =>
@@ -21,7 +27,7 @@ export const FaqSection: React.FC = () => {
     { id: 'gifts', label: '🎁 Regali' },
   ];
 
-  const filteredFaqs = mockFaqs.filter(faq => {
+  const filteredFaqs = faqs.filter(faq => {
     const matchesTag = selectedTag === 'all' || faq.category === selectedTag;
     const matchesSearch =
       faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||

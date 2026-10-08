@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, Church, Castle, Navigation, MapPin, ExternalLink } from 'lucide-react';
-import { weddingConfig } from '../../config/wedding.config';
+import { useSettings } from '../../contexts/SettingsContext';
 
 export const QuickFacts: React.FC = () => {
+  const { settings } = useSettings();
+  const { settings } = useSettings();
   const [navModalPlace, setNavModalPlace] = useState<{
     name: string;
     google: string;
@@ -14,7 +16,7 @@ export const QuickFacts: React.FC = () => {
     {
       icon: Calendar,
       title: 'La Data',
-      main: weddingConfig.event.displayDate,
+      main: settings.event.displayDate,
       subtitle: 'Segna la data in agenda',
       badge: 'Save the Date',
     },
@@ -22,33 +24,33 @@ export const QuickFacts: React.FC = () => {
       icon: Clock,
       title: 'Gli Orari',
       main: 'Ore 17:00',
-      subtitle: weddingConfig.event.ceremonyTime,
+      subtitle: settings.event.ceremonyTime,
       badge: 'Arrivo ore 16:45',
     },
     {
       icon: Church,
       title: 'La Cerimonia',
-      main: weddingConfig.locations.ceremony.name,
-      subtitle: weddingConfig.locations.ceremony.address,
+      main: settings.locations.ceremony.name,
+      subtitle: settings.locations.ceremony.address,
       badge: 'Buttigliera Alta (TO)',
       nav: {
-        name: weddingConfig.locations.ceremony.name,
-        google: weddingConfig.locations.ceremony.googleMapsUrl,
-        apple: weddingConfig.locations.ceremony.appleMapsUrl,
-        waze: weddingConfig.locations.ceremony.wazeUrl,
+        name: settings.locations.ceremony.name,
+        google: settings.locations.ceremony.googleMapsUrl,
+        apple: settings.locations.ceremony.appleMapsUrl,
+        waze: settings.locations.ceremony.wazeUrl,
       }
     },
     {
       icon: Castle,
       title: 'Il Ricevimento',
-      main: weddingConfig.locations.reception.name,
-      subtitle: weddingConfig.event.receptionTime,
+      main: settings.locations.reception.name,
+      subtitle: settings.event.receptionTime,
       badge: 'Stessa location',
       nav: {
-        name: weddingConfig.locations.reception.name,
-        google: weddingConfig.locations.reception.googleMapsUrl,
-        apple: weddingConfig.locations.reception.appleMapsUrl,
-        waze: weddingConfig.locations.reception.wazeUrl,
+        name: settings.locations.reception.name,
+        google: settings.locations.reception.googleMapsUrl,
+        apple: settings.locations.reception.appleMapsUrl,
+        waze: settings.locations.reception.wazeUrl,
       }
     },
   ];
