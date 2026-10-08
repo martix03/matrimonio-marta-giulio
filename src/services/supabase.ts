@@ -243,6 +243,15 @@ export const weddingApi = {
     return [];
   },
 
+  async getFoodCategories(): Promise<any[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.from('food_categories').select('*').order('sort_order', { ascending: true });
+      if (error) console.error('Error fetching food categories', error);
+      else if (data) return data;
+    }
+    return [];
+  },
+
   getRegistryStages(): RegistryStage[] {
     return mockRegistryStages;
   }

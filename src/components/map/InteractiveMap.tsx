@@ -10,6 +10,7 @@ export const InteractiveMap: React.FC = () => {
   const [places, setPlaces] = useState<PlacePOI[]>([]);
   const [activePlace, setActivePlace] = useState<PlacePOI | null>(null);
   const [categories, setCategories] = useState<PlaceCategory[]>([]);
+  const [foodCategories, setFoodCategories] = useState<any[]>([]);
   
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -20,24 +21,16 @@ export const InteractiveMap: React.FC = () => {
       setPlaces(p);
       if (p.length > 0) setActivePlace(p[0]);
     });
-    weddingApi.getPlaceCategories().then(c => {
-      setCategories(c);
-    });
+    weddingApi.getPlaceCategories().then(setCategories);
+    weddingApi.getFoodCategories().then(setFoodCategories);
   }, []);
 
-  const primaryCategories = categories.filter(c => c.parent_id === null).sort((a,b) => a.sort_order - b.sort_order);
-  const subCategories = categories.filter(c => c.parent_id === 'food').sort((a,b) => a.sort_order - b.sort_order);
+  const primaryCategories = categories.sort((a,b) => a.sort_order - b.sort_order);
 
   const getPlaceIcon = (place: PlacePOI): string => {
     const cat = categories.find(c => c.id === place.category);
-    if (cat) return cat.marker_icon;
-    if (place.category === 'ceremony') return '⛪';
-    if (place.category === 'reception') return '🏰';
-    if (place.category === 'hotel') return '🏨';
-    if (place.category === 'beauty') return '💇';
-    if (place.category === 'sightseeing') return '📸';
     if (place.category === 'food') {
-      const sub = categories.find(c => c.id === place.food_type);
+      const sub = foodCategories.find(c => c.id === place.food_type);
       if (sub) return sub.marker_icon;
       switch (place.food_type) {
         case 'colazione': return '🥐';
@@ -47,19 +40,19 @@ export const InteractiveMap: React.FC = () => {
         default: return '🍷';
       }
     }
+    if (cat) return cat.marker_icon;
+    if (place.category === 'ceremony') return '⛪';
+    if (place.category === 'reception') return '🏰';
+    if (place.category === 'hotel') return '🏨';
+    if (place.category === 'beauty') return '💇';
+    if (place.category === 'sightseeing') return '📸';
     return '📍';
   };
 
   const getPlaceCategoryBadge = (place: PlacePOI): string => {
     const cat = categories.find(c => c.id === place.category);
-    if (cat) return cat.label;
-    if (place.category === 'ceremony') return '⛪ Sede Cerimonia';
-    if (place.category === 'reception') return '🏰 Sede Ricevimento';
-    if (place.category === 'hotel') return '🏨 Hotel & Alloggi';
-    if (place.category === 'beauty') return '💇 Beauty & Parrucchieri';
-    if (place.category === 'sightseeing') return '📸 Da Non Perdere';
     if (place.category === 'food') {
-      const sub = categories.find(c => c.id === place.food_type);
+      const sub = foodCategories.find(c => c.id === place.food_type);
       if (sub) return sub.label;
       switch (place.food_type) {
         case 'colazione': return '🥐 Colazione & Bakery';
@@ -69,6 +62,12 @@ export const InteractiveMap: React.FC = () => {
         default: return '🍷 Food & Relax';
       }
     }
+    if (cat) return cat.label;
+    if (place.category === 'ceremony') return '⛪ Sede Cerimonia';
+    if (place.category === 'reception') return '🏰 Sede Ricevimento';
+    if (place.category === 'hotel') return '🏨 Hotel & Alloggi';
+    if (place.category === 'beauty') return '💇 Beauty & Parrucchieri';
+    if (place.category === 'sightseeing') return '📸 Da Non Perdere';
     return '📍 LUOGO';
   };
 
@@ -254,10 +253,10 @@ export const InteractiveMap: React.FC = () => {
               ))}
             </div>
 
-            {selectedCategory === 'food' && subCategories.length > 0 && (
+            {selectedCategory === 'food' && foodCategories.length > 0 && (
               <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-4 no-scrollbar animate-fade-in">
                 <span className="text-[11px] font-semibold text-burgundy/60 shrink-0 mr-1">Filtra cibo:</span>
-                {subCategories.map(sub => (
+                {foodCategories.map(sub => (
                   <button
                     key={sub.id}
                     onClick={() => handleFoodSubFilterChange(sub.id)}
