@@ -99,10 +99,10 @@ export const InteractiveMap: React.FC = () => {
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&scale=2', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png', {
         maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        attribution: '&copy; Google Maps',
+        subdomains: ['a', 'b', 'c', 'd'],
+        attribution: '&copy; OpenStreetMap, &copy; CARTO',
       }).addTo(map);
 
       mapInstanceRef.current = map;
