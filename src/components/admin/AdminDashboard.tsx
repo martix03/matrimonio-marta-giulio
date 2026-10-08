@@ -125,7 +125,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   return (
     <div className="min-h-screen bg-cream text-burgundy font-sans">
       <nav className="bg-paper border-b border-blush/20 py-4 px-6 flex justify-between items-center sticky top-0 z-50 shadow-sm">
-        <h1 className="font-serif text-2xl font-bold">Portale Admin Spaccati</h1>
+        <h1 className="font-serif text-2xl font-bold">Portale Admin Matrimonio</h1>
         <button onClick={onLogout} className="flex items-center gap-2 text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity">
           <LogOut className="w-4 h-4" /> Esci
         </button>
