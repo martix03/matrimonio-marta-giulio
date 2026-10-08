@@ -41,8 +41,10 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
     }
   };
 
-  const handleQuickDemo = (demoCode: string) => {
-    onLoginCode(demoCode).then((ok) => {
+  const handleQuickDemo = (demoFirstName: string, demoLastName: string) => {
+    setFirstName(demoFirstName);
+    setLastName(demoLastName);
+    onLoginName(demoFirstName, demoLastName).then((ok) => {
       if (ok) {
         setSuccessMessage('Accesso demo riuscito!');
         setTimeout(() => {
@@ -138,14 +140,14 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <div className="flex justify-center gap-2">
             <button
               type="button"
-              onClick={() => handleQuickDemo('ROSSI26')}
+              onClick={() => handleQuickDemo('Marco', 'Rossi')}
               className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
               Fam. Rossi
             </button>
             <button
               type="button"
-              onClick={() => handleQuickDemo('FERRARI26')}
+              onClick={() => handleQuickDemo('Marta', 'Spalla')}
               className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
               Marta
