@@ -74,14 +74,14 @@ CREATE POLICY "Public read for places" ON places FOR SELECT USING (true);
 
 -- 6. Dati di esempio (Seed iniziale)
 INSERT INTO clusters (id, family_name, invite_code, notes) VALUES
-  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Famiglia Rossi', 'ROSSI26', 'Tavolo amici'),
+  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Famiglia Spalla', 'ROSSI26', 'Tavolo amici'),
   ('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'Elena & Luca', 'FERRARI26', 'Testimoni')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO guests (cluster_id, first_name, last_name, is_attending, is_child, dietary_tags, song_request, bus_seat_reserved) VALUES
-  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Marco', 'Rossi', NULL, FALSE, '{}', 'Gigi D''Agostino - L''Amour Toujours', TRUE),
-  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Laura', 'Bianchi', NULL, FALSE, '{"vegetarian"}', 'Dua Lipa - Levitating', TRUE),
-  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Tommaso', 'Rossi', NULL, TRUE, '{}', '', FALSE),
+  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Marco', 'Spalla', NULL, FALSE, '{}', 'Gigi D''Agostino - L''Amour Toujours', TRUE),
+  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Laura', 'Spalla', NULL, FALSE, '{"vegetarian"}', 'Dua Lipa - Levitating', TRUE),
+  ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Tommaso', 'Spalla', NULL, TRUE, '{}', '', FALSE),
   ('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'Elena', 'Ferrari', TRUE, FALSE, '{"gluten_free"}', 'Abba - Dancing Queen', FALSE),
   ('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'Luca', 'Moretti', TRUE, FALSE, '{}', 'The Killers - Mr. Brightside', FALSE)
 ON CONFLICT DO NOTHING;

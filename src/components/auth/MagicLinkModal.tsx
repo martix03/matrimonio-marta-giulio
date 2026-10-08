@@ -140,10 +140,10 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <div className="flex justify-center gap-2">
             <button
               type="button"
-              onClick={() => handleQuickDemo('Marco', 'Rossi')}
+              onClick={() => handleQuickDemo('Marco', 'Spalla')}
               className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
-              Fam. Rossi
+              Fam. Spalla
             </button>
             <button
               type="button"
