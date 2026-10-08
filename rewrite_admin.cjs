@@ -58,8 +58,10 @@ export const AdminSettings: React.FC = () => {
     setFormData((prev: any) => {
       const newData = { ...prev };
       if (subsection) {
+        if (!newData[section][subsection]) newData[section][subsection] = {};
         newData[section][subsection][field] = value;
       } else {
+        if (!newData[section]) newData[section] = {};
         newData[section][field] = value;
       }
       return newData;
@@ -93,19 +95,11 @@ export const AdminSettings: React.FC = () => {
               <Users className="w-4 h-4 text-blush" /> Gli Sposi
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <div className="text-xs font-bold text-burgundy mb-2">Partner 1</div>
-                <InputField label="Nome" value={formData.couple.partner1.name} onChange={(v) => handleChange('couple', 'name', v, 'partner1')} />
-                <InputField label="Telefono" value={formData.couple.partner1.phone} onChange={(v) => handleChange('couple', 'phone', v, 'partner1')} />
-                <InputField label="Email" value={formData.couple.partner1.email} onChange={(v) => handleChange('couple', 'email', v, 'partner1')} />
-              </div>
-              <div>
-                <div className="text-xs font-bold text-burgundy mb-2">Partner 2</div>
-                <InputField label="Nome" value={formData.couple.partner2.name} onChange={(v) => handleChange('couple', 'name', v, 'partner2')} />
-                <InputField label="Telefono" value={formData.couple.partner2.phone} onChange={(v) => handleChange('couple', 'phone', v, 'partner2')} />
-                <InputField label="Email" value={formData.couple.partner2.email} onChange={(v) => handleChange('couple', 'email', v, 'partner2')} />
-              </div>
+              <InputField label="Sposa" value={formData?.couple?.bride} onChange={(v) => handleChange('couple', 'bride', v)} />
+              <InputField label="Sposo" value={formData?.couple?.groom} onChange={(v) => handleChange('couple', 'groom', v)} />
             </div>
+            <InputField label="Nome Completo" value={formData?.couple?.fullName} onChange={(v) => handleChange('couple', 'fullName', v)} />
+            <InputField label="Hashtag" value={formData?.couple?.hashtag} onChange={(v) => handleChange('couple', 'hashtag', v)} />
           </div>
 
           {/* Dettagli Evento */}
@@ -113,11 +107,11 @@ export const AdminSettings: React.FC = () => {
             <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
               <Calendar className="w-4 h-4 text-blush" /> Date & Orari
             </h3>
-            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData.event.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
-            <InputField label="Data Scadenza RSVP" value={formData.event.rsvpDeadline} onChange={(v) => handleChange('event', 'rsvpDeadline', v)} />
+            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
+            <InputField label="Città" value={formData?.event?.city} onChange={(v) => handleChange('event', 'city', v)} />
             <div className="grid grid-cols-2 gap-4">
-              <InputField label="Orario Cerimonia" value={formData.event.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
-              <InputField label="Orario Ricevimento" value={formData.event.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
+              <InputField label="Info Cerimonia (es. ore 16:45)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
+              <InputField label="Info Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
             </div>
           </div>
 
@@ -127,16 +121,16 @@ export const AdminSettings: React.FC = () => {
               <MapPin className="w-4 h-4 text-blush" /> Location
             </h3>
             <div className="space-y-3">
-              <div className="text-xs font-bold text-burgundy">Cerimonia</div>
-              <InputField label="Nome" value={formData.locations.ceremony.name} onChange={(v) => handleChange('locations', 'name', v, 'ceremony')} />
-              <InputField label="Indirizzo" value={formData.locations.ceremony.address} onChange={(v) => handleChange('locations', 'address', v, 'ceremony')} />
-              <InputField label="URL Google Maps" value={formData.locations.ceremony.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'ceremony')} />
+              <div className="text-xs font-bold text-burgundy">Sede Cerimonia</div>
+              <InputField label="Nome" value={formData?.locations?.ceremony?.name} onChange={(v) => handleChange('locations', 'name', v, 'ceremony')} />
+              <InputField label="Indirizzo" value={formData?.locations?.ceremony?.address} onChange={(v) => handleChange('locations', 'address', v, 'ceremony')} />
+              <InputField label="URL Google Maps" value={formData?.locations?.ceremony?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'ceremony')} />
             </div>
             <div className="space-y-3 mt-4">
-              <div className="text-xs font-bold text-burgundy">Ricevimento</div>
-              <InputField label="Nome" value={formData.locations.reception.name} onChange={(v) => handleChange('locations', 'name', v, 'reception')} />
-              <InputField label="Indirizzo" value={formData.locations.reception.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
-              <InputField label="URL Google Maps" value={formData.locations.reception.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
+              <div className="text-xs font-bold text-burgundy">Sede Ricevimento</div>
+              <InputField label="Nome" value={formData?.locations?.reception?.name} onChange={(v) => handleChange('locations', 'name', v, 'reception')} />
+              <InputField label="Indirizzo" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
+              <InputField label="URL Google Maps" value={formData?.locations?.reception?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
             </div>
           </div>
 
@@ -145,9 +139,9 @@ export const AdminSettings: React.FC = () => {
             <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
               <CreditCard className="w-4 h-4 text-blush" /> Lista Nozze & IBAN
             </h3>
-            <InputField label="Intestatario IBAN" value={formData.registry.holder} onChange={(v) => handleChange('registry', 'holder', v)} />
-            <InputField label="IBAN" value={formData.registry.iban} onChange={(v) => handleChange('registry', 'iban', v)} />
-            <InputField label="Nome Banca" value={formData.registry.bank} onChange={(v) => handleChange('registry', 'bank', v)} />
+            <InputField label="Intestatario IBAN" value={formData?.registry?.holder} onChange={(v) => handleChange('registry', 'holder', v)} />
+            <InputField label="IBAN" value={formData?.registry?.iban} onChange={(v) => handleChange('registry', 'iban', v)} />
+            <InputField label="Nome Banca" value={formData?.registry?.bank} onChange={(v) => handleChange('registry', 'bank', v)} />
           </div>
 
         </div>
