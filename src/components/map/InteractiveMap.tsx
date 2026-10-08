@@ -99,11 +99,11 @@ export const InteractiveMap: React.FC = () => {
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+      const scale = window.devicePixelRatio > 1 ? 2 : 1;
+      L.tileLayer(`https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&scale=${scale}`, {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         attribution: '&copy; Google Maps',
-        detectRetina: true,
       }).addTo(map);
 
       mapInstanceRef.current = map;
