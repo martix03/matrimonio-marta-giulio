@@ -9,7 +9,7 @@ export const weddingConfig = {
     date: '2027-05-29T17:00:00+02:00', // Sabato 29 Maggio 2027 ore 17:00
     displayDate: 'Sabato 29 Maggio 2027',
     city: 'Buttigliera Alta · Torino',
-    ceremonyTime: 'Ore 17:00 (Arrivo gradito entro le 16:45)',
+    ceremonyTime: 'Arrivo gradito entro le 16:45',
     receptionTime: 'A seguire, aperitivo, cena e festa nello stesso luogo',
   },
   features: {
