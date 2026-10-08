@@ -4,7 +4,7 @@
 CREATE TABLE IF NOT EXISTS clusters (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   family_name TEXT NOT NULL,
-  invite_code TEXT UNIQUE NOT NULL,
+  invite_code TEXT NOT NULL,
   notes TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -76,7 +76,7 @@ CREATE POLICY "Public read for places" ON places FOR SELECT USING (true);
 INSERT INTO clusters (id, family_name, invite_code, notes) VALUES
   ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Famiglia Rossi', 'ROSSI26', 'Tavolo amici'),
   ('b0eebc99-9c0b-4ef8-bb6d-6bb9bd380a22', 'Elena & Luca', 'FERRARI26', 'Testimoni')
-ON CONFLICT (invite_code) DO NOTHING;
+ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO guests (cluster_id, first_name, last_name, is_attending, is_child, dietary_tags, song_request, bus_seat_reserved) VALUES
   ('a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11', 'Marco', 'Rossi', NULL, FALSE, '{}', 'Gigi D''Agostino - L''Amour Toujours', TRUE),
