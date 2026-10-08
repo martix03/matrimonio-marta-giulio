@@ -148,7 +148,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               onClick={() => handleQuickDemo('FERRARI26')}
               className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
-              Elena & Luca
+              Marta
             </button>
           </div>
         </div>
