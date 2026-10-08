@@ -117,20 +117,47 @@ export const AdminSettings: React.FC = () => {
             </div>
           </div>
 
-          {/* Dettagli Evento */}
+          
+          {/* Orari Evento */}
           <div className="space-y-4">
             <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
-              <Calendar className="w-4 h-4 text-blush" /> Date & Orari
+              <Calendar className="w-4 h-4 text-blush" /> Orari
             </h3>
-            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
-            <InputField label="Città" value={formData?.event?.city} onChange={(v) => handleChange('event', 'city', v)} />
             <div className="grid grid-cols-2 gap-4">
-              <InputField label="Orario Cerimonia (es. ore 16:45)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
-              <InputField label="Ora del Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
+              <InputField label="Ora Evento (es. Ore 17:00)" value={formData?.event?.time} onChange={(v) => handleChange('event', 'time', v)} />
+              <InputField label="Info Orario (es. Arrivo gradito...)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
             </div>
+            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
           </div>
 
-          {/* Iban / Lista Nozze */}
+          {/* Sede Cerimonia */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+              <MapPin className="w-4 h-4 text-blush" /> Sede Cerimonia
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <InputField label="Città" value={formData?.locations?.ceremony?.city} onChange={(v) => handleChange('locations', 'city', v, 'ceremony')} />
+              <InputField label="Nome Location" value={formData?.locations?.ceremony?.name} onChange={(v) => handleChange('locations', 'name', v, 'ceremony')} />
+            </div>
+            <InputField label="Indirizzo / Info" value={formData?.locations?.ceremony?.address} onChange={(v) => handleChange('locations', 'address', v, 'ceremony')} />
+            <InputField label="URL Google Maps" value={formData?.locations?.ceremony?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'ceremony')} />
+          </div>
+
+          {/* Sede Ricevimento */}
+          <div className="space-y-4">
+            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+              <MapPin className="w-4 h-4 text-blush" /> Sede Ricevimento
+            </h3>
+            <div className="grid grid-cols-2 gap-4">
+              <InputField label="Città" value={formData?.locations?.reception?.city} onChange={(v) => handleChange('locations', 'city', v, 'reception')} />
+              <InputField label="Nome Location" value={formData?.locations?.reception?.name} onChange={(v) => handleChange('locations', 'name', v, 'reception')} />
+            </div>
+            <InputField label="Info Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
+            <InputField label="Indirizzo" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
+            <InputField label="URL Google Maps" value={formData?.locations?.reception?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
+          </div>
+
+          {/* Iban / Lista Nozze */}{/* Iban / Lista Nozze */}
           <div className="space-y-4">
             <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
               <CreditCard className="w-4 h-4 text-blush" /> Lista Nozze & IBAN

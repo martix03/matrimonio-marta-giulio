@@ -23,16 +23,16 @@ export const QuickFacts: React.FC = () => {
     {
       icon: Clock,
       title: 'Gli Orari',
-      main: 'Ore 17:00',
+      main: settings.event.time || 'Ore 17:00',
       subtitle: settings.event.ceremonyTime,
-      badge: 'Arrivo ore 16:45',
+      badge: settings.event.time || 'Ore 17:00',
     },
     {
       icon: Church,
       title: 'La Cerimonia',
       main: settings.locations.ceremony.name,
       subtitle: settings.locations.ceremony.address,
-      badge: 'Buttigliera Alta (TO)',
+      badge: settings.locations.ceremony.city || 'Buttigliera Alta',
       nav: {
         name: settings.locations.ceremony.name,
         google: settings.locations.ceremony.googleMapsUrl,
@@ -45,7 +45,7 @@ export const QuickFacts: React.FC = () => {
       title: 'Il Ricevimento',
       main: settings.locations.reception.name,
       subtitle: settings.event.receptionTime,
-      badge: 'Stessa location',
+      badge: settings.locations.reception.city || 'Stessa location',
       nav: {
         name: settings.locations.reception.name,
         google: settings.locations.reception.googleMapsUrl,

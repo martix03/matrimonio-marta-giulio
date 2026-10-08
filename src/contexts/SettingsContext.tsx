@@ -14,7 +14,7 @@ export interface WeddingSettings {
     displayDate: string;
     city: string;
     ceremonyTime: string;
-    receptionTime: string;
+    receptionTime: string; time?: string;
   };
   rsvp: {
     deadline: string;
