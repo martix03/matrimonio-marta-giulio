@@ -64,7 +64,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         {/* Monogram Top Pill */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-paper/80 border border-blush/50 text-burgundy shadow-sm text-xs font-semibold uppercase tracking-widest mb-6">
           <Heart className="w-3.5 h-3.5 text-blush fill-blush" />
-          <span>Save the Date · {settings.event.displayDate}</span>
+          <span>Save the Date</span>
         </div>
 
         {/* Couple Names */}
@@ -80,8 +80,13 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         <div className="w-20 h-1 bg-blush rounded-full mx-auto my-6" />
 
         {/* Location & Tagline */}
-        <p className="text-sm sm:text-base md:text-lg font-medium tracking-wide text-burgundy/80 uppercase mb-8">
-          {settings.event.city} · {settings.event.displayDate}
+        <p className="text-sm sm:text-base md:text-lg font-medium tracking-wide text-burgundy/80 uppercase mb-8 leading-relaxed">
+          {settings.event.city.split(' · ').map((part, index) => (
+            <React.Fragment key={index}>
+              {part}<br />
+            </React.Fragment>
+          ))}
+          {settings.event.displayDate}
         </p>
 
         {/* Contextual Welcome Card for Cluster */}
@@ -106,7 +111,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           </div>
         ) : (
           <p className="max-w-md mx-auto text-xs sm:text-sm text-burgundy/70 mb-10">
-            Una giornata da vivere e ricordare insieme. Benvenuti sul nostro sito di nozze!
+            Una giornata da vivere e ricordare insieme.<br />Benvenuti sul nostro sito di nozze!
           </p>
         )}
 

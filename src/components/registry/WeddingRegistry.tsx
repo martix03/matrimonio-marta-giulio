@@ -131,13 +131,13 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 pt-2 border-t border-blush/20">
                   IBAN:
                 </div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-xs sm:text-sm font-bold text-burgundy break-all select-all">
+                <div className="flex flex-col gap-3">
+                  <span className="font-mono text-sm sm:text-base font-bold text-burgundy break-all select-all text-center bg-paper/50 py-3 rounded-xl border border-blush/20">
                     {settings.registry.iban}
                   </span>
                   <button
                     onClick={handleCopyIban}
-                    className="px-3 py-1.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center gap-1.5 transition-colors shrink-0 shadow-sm"
+                    className="w-full py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                     title="Copia negli appunti"
                   >
                     {copiedIban ? (
