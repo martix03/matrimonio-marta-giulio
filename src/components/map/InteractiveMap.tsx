@@ -103,6 +103,7 @@ export const InteractiveMap: React.FC = () => {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         attribution: '&copy; Google Maps',
+        detectRetina: true,
       }).addTo(map);
 
       mapInstanceRef.current = map;
