@@ -49,6 +49,43 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
+  const [editingPlaceId, setEditingPlaceId] = useState<string | null>(null);
+  const [editPlaceData, setEditPlaceData] = useState<any>({});
+
+  const startEditingPlace = (place: any) => {
+    setEditingPlaceId(place.id);
+    setEditPlaceData({
+      name: place.name,
+      category: place.category,
+      food_type: place.food_type || '',
+      address: place.address,
+      latitude: place.latitude || '',
+      longitude: place.longitude || '',
+      is_primary: place.is_primary
+    });
+  };
+
+  const handleSavePlaceEdit = async () => {
+    if (!editingPlaceId) return;
+    const dataToSave = {
+      ...editPlaceData,
+      latitude: parseFloat(editPlaceData.latitude),
+      longitude: parseFloat(editPlaceData.longitude),
+      food_type: editPlaceData.category === 'food' ? editPlaceData.food_type : null,
+    };
+    if (isNaN(dataToSave.latitude) || isNaN(dataToSave.longitude)) {
+      return alert('Coordinate non valide');
+    }
+
+    const success = await weddingApi.updatePlace(editingPlaceId, dataToSave);
+    if (success) {
+       setEditingPlaceId(null);
+       fetchData();
+    } else {
+       alert('Errore durante l\'aggiornamento');
+    }
+  };
+
   const [newPlace, setNewPlace] = useState({
     name: '',
     category: 'hotel',
@@ -411,26 +448,76 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       <th className="p-4 font-semibold">Nome</th>
                       <th className="p-4 font-semibold">Categoria</th>
                       <th className="p-4 font-semibold">Indirizzo</th>
+                      <th className="p-4 font-semibold">Latitudine</th>
+                      <th className="p-4 font-semibold">Longitudine</th>
+                      <th className="p-4 font-semibold text-center">Azioni</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-blush/20">
                     {filteredPlaces.map(p => (
                       <tr key={p.id} className="hover:bg-cream/30 transition-colors">
-                        <td className="p-4 font-medium flex items-center gap-2">
-                          {p.is_primary && <MapPin className="w-4 h-4 text-burgundy" />}
-                          {p.name}
-                        </td>
-                        <td className="p-4 opacity-80">
-                          {p.category === 'food' 
-                            ? (foodCategories.find(c => c.id === p.food_type)?.label || p.food_type)
-                            : (categories.find(c => c.id === p.category)?.label || p.category)}
-                        </td>
-                        <td className="p-4 opacity-80 text-xs">{p.address}</td>
+                        {editingPlaceId === p.id ? (
+                          <>
+                            <td className="p-2">
+                              <input type="text" value={editPlaceData.name} onChange={e => setEditPlaceData({...editPlaceData, name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-2">
+                              <div className="flex gap-1 flex-col">
+                                <select value={editPlaceData.category} onChange={e => setEditPlaceData({...editPlaceData, category: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white">
+                                  {categories.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                                </select>
+                                {editPlaceData.category === 'food' && (
+                                  <select value={editPlaceData.food_type} onChange={e => setEditPlaceData({...editPlaceData, food_type: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white mt-1">
+                                    <option value="">Seleziona...</option>
+                                    {foodCategories.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
+                                  </select>
+                                )}
+                              </div>
+                            </td>
+                            <td className="p-2">
+                              <input type="text" value={editPlaceData.address} onChange={e => setEditPlaceData({...editPlaceData, address: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-2">
+                              <input type="number" step="any" value={editPlaceData.latitude} onChange={e => setEditPlaceData({...editPlaceData, latitude: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-2">
+                              <input type="number" step="any" value={editPlaceData.longitude} onChange={e => setEditPlaceData({...editPlaceData, longitude: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-2 text-center whitespace-nowrap">
+                              <button onClick={handleSavePlaceEdit} className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors mx-0.5">
+                                <Check className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => setEditingPlaceId(null)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-full transition-colors mx-0.5">
+                                <X className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="p-4 font-medium flex items-center gap-2">
+                              {p.is_primary && <MapPin className="w-4 h-4 text-burgundy" />}
+                              {p.name}
+                            </td>
+                            <td className="p-4 opacity-80">
+                              {p.category === 'food' 
+                                ? (foodCategories.find(c => c.id === p.food_type)?.label || p.food_type)
+                                : (categories.find(c => c.id === p.category)?.label || p.category)}
+                            </td>
+                            <td className="p-4 opacity-80 text-xs">{p.address}</td>
+                            <td className="p-4 opacity-80 text-xs">{p.latitude}</td>
+                            <td className="p-4 opacity-80 text-xs">{p.longitude}</td>
+                            <td className="p-4 text-center">
+                              <button onClick={() => startEditingPlace(p)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all">
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </>
+                        )}
                       </tr>
                     ))}
                     {filteredPlaces.length === 0 && (
                       <tr>
-                        <td colSpan={3} className="p-8 text-center opacity-60">Nessun luogo trovato.</td>
+                        <td colSpan={6} className="p-8 text-center opacity-60">Nessun luogo trovato.</td>
                       </tr>
                     )}
                   </tbody>

@@ -345,5 +345,21 @@ export const weddingApi = {
       return true;
     }
     return false;
+  },
+
+  async updatePlace(placeId: string, updates: any): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase
+        .from('places')
+        .update(updates)
+        .eq('id', placeId);
+      
+      if (error) {
+        console.error('Error updating place', error);
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 };
