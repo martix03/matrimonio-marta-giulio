@@ -108,6 +108,7 @@ export const AdminSettings: React.FC = () => {
               <InputField label="Info Orario (es. Arrivo gradito...)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
             </div>
             <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
+            <InputField label="Etichetta Card Orari (es. Arrivo ore 16:45)" value={formData?.event?.timeBadge} onChange={(v) => handleChange('event', 'timeBadge', v)} />
           </div>
 
           {/* Sede Cerimonia */}

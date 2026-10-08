@@ -25,7 +25,7 @@ export const QuickFacts: React.FC = () => {
       title: 'Gli Orari',
       main: settings.event.time || 'Ore 17:00',
       subtitle: settings.event.ceremonyTime,
-      badge: settings.event.time || 'Ore 17:00',
+      badge: settings.event.timeBadge || settings.event.time || 'Ore 17:00',
     },
     {
       icon: Church,
