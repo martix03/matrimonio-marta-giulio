@@ -60,6 +60,15 @@ export interface PlacePOI {
   is_primary?: boolean;
 }
 
+export interface PlaceCategory {
+  id: string;
+  label: string;
+  marker_icon: string;
+  marker_color: string;
+  parent_id: string | null;
+  sort_order: number;
+}
+
 export interface RegistryStage {
   id: string;
   title: string;

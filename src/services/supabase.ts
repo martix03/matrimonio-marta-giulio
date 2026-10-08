@@ -210,8 +210,22 @@ export const weddingApi = {
     return { total, reserved: Math.max(14, reserved) };
   },
 
-  getPlaces(): PlacePOI[] {
+  async getPlaces(): Promise<PlacePOI[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.from('places').select('*');
+      if (error) console.error('Error fetching places', error);
+      else if (data) return data as PlacePOI[];
+    }
     return mockPlaces;
+  },
+
+  async getPlaceCategories(): Promise<any[]> {
+    if (isSupabaseConfigured && supabase) {
+      const { data, error } = await supabase.from('place_categories').select('*').order('sort_order', { ascending: true });
+      if (error) console.error('Error fetching categories', error);
+      else if (data) return data;
+    }
+    return [];
   },
 
   getRegistryStages(): RegistryStage[] {

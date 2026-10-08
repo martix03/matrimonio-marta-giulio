@@ -1,51 +1,44 @@
 import React, { useState, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import { MapPin, Navigation, ExternalLink, Heart, Sparkles } from 'lucide-react';
-import { PlacePOI } from '../../types';
-import { mockPlaces } from '../../services/mockData';
+import { PlacePOI, PlaceCategory } from '../../types';
+import { weddingApi } from '../../services/supabase';
 
 export const InteractiveMap: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [foodSubFilter, setFoodSubFilter] = useState<string>('all');
-  const [activePlace, setActivePlace] = useState<PlacePOI>(mockPlaces[0]);
+  const [foodSubFilter, setFoodSubFilter] = useState<string>('all_food');
+  const [places, setPlaces] = useState<PlacePOI[]>([]);
+  const [activePlace, setActivePlace] = useState<PlacePOI | null>(null);
+  const [categories, setCategories] = useState<PlaceCategory[]>([]);
+  
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersRef = useRef<{ [key: string]: L.Marker }>({});
 
-  const categories = [
-    { id: 'all', label: 'Tutti i Luoghi' },
-    { id: 'primary', label: '⛪ Cerimonia & Villa' },
-    { id: 'hotel', label: '🏨 Hotel & Alloggi' },
-    { id: 'beauty', label: '💇 Parrucchieri' },
-    { id: 'food', label: '🍷 Food & Relax' },
-    { id: 'sightseeing', label: '📸 Da Non Perdere' },
-  ];
+  useEffect(() => {
+    weddingApi.getPlaces().then(p => {
+      setPlaces(p);
+      if (p.length > 0) setActivePlace(p[0]);
+    });
+    weddingApi.getPlaceCategories().then(c => {
+      setCategories(c);
+    });
+  }, []);
 
-  const foodSubFilters = [
-    { id: 'all', label: 'Tutti i Locali' },
-    { id: 'colazione', label: '🥐 Colazione & Bakery' },
-    { id: 'pizza', label: '🍕 Pizzerie' },
-    { id: 'cena', label: '🍷 Piemontese' },
-    { id: 'pub', label: '🍔 Pub & Burger' },
-  ];
-
-  const categoryColors: { [key: string]: string } = {
-    ceremony: '#51101d',   // Bordeaux Sposi
-    reception: '#51101d',  // Bordeaux Sposi
-    hotel: '#1e3a8a',      // Blu Notte
-    beauty: '#c026d3',     // Rosa Magenta
-    food: '#9f1239',       // Rosso Rubino
-    sightseeing: '#d97706',// Oro Solare
-  };
+  const primaryCategories = categories.filter(c => c.parent_id === null).sort((a,b) => a.sort_order - b.sort_order);
+  const subCategories = categories.filter(c => c.parent_id === 'food').sort((a,b) => a.sort_order - b.sort_order);
 
   const getPlaceIcon = (place: PlacePOI): string => {
-    if (place.icon) return place.icon;
+    const cat = categories.find(c => c.id === place.category);
+    if (cat) return cat.marker_icon;
     if (place.category === 'ceremony') return '⛪';
     if (place.category === 'reception') return '🏰';
     if (place.category === 'hotel') return '🏨';
     if (place.category === 'beauty') return '💇';
     if (place.category === 'sightseeing') return '📸';
     if (place.category === 'food') {
+      const sub = categories.find(c => c.id === place.food_type);
+      if (sub) return sub.marker_icon;
       switch (place.food_type) {
         case 'colazione': return '🥐';
         case 'pizza': return '🍕';
@@ -58,12 +51,16 @@ export const InteractiveMap: React.FC = () => {
   };
 
   const getPlaceCategoryBadge = (place: PlacePOI): string => {
+    const cat = categories.find(c => c.id === place.category);
+    if (cat) return cat.label;
     if (place.category === 'ceremony') return '⛪ Sede Cerimonia';
     if (place.category === 'reception') return '🏰 Sede Ricevimento';
     if (place.category === 'hotel') return '🏨 Hotel & Alloggi';
     if (place.category === 'beauty') return '💇 Beauty & Parrucchieri';
     if (place.category === 'sightseeing') return '📸 Da Non Perdere';
     if (place.category === 'food') {
+      const sub = categories.find(c => c.id === place.food_type);
+      if (sub) return sub.label;
       switch (place.food_type) {
         case 'colazione': return '🥐 Colazione & Bakery';
         case 'pizza': return '🍕 Pizzeria';
@@ -75,21 +72,26 @@ export const InteractiveMap: React.FC = () => {
     return '📍 LUOGO';
   };
 
-  const filteredPlaces = mockPlaces.filter(place => {
+  const getPinColor = (place: PlacePOI): string => {
+    const cat = categories.find(c => c.id === place.category);
+    if (cat) return cat.marker_color;
+    return '#51101d';
+  };
+
+  const filteredPlaces = places.filter(place => {
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'primary') return place.category === 'ceremony' || place.category === 'reception';
     if (selectedCategory === 'food') {
-      if (foodSubFilter === 'all') return place.category === 'food';
+      if (foodSubFilter === 'all_food') return place.category === 'food';
       return place.category === 'food' && place.food_type === foodSubFilter;
     }
     return place.category === selectedCategory;
   });
 
   useEffect(() => {
-    if (!mapContainerRef.current) return;
+    if (!mapContainerRef.current || places.length === 0 || !activePlace) return;
 
     if (!mapInstanceRef.current) {
-      // Create map instance
       const map = L.map(mapContainerRef.current, {
         center: [45.075, 7.550],
         zoom: 11,
@@ -98,7 +100,6 @@ export const InteractiveMap: React.FC = () => {
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-      // Official Google Maps Road tiles (multi-marker, no API key required, no watermark)
       L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -107,8 +108,7 @@ export const InteractiveMap: React.FC = () => {
 
       mapInstanceRef.current = map;
 
-      // Fit bounds to show ALL POI pins together on initial load
-      const initialBounds = L.latLngBounds(mockPlaces.map(p => [p.latitude, p.longitude]));
+      const initialBounds = L.latLngBounds(places.map(p => [p.latitude, p.longitude]));
       if (initialBounds.isValid()) {
         map.fitBounds(initialBounds, { padding: [40, 40], maxZoom: 12 });
       }
@@ -116,16 +116,14 @@ export const InteractiveMap: React.FC = () => {
 
     const map = mapInstanceRef.current;
 
-    // Clear existing markers
     Object.values(markersRef.current).forEach(m => m.remove());
     markersRef.current = {};
 
-    // Add markers for all filtered places
     filteredPlaces.forEach(place => {
       const isSelected = activePlace.id === place.id;
       const isPrimary = place.category === 'ceremony' || place.category === 'reception';
 
-      const pinColor = categoryColors[place.category] || '#51101d';
+      const pinColor = getPinColor(place);
       const pinSize = isSelected ? 44 : isPrimary ? 38 : 32;
       const iconEmoji = getPlaceIcon(place);
 
@@ -162,10 +160,7 @@ export const InteractiveMap: React.FC = () => {
       markersRef.current[place.id] = marker;
     });
 
-    return () => {
-      // Cleanup handled by ref
-    };
-  }, [filteredPlaces, activePlace.id]);
+  }, [filteredPlaces, activePlace, places]);
 
   const handleSelectPlace = (place: PlacePOI) => {
     setActivePlace(place);
@@ -176,8 +171,8 @@ export const InteractiveMap: React.FC = () => {
 
   const handleCategoryChange = (catId: string) => {
     setSelectedCategory(catId);
-    setFoodSubFilter('all');
-    const placesInCat = mockPlaces.filter(place => {
+    setFoodSubFilter('all_food');
+    const placesInCat = places.filter(place => {
       if (catId === 'all') return true;
       if (catId === 'primary') return place.category === 'ceremony' || place.category === 'reception';
       return place.category === catId;
@@ -189,7 +184,7 @@ export const InteractiveMap: React.FC = () => {
 
     if (mapInstanceRef.current) {
       if (catId === 'all') {
-        const allBounds = L.latLngBounds(mockPlaces.map(p => [p.latitude, p.longitude]));
+        const allBounds = L.latLngBounds(places.map(p => [p.latitude, p.longitude]));
         if (allBounds.isValid()) {
           mapInstanceRef.current.fitBounds(allBounds, { padding: [40, 40], maxZoom: 12 });
         }
@@ -211,7 +206,7 @@ export const InteractiveMap: React.FC = () => {
 
   const handleFoodSubFilterChange = (subId: string) => {
     setFoodSubFilter(subId);
-    const subPlaces = mockPlaces.filter(p => p.category === 'food' && (subId === 'all' || p.food_type === subId));
+    const subPlaces = places.filter(p => p.category === 'food' && (subId === 'all_food' || p.food_type === subId));
     if (subPlaces.length > 0) {
       setActivePlace(subPlaces[0]);
       if (mapInstanceRef.current) {
@@ -239,148 +234,140 @@ export const InteractiveMap: React.FC = () => {
           </p>
         </div>
 
-        {/* Primary Category Filter Pills */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar">
-          {categories.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => handleCategoryChange(cat.id)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
-                selectedCategory === cat.id
-                  ? 'bg-burgundy text-paper shadow-sm'
-                  : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Secondary Food Sub-Filter Pills (visible when Food & Relax is selected) */}
-        {selectedCategory === 'food' && (
-          <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-4 no-scrollbar animate-fade-in">
-            <span className="text-[11px] font-semibold text-burgundy/60 shrink-0 mr-1">Filtra cibo:</span>
-            {foodSubFilters.map(sub => (
-              <button
-                key={sub.id}
-                onClick={() => handleFoodSubFilterChange(sub.id)}
-                className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
-                  foodSubFilter === sub.id
-                    ? 'bg-burgundy text-paper shadow-sm'
-                    : 'bg-cream text-burgundy/80 border border-blush/40 hover:border-burgundy'
-                }`}
-              >
-                {sub.label}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* Split Layout: Map (Left) + List & Active Card (Right) */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          {/* Map View Container */}
-          <div className="lg:col-span-7 rounded-4xl overflow-hidden shadow-wedding border border-blush/30 min-h-[360px] sm:min-h-[460px] relative bg-paper flex flex-col">
-            {/* Google Maps Badge */}
-            <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 text-xs font-semibold text-burgundy">
-              <span>📍 Mappa Google Maps (Tutti i Pin)</span>
-            </div>
-
-            <div ref={mapContainerRef} className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10" />
-
-          </div>
-
-          {/* Place Detail Card & List */}
-          <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-            {/* Active Place Spotlight Card */}
-            <div className="p-6 rounded-3xl bg-paper shadow-wedding border-2 border-blush/40 animate-fade-in space-y-4">
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cream text-burgundy font-semibold border border-blush/30">
-                    {getPlaceCategoryBadge(activePlace)}
-                  </span>
-                  {activePlace.is_primary && (
-                    <span className="text-xs text-accentGold font-medium flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" /> Luogo Ufficiale
-                    </span>
-                  )}
-                </div>
-
-                <h3 className="font-serif text-2xl text-burgundy font-medium leading-tight">
-                  {activePlace.name}
-                </h3>
-                <p className="text-xs text-burgundy/70 mt-1 flex items-start gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-blush shrink-0 mt-0.5" />
-                  <span>{activePlace.address}</span>
-                </p>
-              </div>
-
-              {/* La Nota degli Sposi */}
-              {activePlace.sposi_note && (
-                <div className="p-4 rounded-2xl bg-cream border-l-4 border-blush space-y-1">
-                  <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-burgundy">
-                    <Heart className="w-3 h-3 text-blush fill-blush" />
-                    <span>La nota degli sposi:</span>
-                  </div>
-                  <p className="text-xs italic text-burgundy/80 leading-relaxed font-serif">
-                    "{activePlace.sposi_note}"
-                  </p>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2 pt-2">
-                <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(activePlace.name + ' ' + activePlace.address)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-2.5 px-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
-                >
-                  <Navigation className="w-3.5 h-3.5" />
-                  <span>Indicazioni</span>
-                </a>
-
-
-
-                {activePlace.website_url && (
-                  <a
-                    href={activePlace.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="py-2.5 px-3 rounded-full bg-cream hover:bg-blush-soft border border-blush/40 text-burgundy text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
-              </div>
-            </div>
-
-            {/* Quick List Selector */}
-            <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-              <div className="text-[11px] font-semibold uppercase tracking-wider text-burgundy/60 px-1">
-                Tutti i punti consigliati ({filteredPlaces.length}):
-              </div>
-              {filteredPlaces.map(place => (
+        {places.length === 0 ? (
+          <div className="text-center text-burgundy py-10">Caricamento mappa in corso...</div>
+        ) : (
+          <>
+            <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-2 mb-2 no-scrollbar">
+              {primaryCategories.map(cat => (
                 <button
-                  key={place.id}
-                  onClick={() => handleSelectPlace(place)}
-                  className={`w-full p-3 rounded-2xl text-left text-xs transition-all flex items-center justify-between ${
-                    activePlace.id === place.id
-                      ? 'bg-burgundy text-paper font-semibold shadow-sm'
-                      : 'bg-paper hover:bg-cream border border-blush/30 text-burgundy'
+                  key={cat.id}
+                  onClick={() => handleCategoryChange(cat.id)}
+                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                    selectedCategory === cat.id
+                      ? 'bg-burgundy text-paper shadow-sm'
+                      : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
                   }`}
                 >
-                  <span className="flex items-center gap-2 truncate pr-2">
-                    <span className="text-sm shrink-0">{getPlaceIcon(place)}</span>
-                    <span className="truncate">{place.name}</span>
-                  </span>
-                  <span className="text-[10px] opacity-70 shrink-0">
-                    {place.category === 'ceremony' ? 'Chiesa' : place.category === 'reception' ? 'Villa' : place.food_type ? place.food_type : place.category}
-                  </span>
+                  {cat.label}
                 </button>
               ))}
             </div>
-          </div>
-        </div>
+
+            {selectedCategory === 'food' && subCategories.length > 0 && (
+              <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-4 no-scrollbar animate-fade-in">
+                <span className="text-[11px] font-semibold text-burgundy/60 shrink-0 mr-1">Filtra cibo:</span>
+                {subCategories.map(sub => (
+                  <button
+                    key={sub.id}
+                    onClick={() => handleFoodSubFilterChange(sub.id)}
+                    className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
+                      foodSubFilter === sub.id
+                        ? 'bg-burgundy text-paper shadow-sm'
+                        : 'bg-cream text-burgundy/80 border border-blush/40 hover:border-burgundy'
+                    }`}
+                  >
+                    {sub.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              <div className="lg:col-span-7 rounded-4xl overflow-hidden shadow-wedding border border-blush/30 min-h-[360px] sm:min-h-[460px] relative bg-paper flex flex-col">
+                <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 text-xs font-semibold text-burgundy">
+                  <span>📍 Mappa Google Maps (Tutti i Pin)</span>
+                </div>
+                <div ref={mapContainerRef} className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10" />
+              </div>
+
+              {activePlace && (
+                <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+                  <div className="p-6 rounded-3xl bg-paper shadow-wedding border-2 border-blush/40 animate-fade-in space-y-4">
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-2">
+                        <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cream text-burgundy font-semibold border border-blush/30">
+                          {getPlaceCategoryBadge(activePlace)}
+                        </span>
+                        {activePlace.is_primary && (
+                          <span className="text-xs text-accentGold font-medium flex items-center gap-1">
+                            <Sparkles className="w-3.5 h-3.5" /> Luogo Ufficiale
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="font-serif text-2xl text-burgundy font-medium leading-tight">
+                        {activePlace.name}
+                      </h3>
+                      <p className="text-xs text-burgundy/70 mt-1 flex items-start gap-1">
+                        <MapPin className="w-3.5 h-3.5 text-blush shrink-0 mt-0.5" />
+                        <span>{activePlace.address}</span>
+                      </p>
+                    </div>
+
+                    {activePlace.sposi_note && (
+                      <div className="p-4 rounded-2xl bg-cream border-l-4 border-blush space-y-1">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-burgundy">
+                          <Heart className="w-3 h-3 text-blush fill-blush" />
+                          <span>La nota degli sposi:</span>
+                        </div>
+                        <p className="text-xs italic text-burgundy/80 leading-relaxed font-serif">
+                          "{activePlace.sposi_note}"
+                        </p>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <a
+                        href={`https://maps.google.com/?q=${encodeURIComponent(activePlace.name + ' ' + activePlace.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 py-2.5 px-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                      >
+                        <Navigation className="w-3.5 h-3.5" />
+                        <span>Indicazioni</span>
+                      </a>
+                      {activePlace.website_url && (
+                        <a
+                          href={activePlace.website_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="py-2.5 px-3 rounded-full bg-cream hover:bg-blush-soft border border-blush/40 text-burgundy text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-burgundy/60 px-1">
+                      Tutti i punti consigliati ({filteredPlaces.length}):
+                    </div>
+                    {filteredPlaces.map(place => (
+                      <button
+                        key={place.id}
+                        onClick={() => handleSelectPlace(place)}
+                        className={`w-full p-3 rounded-2xl text-left text-xs transition-all flex items-center justify-between ${
+                          activePlace.id === place.id
+                            ? 'bg-burgundy text-paper font-semibold shadow-sm'
+                            : 'bg-paper hover:bg-cream border border-blush/30 text-burgundy'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2 truncate pr-2">
+                          <span className="text-sm shrink-0">{getPlaceIcon(place)}</span>
+                          <span className="truncate">{place.name}</span>
+                        </span>
+                        <span className="text-[10px] opacity-70 shrink-0">
+                          {place.category === 'ceremony' ? 'Chiesa' : place.category === 'reception' ? 'Villa' : place.food_type ? place.food_type : place.category}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );
