@@ -174,8 +174,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <button onClick={() => setActiveTab('add_guest')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add_guest' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             + Aggiungi Ospiti
           </button>
-          <button onClick={() => setActiveTab('add_place')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add_place' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
-            <MapPin className="w-4 h-4 inline-block mr-2" /> Aggiungi Luogo
+          <button onClick={() => setActiveTab('places')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'places' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+            <MapPin className="w-4 h-4 inline-block mr-2" /> Gestione Luoghi
           </button>
         </div>
 
