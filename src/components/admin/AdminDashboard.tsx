@@ -9,9 +9,10 @@ interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add_guest' | 'add_place'>('guests');
+  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add_guest' | 'places'>('guests');
   const [guests, setGuests] = useState<any[]>([]);
   const [gifts, setGifts] = useState<any[]>([]);
+  const [places, setPlaces] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [foodCategories, setFoodCategories] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,16 +40,18 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   }, []);
 
   const fetchData = async () => {
-    const [g, gi, c, fc] = await Promise.all([
+    const [g, gi, c, fc, p] = await Promise.all([
       weddingApi.getAllGuestsAdmin(),
       weddingApi.getAllGiftMessages(),
       weddingApi.getPlaceCategories(),
       weddingApi.getFoodCategories(),
+      weddingApi.getPlaces(),
     ]);
     setGuests(g);
     setGifts(gi);
     setCategories(c);
     setFoodCategories(fc);
+    setPlaces(p);
   };
 
   const handleAddGuestRow = () => {
@@ -93,6 +96,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         name: '', category: 'hotel', food_type: '', latitude: '', longitude: '',
         address: '', phone: '', website_url: '', sposi_note: '', is_primary: false
       });
+      fetchData();
     } else {
       alert('Errore durante il salvataggio');
     }
@@ -344,72 +348,112 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           </div>
         )}
 
-        {activeTab === 'add_place' && (
-          <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm animate-fade-in max-w-2xl mx-auto">
-            <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Luogo Mappa</h2>
-            <form onSubmit={handleSavePlace} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome del Luogo</label>
-                <input type="text" required value={newPlace.name} onChange={e => setNewPlace({...newPlace, name: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+        {activeTab === 'places' && (
+          <div className="space-y-8 animate-fade-in">
+            <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
+              <div className="p-4 border-b border-blush/20 bg-cream/50">
+                <h3 className="font-serif text-xl font-medium">Lista Luoghi Mappa</h3>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
-                  <select required value={newPlace.category} onChange={e => setNewPlace({...newPlace, category: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
-                    {categories.map(c => (
-                      <option key={c.id} value={c.id}>{c.label}</option>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm whitespace-nowrap">
+                  <thead className="bg-cream/50 text-xs uppercase tracking-wider opacity-70">
+                    <tr>
+                      <th className="p-4 font-semibold">Nome</th>
+                      <th className="p-4 font-semibold">Categoria</th>
+                      <th className="p-4 font-semibold">Indirizzo</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-blush/20">
+                    {places.map(p => (
+                      <tr key={p.id} className="hover:bg-cream/30 transition-colors">
+                        <td className="p-4 font-medium flex items-center gap-2">
+                          {p.is_primary && <MapPin className="w-4 h-4 text-burgundy" />}
+                          {p.name}
+                        </td>
+                        <td className="p-4 opacity-80">
+                          {p.category === 'food' 
+                            ? (foodCategories.find(c => c.id === p.food_type)?.label || p.food_type)
+                            : (categories.find(c => c.id === p.category)?.label || p.category)}
+                        </td>
+                        <td className="p-4 opacity-80 text-xs">{p.address}</td>
+                      </tr>
                     ))}
-                  </select>
+                    {places.length === 0 && (
+                      <tr>
+                        <td colSpan={3} className="p-8 text-center opacity-60">Nessun luogo trovato.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm max-w-2xl mx-auto">
+              <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Luogo Mappa</h2>
+              <form onSubmit={handleSavePlace} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome del Luogo</label>
+                  <input type="text" required value={newPlace.name} onChange={e => setNewPlace({...newPlace, name: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
-                {newPlace.category === 'food' && (
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Tipo di Cibo</label>
-                    <select required value={newPlace.food_type} onChange={e => setNewPlace({...newPlace, food_type: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
-                      <option value="">-- Seleziona --</option>
-                      {foodCategories.map(c => (
+                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
+                    <select required value={newPlace.category} onChange={e => setNewPlace({...newPlace, category: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
+                      {categories.map(c => (
                         <option key={c.id} value={c.id}>{c.label}</option>
                       ))}
                     </select>
                   </div>
-                )}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Indirizzo</label>
-                <input type="text" required value={newPlace.address} onChange={e => setNewPlace({...newPlace, address: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Latitudine</label>
-                  <input type="number" step="any" required value={newPlace.latitude} onChange={e => setNewPlace({...newPlace, latitude: e.target.value})} placeholder="Es. 45.075" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  {newPlace.category === 'food' && (
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Tipo di Cibo</label>
+                      <select required value={newPlace.food_type} onChange={e => setNewPlace({...newPlace, food_type: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
+                        <option value="">-- Seleziona --</option>
+                        {foodCategories.map(c => (
+                          <option key={c.id} value={c.id}>{c.label}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Longitudine</label>
-                  <input type="number" step="any" required value={newPlace.longitude} onChange={e => setNewPlace({...newPlace, longitude: e.target.value})} placeholder="Es. 7.689" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Indirizzo</label>
+                  <input type="text" required value={newPlace.address} onChange={e => setNewPlace({...newPlace, address: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Latitudine</label>
+                    <input type="number" step="any" required value={newPlace.latitude} onChange={e => setNewPlace({...newPlace, latitude: e.target.value})} placeholder="Es. 45.075" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Longitudine</label>
+                    <input type="number" step="any" required value={newPlace.longitude} onChange={e => setNewPlace({...newPlace, longitude: e.target.value})} placeholder="Es. 7.689" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Telefono (Opzionale)</label>
+                    <input type="text" value={newPlace.phone} onChange={e => setNewPlace({...newPlace, phone: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Sito Web (Opzionale)</label>
+                    <input type="url" value={newPlace.website_url} onChange={e => setNewPlace({...newPlace, website_url: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  </div>
+                </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Telefono (Opzionale)</label>
-                  <input type="text" value={newPlace.phone} onChange={e => setNewPlace({...newPlace, phone: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nota degli sposi (Opzionale)</label>
+                  <textarea rows={2} value={newPlace.sposi_note} onChange={e => setNewPlace({...newPlace, sposi_note: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy resize-none" />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Sito Web (Opzionale)</label>
-                  <input type="url" value={newPlace.website_url} onChange={e => setNewPlace({...newPlace, website_url: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nota degli sposi (Opzionale)</label>
-                <textarea rows={2} value={newPlace.sposi_note} onChange={e => setNewPlace({...newPlace, sposi_note: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy resize-none" />
-              </div>
-              <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
-                <input type="checkbox" checked={newPlace.is_primary} onChange={e => setNewPlace({...newPlace, is_primary: e.target.checked})} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
-                Luogo Principale (Cerimonia / Ricevimento)
-              </label>
+                <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                  <input type="checkbox" checked={newPlace.is_primary} onChange={e => setNewPlace({...newPlace, is_primary: e.target.checked})} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
+                  Luogo Principale (Cerimonia / Ricevimento)
+                </label>
 
-              <div className="pt-6 border-t border-blush/20">
-                <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva nel Database</button>
-              </div>
-            </form>
+                <div className="pt-6 border-t border-blush/20">
+                  <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva nel Database</button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>
