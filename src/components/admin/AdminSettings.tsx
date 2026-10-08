@@ -98,26 +98,6 @@ export const AdminSettings: React.FC = () => {
             </div>
           </div>
           
-          {/* Location */}
-          <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
-              <MapPin className="w-4 h-4 text-blush" /> Location
-            </h3>
-            <div className="space-y-3">
-              <div className="text-xs font-bold text-burgundy">Sede Cerimonia</div>
-              <InputField label="Nome" value={formData?.locations?.ceremony?.name} onChange={(v) => handleChange('locations', 'name', v, 'ceremony')} />
-              <InputField label="Indirizzo" value={formData?.locations?.ceremony?.address} onChange={(v) => handleChange('locations', 'address', v, 'ceremony')} />
-              <InputField label="URL Google Maps" value={formData?.locations?.ceremony?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'ceremony')} />
-            </div>
-            <div className="space-y-3 mt-4">
-              <div className="text-xs font-bold text-burgundy">Sede Ricevimento</div>
-              <InputField label="Nome" value={formData?.locations?.reception?.name} onChange={(v) => handleChange('locations', 'name', v, 'reception')} />
-              <InputField label="Indirizzo" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
-              <InputField label="URL Google Maps" value={formData?.locations?.reception?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
-            </div>
-          </div>
-
-          
           {/* Orari Evento */}
           <div className="space-y-4">
             <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
