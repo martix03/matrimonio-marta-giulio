@@ -16,8 +16,6 @@ interface TimeRemaining {
   isPast: boolean;
 }
 
-import calendarIcon from '../../assets/calendar-icon.jpg';
-
 export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
   const { settings } = useSettings();
   const [timeLeft, setTimeLeft] = useState<TimeRemaining>({
@@ -65,7 +63,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Monogram Top Pill */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-paper/80 border border-blush/50 text-burgundy shadow-sm text-xs font-semibold uppercase tracking-widest mb-6">
-          <img src={calendarIcon} alt="Calendar" className="w-5 h-5 object-cover mix-blend-multiply" />
+          <Heart className="w-3.5 h-3.5 text-blush fill-blush" />
           <span>Save the Date</span>
         </div>
 
