@@ -121,6 +121,8 @@ export const AdminSettings: React.FC = () => {
             </div>
             <InputField label="Indirizzo / Info" value={formData?.locations?.ceremony?.address} onChange={(v) => handleChange('locations', 'address', v, 'ceremony')} />
             <InputField label="URL Google Maps" value={formData?.locations?.ceremony?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'ceremony')} />
+            <InputField label="URL Apple Maps" value={formData?.locations?.ceremony?.appleMapsUrl} onChange={(v) => handleChange('locations', 'appleMapsUrl', v, 'ceremony')} />
+            <InputField label="URL Waze" value={formData?.locations?.ceremony?.wazeUrl} onChange={(v) => handleChange('locations', 'wazeUrl', v, 'ceremony')} />
           </div>
 
           {/* Sede Ricevimento */}
@@ -135,6 +137,8 @@ export const AdminSettings: React.FC = () => {
             <InputField label="Info Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
             <InputField label="Indirizzo" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
             <InputField label="URL Google Maps" value={formData?.locations?.reception?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
+            <InputField label="URL Apple Maps" value={formData?.locations?.reception?.appleMapsUrl} onChange={(v) => handleChange('locations', 'appleMapsUrl', v, 'reception')} />
+            <InputField label="URL Waze" value={formData?.locations?.reception?.wazeUrl} onChange={(v) => handleChange('locations', 'wazeUrl', v, 'reception')} />
           </div>
 
           {/* Iban / Lista Nozze */}{/* Iban / Lista Nozze */}
