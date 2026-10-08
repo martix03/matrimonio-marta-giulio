@@ -1,8 +1,24 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { APIProvider, Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { APIProvider, Map, AdvancedMarker, Pin, useMap } from '@vis.gl/react-google-maps';
 import { MapPin, Navigation, ExternalLink, Heart, Sparkles } from 'lucide-react';
 import { PlacePOI, PlaceCategory } from '../../types';
 import { weddingApi } from '../../services/supabase';
+
+
+const MapController: React.FC<{ activePlace: PlacePOI | null, places: PlacePOI[] }> = ({ activePlace, places }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (!map) return;
+    if (activePlace) {
+      map.panTo({ lat: activePlace.latitude, lng: activePlace.longitude });
+      map.setZoom(14);
+    } else if (places.length > 0) {
+      map.panTo({ lat: places[0].latitude, lng: places[0].longitude });
+      map.setZoom(11);
+    }
+  }, [map, activePlace]);
+  return null;
+};
 
 export const InteractiveMap: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -185,12 +201,12 @@ export const InteractiveMap: React.FC = () => {
                     <Map 
                       defaultZoom={11} 
                       defaultCenter={{ lat: 45.075, lng: 7.550 }}
-                      center={activePlace ? { lat: activePlace.latitude, lng: activePlace.longitude } : undefined}
-                      zoom={activePlace ? 14 : 11}
                       mapId="DEMO_MAP_ID"
                       disableDefaultUI={true}
                       zoomControl={true}
+                      gestureHandling="greedy"
                     >
+                      <MapController activePlace={activePlace} places={places} />
                       {filteredPlaces.map(place => {
                         const isSelected = activePlace?.id === place.id;
                         const isPrimary = place.category === 'ceremony' || place.category === 'reception';
