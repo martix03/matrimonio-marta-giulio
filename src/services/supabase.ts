@@ -317,6 +317,22 @@ export const weddingApi = {
     return false;
   },
 
+  async updateGuest(guestId: string, updates: any): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase
+        .from('guests')
+        .update(updates)
+        .eq('id', guestId);
+      
+      if (error) {
+        console.error('Error updating guest', error);
+        return false;
+      }
+      return true;
+    }
+    return false;
+  },
+
   async createPlace(place: any): Promise<boolean> {
     if (isSupabaseConfigured && supabase) {
       const { error } = await supabase

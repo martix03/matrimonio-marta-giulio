@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock } from 'lucide-react';
+import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X } from 'lucide-react';
 import { weddingApi } from '../../services/supabase';
 import { Cluster } from '../../types';
 
@@ -23,6 +23,31 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const [newFamilyName, setNewFamilyName] = useState('');
   const [newGuests, setNewGuests] = useState<{ firstName: string, lastName: string, isChild: boolean }[]>([{ firstName: '', lastName: '', isChild: false }]);
+
+  const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
+  const [editData, setEditData] = useState<any>({});
+
+  const startEditing = (guest: any) => {
+    setEditingGuestId(guest.id);
+    setEditData({
+      first_name: guest.first_name,
+      last_name: guest.last_name,
+      is_attending: guest.is_attending,
+      dietary_notes: guest.dietary_notes || '',
+      song_request: guest.song_request || ''
+    });
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editingGuestId) return;
+    const success = await weddingApi.updateGuest(editingGuestId, editData);
+    if (success) {
+       setEditingGuestId(null);
+       fetchData();
+    } else {
+       alert('Errore durante l\'aggiornamento');
+    }
+  };
 
   const [newPlace, setNewPlace] = useState({
     name: '',
@@ -247,43 +272,86 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <thead className="bg-cream/50 text-xs uppercase tracking-wider opacity-70">
                     <tr>
                       <th className="p-4 font-semibold">Nome</th>
+                      <th className="p-4 font-semibold">Cognome</th>
                       <th className="p-4 font-semibold">Famiglia</th>
                       <th className="p-4 font-semibold text-center">Stato</th>
                       <th className="p-4 font-semibold">Intolleranze</th>
                       <th className="p-4 font-semibold">Canzoni</th>
+                      <th className="p-4 font-semibold text-center">Azioni</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-blush/20">
                     {filteredGuests.map(g => (
                       <tr key={g.id} className="hover:bg-cream/30 transition-colors">
-                        <td className="p-4 font-medium">{g.first_name} {g.last_name}</td>
-                        <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
-                        <td className="p-4 text-center">
-                          {g.is_attending === true && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase tracking-widest">Confermato</span>}
-                          {g.is_attending === false && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 uppercase tracking-widest">Declinato</span>}
-                          {g.is_attending === null && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 uppercase tracking-widest">In Attesa</span>}
-                        </td>
-                        <td className="p-4">
-                          {g.dietary_notes && (
-                            <div className="flex items-center gap-1.5 text-xs text-rose-600 bg-rose-50 px-2 py-1 rounded-md border border-rose-100 inline-flex">
-                              <AlertTriangle className="w-3.5 h-3.5" />
-                              <span className="truncate max-w-[200px]" title={g.dietary_notes}>{g.dietary_notes}</span>
-                            </div>
-                          )}
-                        </td>
-                        <td className="p-4">
-                          {g.song_request && (
-                            <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-md border border-blue-100 inline-flex">
-                              <Music className="w-3.5 h-3.5" />
-                              <span className="truncate max-w-[200px]" title={g.song_request}>{g.song_request}</span>
-                            </div>
-                          )}
-                        </td>
+                        {editingGuestId === g.id ? (
+                          <>
+                            <td className="p-2">
+                              <input type="text" value={editData.first_name} onChange={e => setEditData({...editData, first_name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-2">
+                              <input type="text" value={editData.last_name} onChange={e => setEditData({...editData, last_name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
+                            <td className="p-2">
+                              <select value={editData.is_attending === null ? 'null' : editData.is_attending.toString()} onChange={e => setEditData({...editData, is_attending: e.target.value === 'null' ? null : e.target.value === 'true'})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white">
+                                <option value="null">In Attesa</option>
+                                <option value="true">Confermato</option>
+                                <option value="false">Declinato</option>
+                              </select>
+                            </td>
+                            <td className="p-2">
+                              <input type="text" value={editData.dietary_notes} onChange={e => setEditData({...editData, dietary_notes: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" placeholder="Nessuna" />
+                            </td>
+                            <td className="p-2">
+                              <input type="text" value={editData.song_request} onChange={e => setEditData({...editData, song_request: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" placeholder="Nessuna" />
+                            </td>
+                            <td className="p-2 text-center">
+                              <button onClick={handleSaveEdit} className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors mx-1">
+                                <Check className="w-4 h-4" />
+                              </button>
+                              <button onClick={() => setEditingGuestId(null)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-full transition-colors mx-1">
+                                <X className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </>
+                        ) : (
+                          <>
+                            <td className="p-4 font-medium">{g.first_name}</td>
+                            <td className="p-4 font-medium">{g.last_name}</td>
+                            <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
+                            <td className="p-4 text-center">
+                              {g.is_attending === true && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase tracking-widest">Confermato</span>}
+                              {g.is_attending === false && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 uppercase tracking-widest">Declinato</span>}
+                              {g.is_attending === null && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 uppercase tracking-widest">In Attesa</span>}
+                            </td>
+                            <td className="p-4">
+                              {g.dietary_notes && (
+                                <div className="flex items-center gap-1.5 text-xs text-rose-600 bg-rose-50 px-2 py-1 rounded-md border border-rose-100 inline-flex">
+                                  <AlertTriangle className="w-3.5 h-3.5" />
+                                  <span className="truncate max-w-[150px]" title={g.dietary_notes}>{g.dietary_notes}</span>
+                                </div>
+                              )}
+                            </td>
+                            <td className="p-4">
+                              {g.song_request && (
+                                <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-md border border-blue-100 inline-flex">
+                                  <Music className="w-3.5 h-3.5" />
+                                  <span className="truncate max-w-[150px]" title={g.song_request}>{g.song_request}</span>
+                                </div>
+                              )}
+                            </td>
+                            <td className="p-4 text-center">
+                              <button onClick={() => startEditing(g)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all">
+                                <Edit2 className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </>
+                        )}
                       </tr>
                     ))}
                     {filteredGuests.length === 0 && (
                       <tr>
-                        <td colSpan={5} className="p-8 text-center opacity-60">Nessun ospite trovato.</td>
+                        <td colSpan={7} className="p-8 text-center opacity-60">Nessun ospite trovato.</td>
                       </tr>
                     )}
                   </tbody>
