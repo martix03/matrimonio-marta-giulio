@@ -3,6 +3,7 @@ import { Gift, Copy, Check, Heart, Plane, Send, Sparkles } from 'lucide-react';
 import { weddingConfig } from '../../config/wedding.config';
 import { mockRegistryStages } from '../../services/mockData';
 import { Cluster } from '../../types';
+import { weddingApi } from '../../services/supabase';
 
 interface WeddingRegistryProps {
   cluster: Cluster | null;
@@ -21,13 +22,15 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
     setTimeout(() => setCopiedIban(false), 2500);
   };
 
-  const handleNotifyTransfer = (e: React.FormEvent) => {
+  const handleNotifyTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
+    await weddingApi.saveGiftMessage(senderName, amountNote, wishes);
     setTransferSentMessage(true);
     setTimeout(() => {
       setAmountNote('');
       setWishes('');
-    }, 3000);
+      setTransferSentMessage(false);
+    }, 4000);
   };
 
   const suggestedReason = `Regalo Matrimonio - ${cluster ? cluster.family_name : 'Marta e Giulio'}`;

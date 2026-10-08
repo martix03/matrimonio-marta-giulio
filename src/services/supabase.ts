@@ -139,6 +139,22 @@ export const weddingApi = {
     return false;
   },
 
+  async saveGiftMessage(senderName: string, amountNote: string, wishes: string): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase
+        .from('gift_messages')
+        .insert([{ sender_name: senderName, amount_note: amountNote, wishes: wishes }]);
+      if (error) {
+        console.error('Error saving gift message', error);
+        return false;
+      }
+      return true;
+    }
+    // Mock fallback: just simulate success
+    console.log('Saved message locally:', { senderName, amountNote, wishes });
+    return true;
+  },
+
   async getCarpooling(): Promise<CarpoolingPost[]> {
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase

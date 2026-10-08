@@ -52,17 +52,28 @@ CREATE TABLE IF NOT EXISTS places (
   is_primary BOOLEAN DEFAULT FALSE
 );
 
+-- 4b. Messaggi Lista Nozze
+CREATE TABLE IF NOT EXISTS gift_messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  sender_name TEXT NOT NULL,
+  amount_note TEXT,
+  wishes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- 5. Row Level Security (RLS)
 ALTER TABLE clusters ENABLE ROW LEVEL SECURITY;
 ALTER TABLE guests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE carpooling_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE places ENABLE ROW LEVEL SECURITY;
+ALTER TABLE gift_messages ENABLE ROW LEVEL SECURITY;
 
 -- 5b. Explicit Grants (Richiesti da Supabase dal 30 Ottobre)
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.clusters TO anon, authenticated, service_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.guests TO anon, authenticated, service_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.carpooling_posts TO anon, authenticated, service_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.places TO anon, authenticated, service_role;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.gift_messages TO anon, authenticated, service_role;
 
 -- Policy anonime per lettura e scrittura pubblica controllata (tramite codice invito)
 CREATE POLICY "Public read for clusters" ON clusters FOR SELECT USING (true);
@@ -71,6 +82,8 @@ CREATE POLICY "Public update for guests" ON guests FOR UPDATE USING (true);
 CREATE POLICY "Public read for carpooling" ON carpooling_posts FOR SELECT USING (true);
 CREATE POLICY "Public insert for carpooling" ON carpooling_posts FOR INSERT WITH CHECK (true);
 CREATE POLICY "Public read for places" ON places FOR SELECT USING (true);
+CREATE POLICY "Public insert for gift_messages" ON gift_messages FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read for gift_messages" ON gift_messages FOR SELECT USING (true);
 
 -- 6. Dati di esempio (Seed iniziale)
 INSERT INTO clusters (id, family_name, invite_code, notes) VALUES
