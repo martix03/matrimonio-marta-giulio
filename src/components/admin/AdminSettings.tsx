@@ -104,11 +104,11 @@ export const AdminSettings: React.FC = () => {
               <Calendar className="w-4 h-4 text-blush" /> Orari
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              <InputField label="Ora Evento (es. Ore 17:00)" value={formData?.event?.time} onChange={(v) => handleChange('event', 'time', v)} />
+              
               <InputField label="Info Orario (es. Arrivo gradito...)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
             </div>
-            <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
-            <InputField label="Data Esatta per il Conto alla Rovescia" type="datetime-local" value={formData?.event?.date ? formData.event.date.substring(0, 16) : ''} onChange={(v) => handleChange('event', 'date', v)} />
+            
+            <InputField label="Data e Ora dell'Evento (calcola in automatico scritte e conto alla rovescia)" type="datetime-local" value={formData?.event?.date ? formData.event.date.substring(0, 16) : ''} onChange={(v) => handleChange('event', 'date', v)} />
             <InputField label="Etichetta Card Orari (es. Arrivo ore 16:45)" value={formData?.event?.timeBadge} onChange={(v) => handleChange('event', 'timeBadge', v)} />
             <InputField label="Data Scadenza RSVP" value={formData?.event?.rsvpDeadline} onChange={(v) => handleChange('event', 'rsvpDeadline', v)} />
           </div>

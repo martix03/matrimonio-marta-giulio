@@ -16,16 +16,16 @@ export const QuickFacts: React.FC = () => {
     {
       icon: Calendar,
       title: 'La Data',
-      main: settings.event.displayDate,
+      main: new Date(settings.event.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase()),
       subtitle: 'Segna la data in agenda',
       badge: 'Save the Date',
     },
     {
       icon: Clock,
       title: 'Gli Orari',
-      main: settings.event.time || 'Ore 17:00',
+      main: "Ore " + new Date(settings.event.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' }),
       subtitle: settings.event.ceremonyTime,
-      badge: settings.event.timeBadge || settings.event.time || 'Ore 17:00',
+      badge: settings.event.timeBadge || ("Ore " + new Date(settings.event.date).toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })),
     },
     {
       icon: Church,
