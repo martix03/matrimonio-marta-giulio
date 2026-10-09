@@ -137,6 +137,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setCategories(c);
     setFoodCategories(fc);
     setPlaces(p);
+    weddingApi.getFaqs().then(setFaqs);
   };
 
   const handleAddGuestRow = () => {
