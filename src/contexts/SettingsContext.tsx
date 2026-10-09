@@ -15,6 +15,7 @@ export interface WeddingSettings {
     city: string;
     ceremonyTime: string;
     receptionTime: string; time?: string; timeBadge?: string;
+    rsvpDeadline?: string;
   };
   rsvp: {
     deadline: string;
