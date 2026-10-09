@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X, Trash2 } from 'lucide-react';
+import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X, Trash2, MessageCircle, HelpCircle } from 'lucide-react';
 import { weddingApi } from '../../services/supabase';
 import { Cluster } from '../../types';
 
@@ -12,8 +12,10 @@ import { AdminSettings } from './AdminSettings';
 import { Settings } from 'lucide-react';
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add' | 'places' | 'settings'>('guests');
+  const [activeTab, setActiveTab] = useState<'guests' | 'gifts' | 'add' | 'places' | 'settings' | 'faq'>('guests');
   const [guests, setGuests] = useState<any[]>([]);
+  const [faqs, setFaqs] = useState<any[]>([]);
+  const [newFaq, setNewFaq] = useState({ question: '', answer: '', category: 'info', sort_order: 10 });
   const [gifts, setGifts] = useState<any[]>([]);
   const [places, setPlaces] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
@@ -157,6 +159,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
+  
+  const handleAddFaq = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const success = await weddingApi.createFaq(newFaq);
+    if (success) {
+      setNewFaq({ question: '', answer: '', category: 'info', sort_order: 10 });
+      weddingApi.getFaqs().then(setFaqs);
+      alert('FAQ aggiunta!');
+    }
+  };
+
+  const handleDeleteFaq = async (id: string) => {
+    if (!window.confirm('Eliminare questa FAQ?')) return;
+    const success = await weddingApi.deleteFaq(id);
+    if (success) weddingApi.getFaqs().then(setFaqs);
+  };
+
   const handleSavePlace = async (e: React.FormEvent) => {
     e.preventDefault();
     const placeData = {
@@ -262,12 +281,42 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <button onClick={() => setActiveTab('add')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             + Aggiungi Dati
           </button>
+          <button onClick={() => setActiveTab('faq')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'faq' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+            <HelpCircle className="w-4 h-4 inline-block mr-2" /> FAQ
+          </button>
           <button onClick={() => setActiveTab('settings')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'settings' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <Settings className="w-4 h-4 inline-block mr-2" /> Impostazioni
           </button>
         </div>
 
         {activeTab === 'settings' && <AdminSettings />}
+
+        {activeTab === 'faq' && (
+          <div className="space-y-6 animate-fade-in">
+            <div className="flex justify-between items-center mb-2">
+              <h2 className="font-serif text-3xl font-medium">Gestione FAQ</h2>
+              <button onClick={() => setActiveTab('add')} className="px-4 py-2 text-xs uppercase tracking-widest font-semibold bg-cream text-burgundy hover:bg-blush-soft border border-blush/30 rounded-full transition-colors">
+                + Aggiungi FAQ
+              </button>
+            </div>
+            <div className="space-y-3">
+              {faqs.map(faq => (
+                <div key={faq.id} className="flex justify-between items-center p-4 bg-paper border border-blush/20 rounded-xl hover:bg-cream/20 shadow-sm">
+                  <div>
+                    <p className="font-semibold text-burgundy text-sm">{faq.question}</p>
+                    <p className="text-xs text-burgundy/70 mt-1">{faq.answer}</p>
+                    <span className="inline-block mt-2 text-[10px] uppercase font-bold tracking-widest text-blush bg-blush-soft px-2 py-0.5 rounded-full">{faq.category}</span>
+                  </div>
+                  <button onClick={() => handleDeleteFaq(faq.id)} className="p-2 text-rose-600 hover:bg-rose-50 rounded-full transition-all shrink-0">
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+              {faqs.length === 0 && <p className="text-center text-sm opacity-60 py-8">Nessuna FAQ presente.</p>}
+            </div>
+          </div>
+        )}
+
 
         {activeTab === 'guests' && (
           <div className="space-y-8 animate-fade-in">
@@ -557,7 +606,33 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
         {activeTab === 'add' && (
           <div className="space-y-8 animate-fade-in max-w-2xl mx-auto">
-            
+
+            {/* Aggiungi FAQ */}
+            <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm mt-8">
+              <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi FAQ</h2>
+              <form onSubmit={handleAddFaq} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Domanda</label>
+                  <input required type="text" value={newFaq.question} onChange={e=>setNewFaq({...newFaq, question: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Risposta</label>
+                  <input required type="text" value={newFaq.answer} onChange={e=>setNewFaq({...newFaq, answer: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
+                  <select value={newFaq.category} onChange={e=>setNewFaq({...newFaq, category: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
+                    <option value="info">Info Utili</option>
+                    <option value="locations">Location</option>
+                    <option value="gifts">Regali</option>
+                  </select>
+                </div>
+                <div className="pt-6 border-t border-blush/20">
+                  <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva FAQ</button>
+                </div>
+              </form>
+            </div>
+
             {/* Aggiungi Famiglia */}
             <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm">
               <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Nuova Famiglia</h2>
