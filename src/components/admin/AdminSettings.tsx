@@ -135,8 +135,7 @@ export const AdminSettings: React.FC = () => {
               <InputField label="Città" value={formData?.locations?.reception?.city} onChange={(v) => handleChange('locations', 'city', v, 'reception')} />
               <InputField label="Nome Location" value={formData?.locations?.reception?.name} onChange={(v) => handleChange('locations', 'name', v, 'reception')} />
             </div>
-            <InputField label="Info Ricevimento" value={formData?.event?.receptionTime} onChange={(v) => handleChange('event', 'receptionTime', v)} />
-            <InputField label="Indirizzo" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
+            <InputField label="Indirizzo / Info" value={formData?.locations?.reception?.address} onChange={(v) => handleChange('locations', 'address', v, 'reception')} />
             <InputField label="URL Google Maps" value={formData?.locations?.reception?.googleMapsUrl} onChange={(v) => handleChange('locations', 'googleMapsUrl', v, 'reception')} />
             <InputField label="URL Apple Maps" value={formData?.locations?.reception?.appleMapsUrl} onChange={(v) => handleChange('locations', 'appleMapsUrl', v, 'reception')} />
             <InputField label="URL Waze" value={formData?.locations?.reception?.wazeUrl} onChange={(v) => handleChange('locations', 'wazeUrl', v, 'reception')} />

@@ -44,7 +44,7 @@ export const QuickFacts: React.FC = () => {
       icon: Castle,
       title: 'Il Ricevimento',
       main: settings.locations.reception.name,
-      subtitle: settings.event.receptionTime,
+      subtitle: settings.locations.reception.address,
       badge: settings.locations.reception.city || 'Stessa location',
       nav: (settings.locations.reception.googleMapsUrl || settings.locations.reception.appleMapsUrl || settings.locations.reception.wazeUrl) ? {
         name: settings.locations.reception.name,
