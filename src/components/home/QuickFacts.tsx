@@ -33,12 +33,12 @@ export const QuickFacts: React.FC = () => {
       main: settings.locations.ceremony.name,
       subtitle: settings.locations.ceremony.address,
       badge: settings.locations.ceremony.city || 'Buttigliera Alta',
-      nav: {
+      nav: (settings.locations.ceremony.googleMapsUrl || settings.locations.ceremony.appleMapsUrl || settings.locations.ceremony.wazeUrl) ? {
         name: settings.locations.ceremony.name,
         google: settings.locations.ceremony.googleMapsUrl,
         apple: settings.locations.ceremony.appleMapsUrl,
         waze: settings.locations.ceremony.wazeUrl,
-      }
+      } : undefined
     },
     {
       icon: Castle,
@@ -46,12 +46,12 @@ export const QuickFacts: React.FC = () => {
       main: settings.locations.reception.name,
       subtitle: settings.event.receptionTime,
       badge: settings.locations.reception.city || 'Stessa location',
-      nav: {
+      nav: (settings.locations.reception.googleMapsUrl || settings.locations.reception.appleMapsUrl || settings.locations.reception.wazeUrl) ? {
         name: settings.locations.reception.name,
         google: settings.locations.reception.googleMapsUrl,
         apple: settings.locations.reception.appleMapsUrl,
         waze: settings.locations.reception.wazeUrl,
-      }
+      } : undefined
     },
   ];
 
@@ -132,33 +132,39 @@ export const QuickFacts: React.FC = () => {
             </p>
 
             <div className="flex flex-col gap-2.5">
-              <a
-                href={navModalPlace.google}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/30 text-burgundy text-xs font-semibold flex items-center justify-between transition-colors"
-              >
-                <span>Apri in Google Maps</span>
-                <ExternalLink className="w-4 h-4 text-burgundy/60" />
-              </a>
-              <a
-                href={navModalPlace.apple}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/30 text-burgundy text-xs font-semibold flex items-center justify-between transition-colors"
-              >
-                <span>Apri in Apple Maps</span>
-                <ExternalLink className="w-4 h-4 text-burgundy/60" />
-              </a>
-              <a
-                href={navModalPlace.waze}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/30 text-burgundy text-xs font-semibold flex items-center justify-between transition-colors"
-              >
-                <span>Apri in Waze</span>
-                <ExternalLink className="w-4 h-4 text-burgundy/60" />
-              </a>
+              {navModalPlace.google && (
+                <a
+                  href={navModalPlace.google}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/30 text-burgundy text-xs font-semibold flex items-center justify-between transition-colors"
+                >
+                  <span>Apri in Google Maps</span>
+                  <ExternalLink className="w-4 h-4 text-burgundy/60" />
+                </a>
+              )}
+              {navModalPlace.apple && (
+                <a
+                  href={navModalPlace.apple}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/30 text-burgundy text-xs font-semibold flex items-center justify-between transition-colors"
+                >
+                  <span>Apri in Apple Maps</span>
+                  <ExternalLink className="w-4 h-4 text-burgundy/60" />
+                </a>
+              )}
+              {navModalPlace.waze && (
+                <a
+                  href={navModalPlace.waze}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/30 text-burgundy text-xs font-semibold flex items-center justify-between transition-colors"
+                >
+                  <span>Apri in Waze</span>
+                  <ExternalLink className="w-4 h-4 text-burgundy/60" />
+                </a>
+              )}
             </div>
 
             <button
