@@ -104,7 +104,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 </span>
               ) : (
                 <span className="block mt-1 text-burgundy/80">
-                  Vi chiediamo gentilmente di confermare la presenza entro il {new Date(settings.rsvp.deadline).toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })}.
+                  Vi chiediamo gentilmente di confermare la presenza entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
                 </span>
               )}
             </p>
