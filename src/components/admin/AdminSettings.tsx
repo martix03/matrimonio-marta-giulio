@@ -3,11 +3,11 @@ import { useSettings } from '../../contexts/SettingsContext';
 import { weddingApi } from '../../services/supabase';
 import { Settings, Save, Plus, Trash2, Users, Calendar, MapPin, CreditCard } from 'lucide-react';
 
-const InputField = ({ label, value, onChange }: { label: string, value: string, onChange: (v: string) => void }) => (
+const InputField = ({ label, value, onChange, type = "text" }: { label: string, value: string, onChange: (v: string) => void, type?: string }) => (
   <div className="mb-3">
     <label className="block text-[10px] font-bold text-burgundy/60 uppercase tracking-wider mb-1">{label}</label>
     <input 
-      type="text" 
+      type={type} 
       value={value || ''} 
       onChange={(e) => onChange(e.target.value)} 
       className="w-full p-2.5 rounded-xl border border-blush/40 text-sm bg-cream/50 outline-none focus:border-burgundy focus:bg-paper transition-colors"
@@ -108,6 +108,7 @@ export const AdminSettings: React.FC = () => {
               <InputField label="Info Orario (es. Arrivo gradito...)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
             </div>
             <InputField label="Data Mostrata (es. Sabato 29 Maggio 2027)" value={formData?.event?.displayDate} onChange={(v) => handleChange('event', 'displayDate', v)} />
+            <InputField label="Data Esatta per il Conto alla Rovescia" type="datetime-local" value={formData?.event?.date ? formData.event.date.substring(0, 16) : ''} onChange={(v) => handleChange('event', 'date', v)} />
             <InputField label="Etichetta Card Orari (es. Arrivo ore 16:45)" value={formData?.event?.timeBadge} onChange={(v) => handleChange('event', 'timeBadge', v)} />
             <InputField label="Data Scadenza RSVP" value={formData?.event?.rsvpDeadline} onChange={(v) => handleChange('event', 'rsvpDeadline', v)} />
           </div>
