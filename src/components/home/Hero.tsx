@@ -86,7 +86,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
               {part}<br />
             </React.Fragment>
           ))}
-          {settings.event.displayDate}
+          {new Date(settings.event.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())}
         </p>
 
         {/* Contextual Welcome Card for Cluster */}
