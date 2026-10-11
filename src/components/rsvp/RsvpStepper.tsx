@@ -274,10 +274,10 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
           ) : hasAlreadyResponded && !isEditing ? (
             /* Already Responded Card */
             <div className="text-center py-6 animate-fade-in">
-              <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200 shadow-sm">
+              <div className="w-16 h-16 rounded-full bg-burgundy/10 text-burgundy flex items-center justify-center mx-auto mb-4 border border-burgundy/20 shadow-sm">
                 <CheckCircle2 className="w-9 h-9" />
               </div>
-              <span className="inline-block px-3 py-1 rounded-full bg-emerald-100/80 text-emerald-800 text-[11px] font-semibold tracking-wider uppercase mb-3 border border-emerald-200">
+              <span className="inline-block px-3 py-1 rounded-full bg-burgundy/10 text-burgundy text-[11px] font-semibold tracking-wider uppercase mb-3 border border-burgundy/20">
                 Risposta Inviata
               </span>
               <h3 className="font-serif text-3xl sm:text-4xl text-burgundy mb-2">
