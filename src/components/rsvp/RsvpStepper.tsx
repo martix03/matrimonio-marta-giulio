@@ -82,6 +82,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   const allAnswered = guestForms.length > 0 && guestForms.every(g => g.is_attending !== null);
   const allDeclined = guestForms.length > 0 && guestForms.every(g => g.is_attending === false);
   const hasAttending = attendingGuests.length > 0;
+  const isSingleGuest = guestForms.length === 1;
 
   const triggerCelebration = () => {
     try {
@@ -236,14 +237,16 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                 Grazie, {cluster.family_name}!
               </h3>
               <p className="text-sm text-burgundy/80 max-w-md mx-auto mb-6">
-                Le vostre risposte sono state salvate con successo.
+                {isSingleGuest ? 'Le tue risposte sono state salvate con successo.' : 'Le vostre risposte sono state salvate con successo.'}
                 {hasAttending ? (
                   <span className="block mt-2 font-medium text-burgundy">
-                    Siamo felicissimi di avervi con noi a Cascina Ranverso il 29 Maggio 2027! 🥂
+                    Siamo felicissimi di {isSingleGuest ? 'averti' : 'avervi'} con noi a Cascina Ranverso il 29 Maggio 2027! 🥂
                   </span>
                 ) : (
                   <span className="block mt-2">
-                    Ci dispiace che non possiate esserci, vi porteremo comunque nel cuore!
+                    {isSingleGuest
+                      ? 'Ci dispiace che non puoi esserci, ti porteremo comunque nel cuore!'
+                      : 'Ci dispiace che non possiate esserci, vi porteremo comunque nel cuore!'}
                   </span>
                 )}
               </p>
@@ -377,13 +380,15 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                   {allDeclined && (
                     <div className="mt-4 p-5 rounded-3xl bg-cream border border-blush/40 space-y-3 animate-fade-in">
                       <div className="text-xs font-semibold uppercase tracking-wider text-burgundy">
-                        Ci dispiace che non possiate esserci! Lasciateci un saluto:
+                        {isSingleGuest
+                          ? 'Ci dispiace che non puoi esserci! Lasciaci un saluto:'
+                          : 'Ci dispiace che non possiate esserci! Lasciateci un saluto:'}
                       </div>
                       <textarea
                         rows={3}
                         value={declineMessage}
                         onChange={e => setDeclineMessage(e.target.value)}
-                        placeholder="Scriveteci un augurio o un messaggio..."
+                        placeholder={isSingleGuest ? "Scrivici un augurio o un messaggio..." : "Scriveteci un augurio o un messaggio..."}
                         className="w-full p-3.5 rounded-2xl border border-blush/50 text-xs text-burgundy focus:border-burgundy outline-none resize-none bg-paper"
                       />
                       <button
