@@ -4,11 +4,11 @@ const connectionString = 'postgresql://postgres:Boxzic-1woqka-qewqez@db.jnjhqbrt
 const client = new Client({ connectionString });
 
 const foodCategories = [
-  { id: 'all_food', label: 'Tutti i Locali', marker_icon: 'utensils', marker_color: '#9f1239', sort_order: 10 },
-  { id: 'colazione', label: 'Colazione & Bakery', marker_icon: 'coffee', marker_color: '#9f1239', sort_order: 11 },
-  { id: 'pizza', label: 'Pizzerie', marker_icon: 'utensils', marker_color: '#9f1239', sort_order: 12 },
-  { id: 'cena', label: 'Cucina Piemontese', marker_icon: 'wine', marker_color: '#9f1239', sort_order: 13 },
-  { id: 'pub', label: 'Pub & Burger', marker_icon: 'utensils', marker_color: '#9f1239', sort_order: 14 }
+  { id: 'all_food', label: 'Tutti i Locali', marker_color: '#9f1239', sort_order: 10 },
+  { id: 'colazione', label: 'Colazione & Bakery', marker_color: '#9f1239', sort_order: 11 },
+  { id: 'pizza', label: 'Pizzerie', marker_color: '#9f1239', sort_order: 12 },
+  { id: 'cena', label: 'Cucina Piemontese', marker_color: '#9f1239', sort_order: 13 },
+  { id: 'pub', label: 'Pub & Burger', marker_color: '#9f1239', sort_order: 14 }
 ];
 
 async function run() {
@@ -19,7 +19,6 @@ async function run() {
     CREATE TABLE food_categories (
       id TEXT PRIMARY KEY,
       label TEXT NOT NULL,
-      marker_icon TEXT NOT NULL,
       marker_color TEXT NOT NULL,
       sort_order INT NOT NULL
     );
@@ -30,8 +29,8 @@ async function run() {
 
   for (const c of foodCategories) {
     await client.query(
-      `INSERT INTO food_categories (id, label, marker_icon, marker_color, sort_order) VALUES ($1, $2, $3, $4, $5)`,
-      [c.id, c.label, c.marker_icon, c.marker_color, c.sort_order]
+      `INSERT INTO food_categories (id, label, marker_color, sort_order) VALUES ($1, $2, $3, $4)`,
+      [c.id, c.label, c.marker_color, c.sort_order]
     );
   }
 
