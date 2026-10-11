@@ -94,8 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         {/* Contextual Welcome Card for Cluster */}
         {cluster ? (
           <div className="max-w-lg mx-auto mb-10 p-5 rounded-3xl bg-paper shadow-wedding border border-blush/40 animate-fade-in">
-            <div className="flex items-center justify-center gap-2 text-burgundy text-sm font-semibold mb-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-burgundy/60" />
+            <div className="flex items-center justify-center text-burgundy text-sm font-semibold mb-1">
               <span>Benvenuta, {cluster.family_name}!</span>
             </div>
             <div className="text-xs sm:text-sm text-burgundy/70">
