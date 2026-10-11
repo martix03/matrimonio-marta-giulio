@@ -53,6 +53,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
   // Check if all guests in cluster already responded
   const allResponded = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending !== null);
+  const allDeclined = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending === false);
   const isSingleGuest = cluster && cluster.guests.length === 1;
 
   return (
@@ -98,15 +99,26 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
               <span>Benvenuta, {cluster.family_name}!</span>
             </div>
             <p className="text-xs sm:text-sm text-burgundy/70">
-              Siamo davvero felici di condividere con voi questo giorno speciale.
-              {allResponded ? (
-                <span className="block mt-1 font-medium text-emerald-700">
-                  ✓ Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza!
-                </span>
+              {allResponded && allDeclined ? (
+                <>
+                  Grazie per aver risposto all'invito.
+                  <span className="block mt-1 font-medium text-burgundy/80">
+                    Ci dispiace che non {isSingleGuest ? 'puoi' : 'possiate'} esserci, {isSingleGuest ? 'ti' : 'vi'} porteremo comunque nel cuore!
+                  </span>
+                </>
               ) : (
-                <span className="block mt-1 text-burgundy/80">
-                  Vi chiediamo gentilmente di confermare la presenza entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
-                </span>
+                <>
+                  Siamo davvero felici di condividere con {isSingleGuest ? 'te' : 'voi'} questo giorno speciale.
+                  {allResponded ? (
+                    <span className="block mt-1 font-medium text-emerald-700">
+                      ✓ Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza!
+                    </span>
+                  ) : (
+                    <span className="block mt-1 text-burgundy/80">
+                      {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare la presenza entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
+                    </span>
+                  )}
+                </>
               )}
             </p>
           </div>
