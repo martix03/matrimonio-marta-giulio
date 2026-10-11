@@ -29,7 +29,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [placeCategoryFilter, setPlaceCategoryFilter] = useState<string>('all');
 
   const [newFamilyName, setNewFamilyName] = useState('');
-  const [newGuests, setNewGuests] = useState<{ firstName: string, lastName: string, isChild: boolean }[]>([{ firstName: '', lastName: '', isChild: false }]);
+  const [newGuests, setNewGuests] = useState<{ firstName: string, lastName: string, gender: 'M' | 'F', isChild: boolean }[]>([{ firstName: '', lastName: '', gender: 'M', isChild: false }]);
 
   const [editingGuestId, setEditingGuestId] = useState<string | null>(null);
   const [editData, setEditData] = useState<any>({});
@@ -39,6 +39,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     setEditData({
       first_name: guest.first_name,
       last_name: guest.last_name,
+      gender: guest.gender || 'M',
       is_attending: guest.is_attending,
       dietary_notes: guest.dietary_notes || '',
       song_request: guest.song_request || ''
@@ -141,7 +142,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   };
 
   const handleAddGuestRow = () => {
-    setNewGuests([...newGuests, { firstName: '', lastName: '', isChild: false }]);
+    setNewGuests([...newGuests, { firstName: '', lastName: '', gender: 'M', isChild: false }]);
   };
 
   const handleSaveGuests = async (e: React.FormEvent) => {
@@ -154,7 +155,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     if (success) {
       alert('Famiglia e ospiti aggiunti con successo!');
       setNewFamilyName('');
-      setNewGuests([{ firstName: '', lastName: '', isChild: false }]);
+      setNewGuests([{ firstName: '', lastName: '', gender: 'M', isChild: false }]);
       fetchData();
       setActiveTab('guests');
     } else {
@@ -422,6 +423,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <tr>
                       <th className="p-4 font-semibold">Nome</th>
                       <th className="p-4 font-semibold">Cognome</th>
+                      <th className="p-4 font-semibold text-center">Genere</th>
                       <th className="p-4 font-semibold">Famiglia</th>
                       <th className="p-4 font-semibold text-center">Stato</th>
                       <th className="p-4 font-semibold">Intolleranze</th>
@@ -439,6 +441,12 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             </td>
                             <td className="p-2">
                               <input type="text" value={editData.last_name} onChange={e => setEditData({...editData, last_name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                            </td>
+                            <td className="p-2 text-center">
+                              <select value={editData.gender || 'M'} onChange={e => setEditData({...editData, gender: e.target.value as 'M' | 'F'})} className="px-2 py-1 rounded text-xs border border-blush/40 bg-white">
+                                <option value="M">M</option>
+                                <option value="F">F</option>
+                              </select>
                             </td>
                             <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
                             <td className="p-2">
@@ -467,6 +475,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                           <>
                             <td className="p-4 font-medium">{g.first_name}</td>
                             <td className="p-4 font-medium">{g.last_name}</td>
+                            <td className="p-4 text-center">
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                                g.gender === 'F' ? 'bg-pink-50 text-pink-700 border-pink-200' : 'bg-blue-50 text-blue-700 border-blue-200'
+                              }`}>
+                                {g.gender === 'F' ? 'Femmina (F)' : 'Maschio (M)'}
+                              </span>
+                            </td>
                             <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
                             <td className="p-4 text-center">
                               {g.is_attending === true && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blush-soft text-burgundy uppercase tracking-widest border border-blush/40">Confermato</span>}
@@ -503,7 +518,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     ))}
                     {filteredGuests.length === 0 && (
                       <tr>
-                        <td colSpan={7} className="p-8 text-center opacity-60">Nessun ospite trovato.</td>
+                        <td colSpan={8} className="p-8 text-center opacity-60">Nessun ospite trovato.</td>
                       </tr>
                     )}
                   </tbody>
@@ -685,9 +700,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 <div className="space-y-4">
                   <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Membri (Ospiti)</label>
                   {newGuests.map((g, idx) => (
-                    <div key={idx} className="flex gap-4 items-center">
-                      <input type="text" required placeholder="Nome" value={g.firstName} onChange={e => { const updated = [...newGuests]; updated[idx].firstName = e.target.value; setNewGuests(updated); }} className="flex-1 px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-                      <input type="text" required placeholder="Cognome" value={g.lastName} onChange={e => { const updated = [...newGuests]; updated[idx].lastName = e.target.value; setNewGuests(updated); }} className="flex-1 px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                    <div key={idx} className="flex flex-wrap sm:flex-nowrap gap-3 items-center">
+                      <input type="text" required placeholder="Nome" value={g.firstName} onChange={e => { const updated = [...newGuests]; updated[idx].firstName = e.target.value; setNewGuests(updated); }} className="flex-1 min-w-[120px] px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                      <input type="text" required placeholder="Cognome" value={g.lastName} onChange={e => { const updated = [...newGuests]; updated[idx].lastName = e.target.value; setNewGuests(updated); }} className="flex-1 min-w-[120px] px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                      <select value={g.gender} onChange={e => { const updated = [...newGuests]; updated[idx].gender = e.target.value as 'M' | 'F'; setNewGuests(updated); }} className="px-3 py-2 rounded-xl border border-blush/40 bg-cream/30 text-xs font-semibold focus:outline-none focus:border-burgundy">
+                        <option value="M">Maschio (M)</option>
+                        <option value="F">Femmina (F)</option>
+                      </select>
                       <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer shrink-0">
                         <input type="checkbox" checked={g.isChild} onChange={e => { const updated = [...newGuests]; updated[idx].isChild = e.target.checked; setNewGuests(updated); }} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
                         Bambino

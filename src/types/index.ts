@@ -13,6 +13,7 @@ export interface Guest {
   cluster_id: string;
   first_name: string;
   last_name: string;
+  gender?: 'M' | 'F';
   is_attending: boolean | null;
   is_child: boolean;
   dietary_tags: DietaryTag[];

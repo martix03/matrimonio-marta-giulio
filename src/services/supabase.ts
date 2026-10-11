@@ -308,7 +308,7 @@ export const weddingApi = {
     return [];
   },
 
-  async createClusterAndGuests(familyName: string, guests: { firstName: string, lastName: string, isChild: boolean }[]): Promise<boolean> {
+  async createClusterAndGuests(familyName: string, guests: { firstName: string, lastName: string, gender?: 'M' | 'F', isChild: boolean }[]): Promise<boolean> {
     if (isSupabaseConfigured && supabase) {
       // Create cluster
       const inviteCode = familyName.substring(0, 4).toUpperCase() + Math.floor(Math.random() * 1000);
@@ -328,6 +328,7 @@ export const weddingApi = {
         cluster_id: clusterData.id,
         first_name: g.firstName,
         last_name: g.lastName,
+        gender: g.gender || 'M',
         is_child: g.isChild,
       }));
 

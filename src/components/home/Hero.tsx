@@ -66,6 +66,9 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       return 'Benvenuti';
     }
     const singleGuest = cluster.guests[0];
+    if (singleGuest?.gender) {
+      return singleGuest.gender === 'F' ? 'Benvenuta' : 'Benvenuto';
+    }
     const firstName = (singleGuest?.first_name || cluster.family_name).trim().toLowerCase().split(' ')[0];
     const maleNamesEndingInA = ['andrea', 'luca', 'mattia', 'elia', 'nicola'];
     if (firstName.endsWith('a') && !maleNamesEndingInA.includes(firstName)) {
