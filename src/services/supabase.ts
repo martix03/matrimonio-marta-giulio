@@ -74,6 +74,24 @@ export const weddingApi = {
     return found || null;
   },
 
+  async getClusterById(clusterId: string): Promise<Cluster | null> {
+    if (isSupabaseConfigured && supabase) {
+      const { data: cluster, error: clusterError } = await supabase
+        .from('clusters')
+        .select('*, guests(*)')
+        .eq('id', clusterId)
+        .single();
+
+      if (clusterError || !cluster) return null;
+      return cluster as Cluster;
+    }
+
+    // Local fallback
+    const clusters = getLocalClusters();
+    const found = clusters.find(c => c.id === clusterId);
+    return found || null;
+  },
+
   async searchClusterByName(firstName: string, lastName: string): Promise<Cluster | null> {
     const fn = firstName.trim().toLowerCase();
     const ln = lastName.trim().toLowerCase();

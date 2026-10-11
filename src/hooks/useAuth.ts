@@ -2,14 +2,27 @@ import { useState, useEffect, useCallback } from 'react';
 import { Cluster } from '../types';
 import { weddingApi } from '../services/supabase';
 
-const AUTH_STORAGE_KEY = 'wedding_saved_invite_code';
+const AUTH_STORAGE_KEY_ID = 'wedding_saved_cluster_id';
+const AUTH_STORAGE_KEY_CODE = 'wedding_saved_invite_code';
 
 export function useAuth() {
   const [cluster, setCluster] = useState<Cluster | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize from URL query param (?code=...) or localStorage
+  const saveSession = (c: Cluster) => {
+    localStorage.setItem(AUTH_STORAGE_KEY_ID, c.id);
+    if (c.invite_code) {
+      localStorage.setItem(AUTH_STORAGE_KEY_CODE, c.invite_code);
+    }
+  };
+
+  const clearSession = () => {
+    localStorage.removeItem(AUTH_STORAGE_KEY_ID);
+    localStorage.removeItem(AUTH_STORAGE_KEY_CODE);
+  };
+
+  // Initialize from URL query param (?code=...) or localStorage (ID or code)
   useEffect(() => {
     async function initAuth() {
       setLoading(true);
@@ -18,24 +31,59 @@ export function useAuth() {
       const params = new URLSearchParams(window.location.search);
       const urlCode = params.get('code') || params.get('invito');
 
-      const codeToUse = urlCode || localStorage.getItem(AUTH_STORAGE_KEY);
-
-      if (codeToUse) {
+      if (urlCode) {
         try {
-          const found = await weddingApi.getClusterByCode(codeToUse);
+          const found = await weddingApi.getClusterByCode(urlCode);
           if (found) {
             setCluster(found);
-            localStorage.setItem(AUTH_STORAGE_KEY, found.invite_code);
+            saveSession(found);
+            setLoading(false);
+            return;
           } else {
-            // If code from storage was invalid, clean it
-            if (!urlCode) localStorage.removeItem(AUTH_STORAGE_KEY);
             setError('Invito non trovato. Prova ad accedere inserendo nome e cognome.');
           }
         } catch (err) {
           console.error(err);
-          setError('Errore di connessione durante la verifica dell\'invito.');
         }
       }
+
+      // Check saved cluster ID first (most stable & unique across DB)
+      const savedId = localStorage.getItem(AUTH_STORAGE_KEY_ID);
+      if (savedId) {
+        try {
+          const found = await weddingApi.getClusterById(savedId);
+          if (found) {
+            setCluster(found);
+            saveSession(found);
+            setLoading(false);
+            return;
+          }
+        } catch (err) {
+          console.error('Error fetching cluster by ID:', err);
+        }
+      }
+
+      // Fallback check saved invite code
+      const savedCode = localStorage.getItem(AUTH_STORAGE_KEY_CODE);
+      if (savedCode) {
+        try {
+          const found = await weddingApi.getClusterByCode(savedCode);
+          if (found) {
+            setCluster(found);
+            saveSession(found);
+            setLoading(false);
+            return;
+          }
+        } catch (err) {
+          console.error('Error fetching cluster by code:', err);
+        }
+      }
+
+      // If we had stored items but none worked, clean them
+      if (savedId || savedCode) {
+        clearSession();
+      }
+
       setLoading(false);
     }
 
@@ -49,7 +97,7 @@ export function useAuth() {
       const found = await weddingApi.getClusterByCode(code);
       if (found) {
         setCluster(found);
-        localStorage.setItem(AUTH_STORAGE_KEY, found.invite_code);
+        saveSession(found);
         setLoading(false);
         return true;
       } else {
@@ -71,7 +119,7 @@ export function useAuth() {
       const found = await weddingApi.searchClusterByName(firstName, lastName);
       if (found) {
         setCluster(found);
-        localStorage.setItem(AUTH_STORAGE_KEY, found.invite_code);
+        saveSession(found);
         setLoading(false);
         return true;
       } else {
@@ -88,7 +136,7 @@ export function useAuth() {
 
   const logout = useCallback(() => {
     setCluster(null);
-    localStorage.removeItem(AUTH_STORAGE_KEY);
+    clearSession();
     // Remove query param from URL cleanly
     if (window.location.search) {
       window.history.replaceState({}, document.title, window.location.pathname);
@@ -97,8 +145,11 @@ export function useAuth() {
 
   const refreshCluster = useCallback(async () => {
     if (!cluster) return;
-    const refreshed = await weddingApi.getClusterByCode(cluster.invite_code);
-    if (refreshed) setCluster(refreshed);
+    const refreshed = await weddingApi.getClusterById(cluster.id);
+    if (refreshed) {
+      setCluster(refreshed);
+      saveSession(refreshed);
+    }
   }, [cluster]);
 
   return {
