@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, XCircle, Users, Utensils, Music, Sparkles, 
-  ArrowRight, ArrowLeft, Bus, Check, KeyRound, AlertCircle 
+  ArrowRight, ArrowLeft, Bus, Check, KeyRound, AlertCircle, Edit2 
 } from 'lucide-react';
 import { Cluster, Guest, DietaryTag } from '../../types';
 import { weddingApi } from '../../services/supabase';
@@ -31,11 +31,14 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   const [guestForms, setGuestForms] = useState<Guest[]>([]);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // Sync cluster guests into local form state
   useEffect(() => {
     if (cluster && cluster.guests.length > 0) {
       setGuestForms(JSON.parse(JSON.stringify(cluster.guests)));
+      setIsEditing(false);
+      setSavedSuccess(false);
     }
   }, [cluster]);
 
@@ -83,6 +86,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   const allDeclined = guestForms.length > 0 && guestForms.every(g => g.is_attending === false);
   const hasAttending = attendingGuests.length > 0;
   const isSingleGuest = guestForms.length === 1;
+  const hasAlreadyResponded = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending !== null);
 
   const triggerCelebration = () => {
     try {
@@ -113,6 +117,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
     setIsSaving(false);
     if (ok) {
       setSavedSuccess(true);
+      setIsEditing(false);
       if (hasAttending) {
         triggerCelebration();
       }
@@ -169,61 +174,63 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
         </div>
 
         {/* Stepper Progress Indicator */}
-        <div className="mb-8 max-w-lg mx-auto px-2">
-          <div className="relative grid grid-cols-4 w-full">
-            {/* Background connecting track line */}
-            <div className="absolute left-[12.5%] right-[12.5%] top-5 -translate-y-1/2 h-0.5 bg-blush/30 -z-0" />
-            
-            {/* Active connecting track fill line */}
-            <div
-              className="absolute left-[12.5%] top-5 -translate-y-1/2 h-0.5 bg-burgundy transition-all duration-300 -z-0"
-              style={{
-                width: `${((Math.min(step, 4) - 1) / 3) * 75}%`,
-              }}
-            />
+        {(isEditing || !hasAlreadyResponded) && !savedSuccess && (
+          <div className="mb-8 max-w-lg mx-auto px-2">
+            <div className="relative grid grid-cols-4 w-full">
+              {/* Background connecting track line */}
+              <div className="absolute left-[12.5%] right-[12.5%] top-5 -translate-y-1/2 h-0.5 bg-blush/30 -z-0" />
+              
+              {/* Active connecting track fill line */}
+              <div
+                className="absolute left-[12.5%] top-5 -translate-y-1/2 h-0.5 bg-burgundy transition-all duration-300 -z-0"
+                style={{
+                  width: `${((Math.min(step, 4) - 1) / 3) * 75}%`,
+                }}
+              />
 
-            {[
-              { num: 1, label: 'Presenze' },
-              { num: 2, label: 'Menu & Dettagli' },
-              { num: 3, label: 'DJ Set' },
-              { num: 4, label: 'Riepilogo' },
-            ].map(s => {
-              const isActive = step === s.num;
-              const isPassed = step > s.num;
-              return (
-                <button
-                  key={s.num}
-                  type="button"
-                  onClick={() => {
-                    if (savedSuccess) setSavedSuccess(false);
-                    setStep(s.num);
-                  }}
-                  className="relative z-10 flex flex-col items-center justify-start group cursor-pointer focus:outline-none"
-                  aria-label={`Vai allo step ${s.num}: ${s.label}`}
-                >
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xs transition-all shadow-sm ${
-                      isPassed
-                        ? 'bg-burgundy text-paper hover:bg-burgundy-light group-hover:scale-110'
-                        : isActive
-                        ? 'bg-blush text-burgundy ring-4 ring-blush/30 group-hover:scale-110'
-                        : 'bg-paper text-burgundy/60 border border-blush/40 hover:border-burgundy/40 hover:text-burgundy group-hover:scale-110'
-                    }`}
+              {[
+                { num: 1, label: 'Presenze' },
+                { num: 2, label: 'Menu & Dettagli' },
+                { num: 3, label: 'DJ Set' },
+                { num: 4, label: 'Riepilogo' },
+              ].map(s => {
+                const isActive = step === s.num;
+                const isPassed = step > s.num;
+                return (
+                  <button
+                    key={s.num}
+                    type="button"
+                    onClick={() => {
+                      if (savedSuccess) setSavedSuccess(false);
+                      setStep(s.num);
+                    }}
+                    className="relative z-10 flex flex-col items-center justify-start group cursor-pointer focus:outline-none"
+                    aria-label={`Vai allo step ${s.num}: ${s.label}`}
                   >
-                    {isPassed ? <Check className="w-4 h-4 text-paper" /> : s.num}
-                  </div>
-                  <span
-                    className={`text-[10px] sm:text-xs mt-1.5 font-medium transition-colors text-center hidden sm:block ${
-                      isActive ? 'text-burgundy font-semibold' : 'text-burgundy/60 group-hover:text-burgundy'
-                    }`}
-                  >
-                    {s.label}
-                  </span>
-                </button>
-              );
-            })}
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-xs transition-all shadow-sm ${
+                        isPassed
+                          ? 'bg-burgundy text-paper hover:bg-burgundy-light group-hover:scale-110'
+                          : isActive
+                          ? 'bg-blush text-burgundy ring-4 ring-blush/30 group-hover:scale-110'
+                          : 'bg-paper text-burgundy/60 border border-blush/40 hover:border-burgundy/40 hover:text-burgundy group-hover:scale-110'
+                      }`}
+                    >
+                      {isPassed ? <Check className="w-4 h-4 text-paper" /> : s.num}
+                    </div>
+                    <span
+                      className={`text-[10px] sm:text-xs mt-1.5 font-medium transition-colors text-center hidden sm:block ${
+                        isActive ? 'text-burgundy font-semibold' : 'text-burgundy/60 group-hover:text-burgundy'
+                      }`}
+                    >
+                      {s.label}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main Card */}
         <div className="p-6 sm:p-10 rounded-4xl bg-paper shadow-wedding-lg border border-blush/30">
@@ -253,6 +260,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
               <button
                 onClick={() => {
                   setSavedSuccess(false);
+                  setIsEditing(true);
                   setStep(1);
                 }}
                 className="px-6 py-2.5 rounded-full border border-blush text-burgundy text-xs font-semibold hover:bg-cream transition-colors"
@@ -260,8 +268,95 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                 Modifica risposte
               </button>
             </div>
+          ) : hasAlreadyResponded && !isEditing ? (
+            /* Already Responded Card */
+            <div className="text-center py-6 animate-fade-in">
+              <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 border border-emerald-200 shadow-sm">
+                <CheckCircle2 className="w-9 h-9" />
+              </div>
+              <span className="inline-block px-3 py-1 rounded-full bg-emerald-100/80 text-emerald-800 text-[11px] font-semibold tracking-wider uppercase mb-3 border border-emerald-200">
+                Risposta Inviata
+              </span>
+              <h3 className="font-serif text-3xl sm:text-4xl text-burgundy mb-2">
+                {isSingleGuest ? 'Hai già risposto all\'invito!' : 'Avete già risposto all\'invito!'}
+              </h3>
+              <p className="text-sm text-burgundy/80 max-w-md mx-auto mb-6 leading-relaxed">
+                {hasAttending ? (
+                  isSingleGuest ? (
+                    <span>La tua presenza è confermata. Non vediamo l'ora di festeggiare insieme a Cascina Ranverso! 🥂</span>
+                  ) : (
+                    <span>
+                      Avete confermato la presenza per{' '}
+                      <strong className="text-burgundy">{attendingGuests.length} {attendingGuests.length === 1 ? 'persona' : 'persone'}</strong> su {guestForms.length}.
+                      Non vediamo l'ora di festeggiare insieme! 🥂
+                    </span>
+                  )
+                ) : (
+                  <span>
+                    {isSingleGuest
+                      ? 'Hai indicato che non potrai esserci. Ci dispiace che non puoi esserci, ti porteremo comunque nel cuore!'
+                      : 'Avete indicato che non potrete esserci. Ci dispiace che non possiate esserci, vi porteremo comunque nel cuore!'}
+                  </span>
+                )}
+              </p>
+
+              {/* Guest status recap chips */}
+              <div className="flex flex-wrap justify-center gap-2 mb-8 max-w-md mx-auto">
+                {guestForms.map(g => (
+                  <span
+                    key={g.id}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border shadow-xs ${
+                      g.is_attending
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                        : 'bg-rose-50 text-rose-700 border-rose-200'
+                    }`}
+                  >
+                    {g.is_attending ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <XCircle className="w-3.5 h-3.5 text-rose-600" />}
+                    <span>{g.first_name} {g.last_name}</span>
+                    <span className="text-[10px] opacity-75">
+                      {g.is_attending ? '(Presente)' : '(Assente)'}
+                    </span>
+                  </span>
+                ))}
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setStep(1);
+                  }}
+                  className="px-8 py-3.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
+                >
+                  <Edit2 className="w-4 h-4 text-blush" />
+                  <span>Modifica le risposte</span>
+                </button>
+              </div>
+            </div>
           ) : (
             <>
+              {/* If isEditing is active, offer a cancel link back to already responded recap */}
+              {isEditing && (
+                <div className="flex justify-between items-center pb-4 mb-4 border-b border-blush/20">
+                  <span className="text-xs uppercase tracking-wider font-semibold text-burgundy/60">
+                    Modalità modifica risposte
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (cluster && cluster.guests.length > 0) {
+                        setGuestForms(JSON.parse(JSON.stringify(cluster.guests)));
+                      }
+                      setIsEditing(false);
+                      setStep(1);
+                    }}
+                    className="text-xs text-burgundy hover:text-burgundy-light font-medium underline transition-colors"
+                  >
+                    Annulla e torna al riepilogo
+                  </button>
+                </div>
+              )}
               {/* STEP 1: Individual Member Attendance */}
               {step === 1 && (
                 <div className="space-y-6 animate-fade-in">
