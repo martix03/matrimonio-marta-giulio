@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, UserSearch, Sparkles, CheckCircle2 } from 'lucide-react';
+import { X, UserSearch, Sparkles, Check } from 'lucide-react';
 
 interface MagicLinkModalProps {
   isOpen: boolean;
@@ -89,8 +89,8 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           </div>
         )}
         {successMessage && (
-          <div className="mb-4 p-3 bg-emerald-50 text-emerald-800 text-xs rounded-xl border border-emerald-200 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <div className="mb-4 p-3 bg-blush-soft text-burgundy text-xs rounded-xl border border-blush/40 flex items-center gap-2">
+            <Check className="w-4 h-4 text-burgundy" strokeWidth={2.5} />
             {successMessage}
           </div>
         )}

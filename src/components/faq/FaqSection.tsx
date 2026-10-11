@@ -22,9 +22,9 @@ export const FaqSection: React.FC = () => {
 
   const tags = [
     { id: 'all', label: 'Tutti i Temi' },
-    { id: 'locations', label: '📍 Location & Orari' },
-    { id: 'info', label: 'ℹ️ Info Utili' },
-    { id: 'gifts', label: '🎁 Regali' },
+    { id: 'locations', label: 'Location & Orari' },
+    { id: 'info', label: 'Info Utili' },
+    { id: 'gifts', label: 'Regali' },
   ];
 
   const filteredFaqs = faqs.filter(faq => {

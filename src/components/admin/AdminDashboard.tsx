@@ -363,11 +363,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <div className="space-y-8 animate-fade-in">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
-                  <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+                <div className="w-12 h-12 rounded-full bg-blush-soft flex items-center justify-center">
+                  <Check className="w-6 h-6 text-burgundy" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-emerald-700">{confirmed.length}</div>
+                  <div className="text-3xl font-bold text-burgundy">{confirmed.length}</div>
                   <div className="text-xs uppercase tracking-wider font-semibold opacity-70">Confermati</div>
                 </div>
               </div>
@@ -455,7 +455,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                               <input type="text" value={editData.song_request} onChange={e => setEditData({...editData, song_request: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" placeholder="Nessuna" />
                             </td>
                             <td className="p-2 text-center">
-                              <button onClick={handleSaveEdit} className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors mx-1">
+                              <button onClick={handleSaveEdit} className="p-1.5 text-burgundy hover:bg-blush-soft rounded-full transition-colors mx-1">
                                 <Check className="w-4 h-4" />
                               </button>
                               <button onClick={() => setEditingGuestId(null)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-full transition-colors mx-1">
@@ -469,7 +469,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             <td className="p-4 font-medium">{g.last_name}</td>
                             <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
                             <td className="p-4 text-center">
-                              {g.is_attending === true && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase tracking-widest">Confermato</span>}
+                              {g.is_attending === true && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blush-soft text-burgundy uppercase tracking-widest border border-blush/40">Confermato</span>}
                               {g.is_attending === false && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700 uppercase tracking-widest">Declinato</span>}
                               {g.is_attending === null && <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700 uppercase tracking-widest">In Attesa</span>}
                             </td>
@@ -521,11 +521,11 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 <div key={g.id} className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm flex flex-col justify-between">
                   <div>
                     <div className="text-xs uppercase tracking-wider font-semibold opacity-60 mb-1">{new Date(g.created_at).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })}</div>
-                    <div className="font-serif text-xl font-medium mb-3 text-emerald-800">{g.sender_name}</div>
+                    <div className="font-serif text-xl font-medium mb-3 text-burgundy">{g.sender_name}</div>
                     {g.wishes && <div className="text-sm italic opacity-80 mb-3 line-clamp-4">"{g.wishes}"</div>}
                   </div>
                   {g.amount_note && (
-                    <div className="mt-4 pt-4 border-t border-blush/20 text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl text-center">
+                    <div className="mt-4 pt-4 border-t border-blush/20 text-xs font-semibold text-burgundy bg-blush-soft px-3 py-2 rounded-xl text-center">
                       Bonifico comunicato: {g.amount_note}
                     </div>
                   )}
@@ -599,7 +599,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                               <input type="number" step="any" value={editPlaceData.longitude} onChange={e => setEditPlaceData({...editPlaceData, longitude: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2 text-center whitespace-nowrap">
-                              <button onClick={handleSavePlaceEdit} className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-full transition-colors mx-0.5">
+                              <button onClick={handleSavePlaceEdit} className="p-1.5 text-burgundy hover:bg-blush-soft rounded-full transition-colors mx-0.5">
                                 <Check className="w-4 h-4" />
                               </button>
                               <button onClick={() => setEditingPlaceId(null)} className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-full transition-colors mx-0.5">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Calendar, ArrowDown, CheckCircle } from 'lucide-react';
+import { Heart, Calendar, ArrowDown, CheckCircle, Check } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { Cluster } from '../../types';
 
@@ -93,34 +93,35 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
         {/* Contextual Welcome Card for Cluster */}
         {cluster ? (
-          <div className="max-w-lg mx-auto mb-10 p-5 rounded-3xl bg-paper shadow-wedding border border-blush/30 animate-fade-in">
+          <div className="max-w-lg mx-auto mb-10 p-5 rounded-3xl bg-paper shadow-wedding border border-blush/40 animate-fade-in">
             <div className="flex items-center justify-center gap-2 text-burgundy text-sm font-semibold mb-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-burgundy/60" />
               <span>Benvenuta, {cluster.family_name}!</span>
             </div>
-            <p className="text-xs sm:text-sm text-burgundy/70">
+            <div className="text-xs sm:text-sm text-burgundy/70">
               {allResponded && allDeclined ? (
                 <>
-                  Grazie per aver risposto all'invito.
-                  <span className="block mt-1 font-medium text-burgundy/80">
+                  <p>Grazie per aver risposto all'invito.</p>
+                  <span className="block mt-1 font-medium text-burgundy">
                     Ci dispiace che non {isSingleGuest ? 'puoi' : 'possiate'} esserci, {isSingleGuest ? 'ti' : 'vi'} porteremo comunque nel cuore!
                   </span>
                 </>
               ) : (
                 <>
-                  Siamo davvero felici di condividere con {isSingleGuest ? 'te' : 'voi'} questo giorno speciale.
+                  <p>Siamo davvero felici di condividere con {isSingleGuest ? 'te' : 'voi'} questo giorno speciale.</p>
                   {allResponded ? (
-                    <span className="block mt-1 font-medium text-emerald-700">
-                      ✓ Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza!
+                    <span className="inline-flex items-center gap-1.5 mt-2 font-medium text-burgundy bg-blush-soft px-3 py-1 rounded-full text-xs border border-blush/40">
+                      <Check className="w-3.5 h-3.5 text-burgundy" strokeWidth={2.5} />
+                      <span>Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza</span>
                     </span>
                   ) : (
-                    <span className="block mt-1 text-burgundy/80">
+                    <span className="block mt-1 text-burgundy/80 font-medium">
                       {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare la presenza entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
                     </span>
                   )}
                 </>
               )}
-            </p>
+            </div>
           </div>
         ) : (
           <p className="max-w-md mx-auto text-xs sm:text-sm text-burgundy/70 mb-10">

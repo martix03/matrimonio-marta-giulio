@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Bus, Car, Plus, MessageCircle, Clock, MapPin, Users, CheckCircle2 } from 'lucide-react';
+import { Bus, Car, Plus, MessageCircle, Clock, MapPin, Users, Check } from 'lucide-react';
 import { CarpoolingPost } from '../../types';
 import { weddingApi } from '../../services/supabase';
 import { useSettings } from '../../contexts/SettingsContext';
@@ -86,7 +86,7 @@ export const LogisticsHub: React.FC = () => {
                       Bus Navetta del Rientro
                     </h3>
                     <span className="text-[11px] text-burgundy/60 uppercase tracking-wider font-semibold">
-                      Cascina Ranverso ➔ Torino
+                      Cascina Ranverso &rarr; Torino
                     </span>
                   </div>
                 </div>
@@ -172,8 +172,8 @@ export const LogisticsHub: React.FC = () => {
                 </div>
 
                 {formSubmitted ? (
-                  <div className="p-4 bg-emerald-50 text-emerald-800 rounded-2xl flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                  <div className="p-4 bg-blush-soft text-burgundy rounded-2xl border border-blush/40 flex items-center gap-2">
+                    <Check className="w-4 h-4 text-burgundy" strokeWidth={2.5} />
                     <span>Grazie! Il tuo passaggio è stato pubblicato in bacheca.</span>
                   </div>
                 ) : (
@@ -292,7 +292,7 @@ export const LogisticsHub: React.FC = () => {
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-paper text-xs font-semibold tracking-wider transition-all shadow-sm shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider transition-all shadow-sm shrink-0"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>Scrivi su WhatsApp</span>

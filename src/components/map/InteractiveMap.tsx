@@ -1,6 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { APIProvider, Map, AdvancedMarker, Pin, useMap } from '@vis.gl/react-google-maps';
-import { MapPin, Navigation, ExternalLink, Heart, Sparkles } from 'lucide-react';
+import { 
+  MapPin, 
+  Navigation, 
+  ExternalLink, 
+  Heart, 
+  Sparkles,
+  Church,
+  Castle,
+  Bed,
+  Scissors,
+  Camera,
+  UtensilsCrossed,
+  Coffee,
+  Wine
+} from 'lucide-react';
 import { PlacePOI, PlaceCategory } from '../../types';
 import { weddingApi } from '../../services/supabase';
 
@@ -57,48 +71,40 @@ export const InteractiveMap: React.FC = () => {
 
   const primaryCategories = categories.sort((a,b) => a.sort_order - b.sort_order);
 
-  const getPlaceIcon = (place: PlacePOI): string => {
-    const cat = categories.find(c => c.id === place.category);
+  const renderPlaceIcon = (place: PlacePOI, className = "w-4 h-4") => {
+    if (place.category === 'ceremony') return <Church className={className} />;
+    if (place.category === 'reception') return <Castle className={className} />;
+    if (place.category === 'hotel') return <Bed className={className} />;
+    if (place.category === 'beauty') return <Scissors className={className} />;
+    if (place.category === 'sightseeing') return <Camera className={className} />;
     if (place.category === 'food') {
-      const sub = foodCategories.find(c => c.id === place.food_type);
-      if (sub) return sub.marker_icon;
-      switch (place.food_type) {
-        case 'colazione': return '🥐';
-        case 'pizza': return '🍕';
-        case 'pub': return '🍔';
-        case 'cena': return '🍷';
-        default: return '🍷';
-      }
+      if (place.food_type === 'colazione') return <Coffee className={className} />;
+      if (place.food_type === 'cena') return <Wine className={className} />;
+      return <UtensilsCrossed className={className} />;
     }
-    if (cat) return cat.marker_icon;
-    if (place.category === 'ceremony') return '⛪';
-    if (place.category === 'reception') return '🏰';
-    if (place.category === 'hotel') return '🏨';
-    if (place.category === 'beauty') return '💇';
-    if (place.category === 'sightseeing') return '📸';
-    return '📍';
+    return <MapPin className={className} />;
   };
 
   const getPlaceCategoryBadge = (place: PlacePOI): string => {
-    const cat = categories.find(c => c.id === place.category);
+    if (place.category === 'ceremony') return 'Sede Cerimonia';
+    if (place.category === 'reception') return 'Sede Ricevimento';
+    if (place.category === 'hotel') return 'Hotel & Alloggi';
+    if (place.category === 'beauty') return 'Beauty & Parrucchieri';
+    if (place.category === 'sightseeing') return 'Da Non Perdere';
     if (place.category === 'food') {
       const sub = foodCategories.find(c => c.id === place.food_type);
-      if (sub) return sub.label;
+      if (sub) return sub.label.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
       switch (place.food_type) {
-        case 'colazione': return '🥐 Colazione & Bakery';
-        case 'pizza': return '🍕 Pizzeria';
-        case 'pub': return '🍔 Pub & Burger';
-        case 'cena': return '🍷 Piemontese';
-        default: return '🍷 Food & Relax';
+        case 'colazione': return 'Colazione & Bakery';
+        case 'pizza': return 'Pizzeria';
+        case 'pub': return 'Pub & Burger';
+        case 'cena': return 'Cucina Piemontese';
+        default: return 'Food & Wine';
       }
     }
-    if (cat) return cat.label;
-    if (place.category === 'ceremony') return '⛪ Sede Cerimonia';
-    if (place.category === 'reception') return '🏰 Sede Ricevimento';
-    if (place.category === 'hotel') return '🏨 Hotel & Alloggi';
-    if (place.category === 'beauty') return '💇 Beauty & Parrucchieri';
-    if (place.category === 'sightseeing') return '📸 Da Non Perdere';
-    return '📍 LUOGO';
+    const cat = categories.find(c => c.id === place.category);
+    if (cat) return cat.label.replace(/[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+    return 'Punto d\'Interesse';
   };
 
   const getPinColor = (place: PlacePOI): string => {
@@ -208,7 +214,8 @@ export const InteractiveMap: React.FC = () => {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               <div className="lg:col-span-7 rounded-4xl overflow-hidden shadow-wedding border border-blush/30 min-h-[360px] sm:min-h-[460px] relative bg-paper flex flex-col">
                 <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 text-xs font-semibold text-burgundy">
-                  <span>📍 Mappa Google Maps (Tutti i Pin)</span>
+                  <MapPin className="w-3.5 h-3.5 text-burgundy" />
+                  <span>Mappa Google Maps</span>
                 </div>
                 <div className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10">
                   <APIProvider apiKey={googleMapsApiKey}>
@@ -225,8 +232,6 @@ export const InteractiveMap: React.FC = () => {
                         const isSelected = activePlace?.id === place.id;
                         const isPrimary = place.category === 'ceremony' || place.category === 'reception';
                         const pinColor = getPinColor(place);
-                        const iconEmoji = getPlaceIcon(place);
-                        const scale = isSelected ? 1.4 : isPrimary ? 1.2 : 1.0;
 
                         return (
                           <AdvancedMarker 
@@ -237,20 +242,19 @@ export const InteractiveMap: React.FC = () => {
                           >
                             
                           <div style={{
-                            width: isSelected ? 44 : isPrimary ? 38 : 32,
-                            height: isSelected ? 44 : isPrimary ? 38 : 32,
+                            width: isSelected ? 42 : isPrimary ? 36 : 30,
+                            height: isSelected ? 42 : isPrimary ? 36 : 30,
                             background: pinColor,
-                            border: '2.5px solid #ffffff',
+                            border: '2px solid #ffffff',
                             borderRadius: '9999px',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
                             color: '#ffffff',
-                            fontSize: (isSelected ? 44 : isPrimary ? 38 : 32) * 0.45,
                             boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
                             transition: 'all 0.2s ease',
                           }}>
-                            {iconEmoji}
+                            {renderPlaceIcon(place, isSelected ? "w-5 h-5 text-white" : isPrimary ? "w-4 h-4 text-white" : "w-3.5 h-3.5 text-white")}
                           </div>
 
                           </AdvancedMarker>
@@ -334,7 +338,7 @@ export const InteractiveMap: React.FC = () => {
                         }`}
                       >
                         <span className="flex items-center gap-2 truncate pr-2">
-                          <span className="text-sm shrink-0">{getPlaceIcon(place)}</span>
+                          <span className="shrink-0 text-burgundy">{renderPlaceIcon(place, "w-3.5 h-3.5")}</span>
                           <span className="truncate">{place.name}</span>
                         </span>
                         <span className="text-[10px] opacity-70 shrink-0">

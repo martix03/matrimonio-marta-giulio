@@ -174,7 +174,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
 
               {transferSentMessage || hasSentAlready ? (
                 <div className="p-4 rounded-2xl bg-blush-soft text-burgundy text-xs border border-blush/40 text-center animate-fade-in">
-                  <Sparkles className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
+                  <Sparkles className="w-5 h-5 text-accentGold mx-auto mb-1" />
                   <span className="font-semibold block">Grazie di cuore!</span>
                   <span>Abbiamo ricevuto il vostro messaggio con infinita gioia.</span>
                 </div>
