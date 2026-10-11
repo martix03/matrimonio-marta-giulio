@@ -53,6 +53,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
   // Check if all guests in cluster already responded
   const allResponded = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending !== null);
+  const isSingleGuest = cluster && cluster.guests.length === 1;
 
   return (
     <section id="home" className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden text-center">
@@ -100,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
               Siamo davvero felici di condividere con voi questo giorno speciale.
               {allResponded ? (
                 <span className="block mt-1 font-medium text-emerald-700">
-                  ✓ Grazie per aver confermato la vostra presenza!
+                  ✓ Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza!
                 </span>
               ) : (
                 <span className="block mt-1 text-burgundy/80">
