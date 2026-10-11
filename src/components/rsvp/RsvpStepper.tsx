@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, XCircle, Users, Utensils, Music, Sparkles, 
-  ArrowRight, ArrowLeft, Bus, Check, KeyRound, AlertCircle, Edit2, X 
+  ArrowRight, ArrowLeft, Bus, Check, AlertCircle, Edit2, X 
 } from 'lucide-react';
 import { Cluster, Guest, DietaryTag } from '../../types';
 import { weddingApi } from '../../services/supabase';
@@ -131,9 +131,6 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
       <section id="rsvp" className="py-16 sm:py-24 bg-cream">
         <div className="max-w-2xl mx-auto px-4 text-center">
           <div className="p-8 sm:p-12 rounded-4xl bg-paper shadow-wedding border border-blush/30">
-            <div className="w-14 h-14 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-4">
-              <KeyRound className="w-7 h-7 text-burgundy" />
-            </div>
             <h2 className="font-serif text-3xl sm:text-4xl text-burgundy mb-2">
               Conferma la tua Presenza
             </h2>
