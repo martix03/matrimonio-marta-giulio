@@ -346,6 +346,43 @@ export const weddingApi = {
     return false;
   },
 
+  async addSingleGuest(guest: { clusterId?: string, newFamilyName?: string, firstName: string, lastName: string, gender: 'M' | 'F', isChild: boolean }): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      let targetClusterId = guest.clusterId;
+
+      if (!targetClusterId && guest.newFamilyName) {
+        const inviteCode = guest.newFamilyName.substring(0, 4).toUpperCase() + Math.floor(Math.random() * 1000);
+        const { data: clusterData, error: clusterError } = await supabase
+          .from('clusters')
+          .insert([{ family_name: guest.newFamilyName, invite_code: inviteCode }])
+          .select()
+          .single();
+        if (clusterError || !clusterData) {
+          console.error('Error creating cluster', clusterError);
+          return false;
+        }
+        targetClusterId = clusterData.id;
+      }
+
+      if (!targetClusterId) return false;
+
+      const { error } = await supabase.from('guests').insert([{
+        cluster_id: targetClusterId,
+        first_name: guest.firstName,
+        last_name: guest.lastName,
+        gender: guest.gender,
+        is_child: guest.isChild,
+      }]);
+
+      if (error) {
+        console.error('Error adding single guest', error);
+        return false;
+      }
+      return true;
+    }
+    return false;
+  },
+
   async updateGuest(guestId: string, updates: any): Promise<boolean> {
     if (isSupabaseConfigured && supabase) {
       const { error } = await supabase

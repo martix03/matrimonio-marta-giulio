@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X, Trash2, MessageCircle, HelpCircle } from 'lucide-react';
+import { Users, Gift, MapPin, Search, Music, AlertTriangle, LogOut, CheckCircle2, XCircle, Clock, Edit2, Check, X, Trash2, MessageCircle, HelpCircle, UserPlus } from 'lucide-react';
 import { weddingApi } from '../../services/supabase';
 import { Cluster } from '../../types';
 
@@ -27,6 +27,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   
   const [placeSearchQuery, setPlaceSearchQuery] = useState('');
   const [placeCategoryFilter, setPlaceCategoryFilter] = useState<string>('all');
+
+  const [showAddGuestModal, setShowAddGuestModal] = useState(false);
+  const [singleGuestData, setSingleGuestData] = useState<{
+    firstName: string;
+    lastName: string;
+    gender: 'M' | 'F';
+    isChild: boolean;
+    clusterMode: 'existing' | 'new';
+    clusterId: string;
+    newFamilyName: string;
+  }>({
+    firstName: '',
+    lastName: '',
+    gender: 'M',
+    isChild: false,
+    clusterMode: 'existing',
+    clusterId: '',
+    newFamilyName: '',
+  });
 
   const [newFamilyName, setNewFamilyName] = useState('');
   const [newGuests, setNewGuests] = useState<{ firstName: string, lastName: string, gender: 'M' | 'F', isChild: boolean }[]>([{ firstName: '', lastName: '', gender: 'M', isChild: false }]);
@@ -160,6 +179,53 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       setActiveTab('guests');
     } else {
       alert('Errore durante il salvataggio');
+    }
+  };
+
+  const existingClusters = Array.from(
+    new Map(
+      guests
+        .filter(g => g.cluster_id && g.clusters?.family_name)
+        .map(g => [g.cluster_id, { id: g.cluster_id, name: g.clusters?.family_name as string }])
+    ).values()
+  ).sort((a, b) => a.name.localeCompare(b.name));
+
+  const handleSaveSingleGuest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!singleGuestData.firstName.trim() || !singleGuestData.lastName.trim()) {
+      return alert('Inserisci nome e cognome');
+    }
+    if (singleGuestData.clusterMode === 'new' && !singleGuestData.newFamilyName.trim()) {
+      return alert('Inserisci il nome della nuova famiglia o gruppo');
+    }
+    if (singleGuestData.clusterMode === 'existing' && !singleGuestData.clusterId) {
+      return alert('Seleziona una famiglia esistente');
+    }
+
+    const success = await weddingApi.addSingleGuest({
+      firstName: singleGuestData.firstName.trim(),
+      lastName: singleGuestData.lastName.trim(),
+      gender: singleGuestData.gender,
+      isChild: singleGuestData.isChild,
+      clusterId: singleGuestData.clusterMode === 'existing' ? singleGuestData.clusterId : undefined,
+      newFamilyName: singleGuestData.clusterMode === 'new' ? singleGuestData.newFamilyName.trim() : undefined,
+    });
+
+    if (success) {
+      alert('Ospite aggiunto con successo!');
+      setShowAddGuestModal(false);
+      setSingleGuestData({
+        firstName: '',
+        lastName: '',
+        gender: 'M',
+        isChild: false,
+        clusterMode: existingClusters.length > 0 ? 'existing' : 'new',
+        clusterId: existingClusters[0]?.id || '',
+        newFamilyName: '',
+      });
+      fetchData();
+    } else {
+      alert('Errore durante l\'aggiunta dell\'ospite');
     }
   };
 
@@ -392,12 +458,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-4">
-              <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
-                <AlertTriangle className="w-4 h-4" /> Scarica CSV Intolleranze
-              </button>
-              <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
-                <Music className="w-4 h-4" /> Scarica CSV Canzoni
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-wrap gap-4">
+                <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
+                  <AlertTriangle className="w-4 h-4" /> Scarica CSV Intolleranze
+                </button>
+                <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
+                  <Music className="w-4 h-4" /> Scarica CSV Canzoni
+                </button>
+              </div>
+              <button
+                onClick={() => {
+                  setSingleGuestData(prev => ({
+                    ...prev,
+                    clusterMode: existingClusters.length > 0 ? 'existing' : 'new',
+                    clusterId: existingClusters[0]?.id || '',
+                  }));
+                  setShowAddGuestModal(true);
+                }}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider uppercase shadow-sm transition-all"
+              >
+                <UserPlus className="w-4 h-4" /> Aggiungi Ospite
               </button>
             </div>
 
@@ -423,7 +504,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <tr>
                       <th className="p-4 font-semibold">Nome</th>
                       <th className="p-4 font-semibold">Cognome</th>
-                      <th className="p-4 font-semibold text-center">Genere</th>
+                      <th className="p-4 font-semibold text-center">Sesso</th>
                       <th className="p-4 font-semibold">Famiglia</th>
                       <th className="p-4 font-semibold text-center">Stato</th>
                       <th className="p-4 font-semibold">Intolleranze</th>
@@ -525,6 +606,171 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </table>
               </div>
             </div>
+
+            {/* Modal Aggiungi Ospite */}
+            {showAddGuestModal && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+                <div className="bg-paper w-full max-w-lg rounded-3xl border border-blush/40 shadow-2xl p-6 sm:p-8 space-y-6">
+                  <div className="flex items-center justify-between pb-3 border-b border-blush/20">
+                    <h3 className="font-serif text-2xl font-semibold text-burgundy flex items-center gap-2">
+                      <UserPlus className="w-5 h-5 text-blush" /> Aggiungi Nuovo Ospite
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => setShowAddGuestModal(false)}
+                      className="p-1 rounded-full text-burgundy/60 hover:text-burgundy hover:bg-cream transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveSingleGuest} className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="es. Mario"
+                          value={singleGuestData.firstName}
+                          onChange={e => setSingleGuestData({ ...singleGuestData, firstName: e.target.value })}
+                          className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Cognome</label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="es. Rossi"
+                          value={singleGuestData.lastName}
+                          onChange={e => setSingleGuestData({ ...singleGuestData, lastName: e.target.value })}
+                          className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy text-sm"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Sesso / Genere */}
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-2">
+                        Sesso
+                      </label>
+                      <div className="grid grid-cols-2 gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setSingleGuestData({ ...singleGuestData, gender: 'M' })}
+                          className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${
+                            singleGuestData.gender === 'M'
+                              ? 'bg-blue-50 border-blue-400 text-blue-800 shadow-sm'
+                              : 'bg-cream/40 border-blush/30 text-burgundy/70 hover:border-blush'
+                          }`}
+                        >
+                          <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" />
+                          Maschio (M)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSingleGuestData({ ...singleGuestData, gender: 'F' })}
+                          className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${
+                            singleGuestData.gender === 'F'
+                              ? 'bg-pink-50 border-pink-400 text-pink-800 shadow-sm'
+                              : 'bg-cream/40 border-blush/30 text-burgundy/70 hover:border-blush'
+                          }`}
+                        >
+                          <span className="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block" />
+                          Femmina (F)
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Bambino */}
+                    <div className="pt-1">
+                      <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={singleGuestData.isChild}
+                          onChange={e => setSingleGuestData({ ...singleGuestData, isChild: e.target.checked })}
+                          className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy"
+                        />
+                        È un bambino / ragazzo
+                      </label>
+                    </div>
+
+                    {/* Assegna Famiglia o Gruppo */}
+                    <div className="pt-2 border-t border-blush/20 space-y-3">
+                      <label className="block text-xs font-semibold uppercase tracking-wider opacity-70">
+                        Famiglia o Gruppo
+                      </label>
+                      <div className="flex gap-4 text-xs font-semibold">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="clusterMode"
+                            checked={singleGuestData.clusterMode === 'existing'}
+                            onChange={() => setSingleGuestData({ ...singleGuestData, clusterMode: 'existing' })}
+                            className="text-burgundy focus:ring-burgundy"
+                          />
+                          Famiglia esistente
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="clusterMode"
+                            checked={singleGuestData.clusterMode === 'new'}
+                            onChange={() => setSingleGuestData({ ...singleGuestData, clusterMode: 'new' })}
+                            className="text-burgundy focus:ring-burgundy"
+                          />
+                          Nuova famiglia / singolo
+                        </label>
+                      </div>
+
+                      {singleGuestData.clusterMode === 'existing' ? (
+                        <div>
+                          {existingClusters.length > 0 ? (
+                            <select
+                              value={singleGuestData.clusterId}
+                              onChange={e => setSingleGuestData({ ...singleGuestData, clusterId: e.target.value })}
+                              className="w-full px-4 py-2.5 rounded-xl border border-blush/40 bg-cream/30 text-xs font-medium focus:outline-none focus:border-burgundy"
+                            >
+                              {existingClusters.map(c => (
+                                <option key={c.id} value={c.id}>{c.name}</option>
+                              ))}
+                            </select>
+                          ) : (
+                            <p className="text-xs text-burgundy/60 italic">Nessuna famiglia esistente, creane una nuova sotto.</p>
+                          )}
+                        </div>
+                      ) : (
+                        <input
+                          type="text"
+                          required
+                          placeholder="es. Famiglia Rossi oppure Nome Singolo..."
+                          value={singleGuestData.newFamilyName}
+                          onChange={e => setSingleGuestData({ ...singleGuestData, newFamilyName: e.target.value })}
+                          className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy text-sm"
+                        />
+                      )}
+                    </div>
+
+                    <div className="pt-4 flex gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setShowAddGuestModal(false)}
+                        className="flex-1 py-2.5 rounded-full border border-blush/40 hover:bg-cream text-xs font-semibold uppercase tracking-wider text-burgundy/80 transition-colors"
+                      >
+                        Annulla
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider shadow-sm transition-all"
+                      >
+                        Salva Ospite
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -703,10 +949,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                     <div key={idx} className="flex flex-wrap sm:flex-nowrap gap-3 items-center">
                       <input type="text" required placeholder="Nome" value={g.firstName} onChange={e => { const updated = [...newGuests]; updated[idx].firstName = e.target.value; setNewGuests(updated); }} className="flex-1 min-w-[120px] px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                       <input type="text" required placeholder="Cognome" value={g.lastName} onChange={e => { const updated = [...newGuests]; updated[idx].lastName = e.target.value; setNewGuests(updated); }} className="flex-1 min-w-[120px] px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
-                      <select value={g.gender} onChange={e => { const updated = [...newGuests]; updated[idx].gender = e.target.value as 'M' | 'F'; setNewGuests(updated); }} className="px-3 py-2 rounded-xl border border-blush/40 bg-cream/30 text-xs font-semibold focus:outline-none focus:border-burgundy">
-                        <option value="M">Maschio (M)</option>
-                        <option value="F">Femmina (F)</option>
-                      </select>
+                      <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-blush/40 bg-cream/30 shrink-0">
+                        <span className="text-xs font-semibold text-burgundy/70">Sesso:</span>
+                        <select value={g.gender} onChange={e => { const updated = [...newGuests]; updated[idx].gender = e.target.value as 'M' | 'F'; setNewGuests(updated); }} className="bg-transparent text-xs font-bold text-burgundy focus:outline-none cursor-pointer">
+                          <option value="M">Maschio (M)</option>
+                          <option value="F">Femmina (F)</option>
+                        </select>
+                      </div>
                       <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer shrink-0">
                         <input type="checkbox" checked={g.isChild} onChange={e => { const updated = [...newGuests]; updated[idx].isChild = e.target.checked; setNewGuests(updated); }} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
                         Bambino
