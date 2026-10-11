@@ -342,7 +342,9 @@ export const InteractiveMap: React.FC = () => {
                         }`}
                       >
                         <span className="flex items-center gap-2 truncate pr-2">
-                          <span className="shrink-0 text-burgundy">{renderPlaceIcon(place, "w-3.5 h-3.5")}</span>
+                          <span className={`shrink-0 ${activePlace.id === place.id ? 'text-blush' : 'text-burgundy'}`}>
+                            {renderPlaceIcon(place, "w-3.5 h-3.5")}
+                          </span>
                           <span className="truncate">{place.name}</span>
                         </span>
                         <span className="text-[10px] opacity-70 shrink-0">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, ArrowDown, CheckCircle, Check } from 'lucide-react';
+import { Heart, Check } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { Cluster } from '../../types';
 
@@ -193,26 +193,15 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           <a
             href="#rsvp"
             onClick={onOpenRsvp}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-sm font-semibold tracking-wider uppercase shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-4 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-sm font-semibold tracking-wider uppercase shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all flex items-center justify-center"
           >
-            {allResponded ? (
-              <>
-                <CheckCircle className="w-4 h-4 text-blush" />
-                <span>Modifica RSVP</span>
-              </>
-            ) : (
-              <>
-                <Heart className="w-4 h-4 text-blush fill-blush" />
-                <span>Conferma Presenza (RSVP)</span>
-              </>
-            )}
+            <span>{allResponded ? 'Modifica RSVP' : 'Conferma Presenza (RSVP)'}</span>
           </a>
           <a
             href="#dettagli"
-            className="w-full sm:w-auto px-6 py-4 rounded-full bg-paper hover:bg-blush-soft text-burgundy border border-blush/50 text-sm font-semibold tracking-wider uppercase shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-1.5"
+            className="w-full sm:w-auto px-6 py-4 rounded-full bg-paper hover:bg-blush-soft text-burgundy border border-blush/50 text-sm font-semibold tracking-wider uppercase shadow-sm hover:shadow-md transition-all flex items-center justify-center"
           >
             <span>Dettagli e Orari</span>
-            <ArrowDown className="w-4 h-4 text-burgundy/60" />
           </a>
         </div>
       </div>

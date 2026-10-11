@@ -104,16 +104,11 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left: IBAN details */}
             <div className="lg:col-span-6 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-blush-soft text-burgundy flex items-center justify-center">
-                  <Gift className="w-5 h-5 text-burgundy" />
-                </div>
-                <div>
-                  <h3 className="font-serif text-2xl text-burgundy">
-                    Coordinate Bancarie
-                  </h3>
-                  <span className="text-xs text-burgundy/60">Lista Nozze</span>
-                </div>
+              <div>
+                <h3 className="font-serif text-2xl text-burgundy">
+                  Coordinate Bancarie
+                </h3>
+                <span className="text-xs text-burgundy/60">Lista Nozze</span>
               </div>
 
               <p className="text-xs text-burgundy/70 leading-relaxed">

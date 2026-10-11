@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown, Phone, Mail, MessageCircle, Heart } from 'lucide-react';
+import { Search, ChevronDown, Phone, Mail, MessageCircle } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { weddingApi } from '../../services/supabase';
 
@@ -123,9 +123,6 @@ export const FaqSection: React.FC = () => {
 
         {/* Direct Contacts Box (Burgundy Style) */}
         <div className="mt-12 p-6 sm:p-8 rounded-4xl bg-paper shadow-wedding border border-blush/30 text-center max-w-xl mx-auto">
-          <div className="w-12 h-12 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-3">
-            <Heart className="w-6 h-6 text-burgundy fill-blush/40" />
-          </div>
           <h4 className="font-serif text-2xl text-burgundy font-medium mb-1">
             Hai un'altra domanda o curiosità?
           </h4>
