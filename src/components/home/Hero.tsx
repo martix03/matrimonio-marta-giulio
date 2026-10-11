@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Calendar, ArrowDown, CheckCircle, Check } from 'lucide-react';
+import { Heart, ArrowDown, CheckCircle, Check } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { Cluster } from '../../types';
 
@@ -148,8 +148,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
         {/* Countdown Timer */}
         <div className="max-w-md mx-auto bg-paper/90 rounded-3xl p-6 sm:p-7 shadow-wedding border border-blush/30 mb-10">
-          <div className="flex items-center justify-center gap-1.5 text-xs uppercase tracking-widest text-burgundy font-semibold mb-4">
-            <Calendar className="w-4 h-4 text-blush" />
+          <div className="text-center text-xs uppercase tracking-widest text-burgundy font-semibold mb-4">
             <span>Il Conto alla Rovescia</span>
           </div>
 
