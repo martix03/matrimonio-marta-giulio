@@ -18,7 +18,7 @@ export const QuickFacts: React.FC = () => {
       title: 'La Data',
       main: new Date(settings.event.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase()),
       subtitle: 'Segna la data in agenda',
-      badge: 'Save the Date',
+      badge: 'Il Grande Giorno',
     },
     {
       icon: Clock,

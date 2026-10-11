@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Check } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { Cluster } from '../../types';
 
@@ -81,12 +81,6 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -z-10 w-[550px] h-[550px] bg-blush/20 rounded-full blur-3xl pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Monogram Top Pill */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-paper/80 border border-blush/50 text-burgundy shadow-sm text-xs font-semibold uppercase tracking-widest mb-6">
-          <Heart className="w-3.5 h-3.5 text-blush fill-blush" />
-          <span>Save the Date</span>
-        </div>
-
         {/* Couple Names */}
         <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl text-burgundy font-normal tracking-tight leading-[0.9] mb-4">
           {settings.couple.bride}
