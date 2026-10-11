@@ -56,6 +56,24 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
   const allDeclined = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending === false);
   const isSingleGuest = cluster && cluster.guests.length === 1;
 
+  const welcomeGreeting = (() => {
+    if (!cluster) return 'Benvenuti';
+    const isFamily = cluster.family_name.toLowerCase().includes('famiglia');
+    if (isFamily) {
+      return 'Benvenuta';
+    }
+    if (cluster.guests.length >= 2) {
+      return 'Benvenuti';
+    }
+    const singleGuest = cluster.guests[0];
+    const firstName = (singleGuest?.first_name || cluster.family_name).trim().toLowerCase().split(' ')[0];
+    const maleNamesEndingInA = ['andrea', 'luca', 'mattia', 'elia', 'nicola'];
+    if (firstName.endsWith('a') && !maleNamesEndingInA.includes(firstName)) {
+      return 'Benvenuta';
+    }
+    return 'Benvenuto';
+  })();
+
   return (
     <section id="home" className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden text-center">
       {/* Background Soft Gradients */}
@@ -95,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         {cluster ? (
           <div className="max-w-lg mx-auto mb-10 p-5 rounded-3xl bg-paper shadow-wedding border border-blush/40 animate-fade-in">
             <div className="flex items-center justify-center text-burgundy text-sm font-semibold mb-1">
-              <span>Benvenuta, {cluster.family_name}!</span>
+              <span>{welcomeGreeting}, {cluster.family_name}!</span>
             </div>
             <div className="text-xs sm:text-sm text-burgundy/70">
               {allResponded && allDeclined ? (
