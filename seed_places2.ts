@@ -5,19 +5,19 @@ const connectionString = 'postgresql://postgres:Boxzic-1woqka-qewqez@db.jnjhqbrt
 const client = new Client({ connectionString });
 
 const categories = [
-  { id: 'all', label: 'Tutti i Luoghi', marker_icon: '📍', marker_color: '#51101d', parent_id: null, sort_order: 0 },
-  { id: 'primary', label: '⛪ Cerimonia & Villa', marker_icon: '⛪', marker_color: '#51101d', parent_id: null, sort_order: 1 },
-  { id: 'hotel', label: '🏨 Hotel & Alloggi', marker_icon: '🏨', marker_color: '#1e3a8a', parent_id: null, sort_order: 2 },
-  { id: 'beauty', label: '💇 Parrucchieri', marker_icon: '💇', marker_color: '#c026d3', parent_id: null, sort_order: 3 },
-  { id: 'food', label: '🍷 Food & Relax', marker_icon: '🍷', marker_color: '#9f1239', parent_id: null, sort_order: 4 },
-  { id: 'sightseeing', label: '📸 Da Non Perdere', marker_icon: '📸', marker_color: '#d97706', parent_id: null, sort_order: 5 },
+  { id: 'all', label: 'Tutti i Luoghi', marker_icon: 'map-pin', marker_color: '#51101d', parent_id: null, sort_order: 0 },
+  { id: 'primary', label: 'Cerimonia & Villa', marker_icon: 'church', marker_color: '#51101d', parent_id: null, sort_order: 1 },
+  { id: 'hotel', label: 'Hotel & Alloggi', marker_icon: 'bed', marker_color: '#1e3a8a', parent_id: null, sort_order: 2 },
+  { id: 'beauty', label: 'Parrucchieri', marker_icon: 'scissors', marker_color: '#c026d3', parent_id: null, sort_order: 3 },
+  { id: 'food', label: 'Food & Relax', marker_icon: 'utensils', marker_color: '#9f1239', parent_id: null, sort_order: 4 },
+  { id: 'sightseeing', label: 'Da Non Perdere', marker_icon: 'camera', marker_color: '#d97706', parent_id: null, sort_order: 5 },
   
   // Food subfilters
-  { id: 'all_food', label: 'Tutti i Locali', marker_icon: '🍷', marker_color: '#9f1239', parent_id: 'food', sort_order: 10 },
-  { id: 'colazione', label: '🥐 Colazione & Bakery', marker_icon: '🥐', marker_color: '#9f1239', parent_id: 'food', sort_order: 11 },
-  { id: 'pizza', label: '🍕 Pizzerie', marker_icon: '🍕', marker_color: '#9f1239', parent_id: 'food', sort_order: 12 },
-  { id: 'cena', label: '🍷 Piemontese', marker_icon: '🍷', marker_color: '#9f1239', parent_id: 'food', sort_order: 13 },
-  { id: 'pub', label: '🍔 Pub & Burger', marker_icon: '🍔', marker_color: '#9f1239', parent_id: 'food', sort_order: 14 }
+  { id: 'all_food', label: 'Tutti i Locali', marker_icon: 'utensils', marker_color: '#9f1239', parent_id: 'food', sort_order: 10 },
+  { id: 'colazione', label: 'Colazione & Bakery', marker_icon: 'coffee', marker_color: '#9f1239', parent_id: 'food', sort_order: 11 },
+  { id: 'pizza', label: 'Pizzerie', marker_icon: 'utensils', marker_color: '#9f1239', parent_id: 'food', sort_order: 12 },
+  { id: 'cena', label: 'Cucina Piemontese', marker_icon: 'wine', marker_color: '#9f1239', parent_id: 'food', sort_order: 13 },
+  { id: 'pub', label: 'Pub & Burger', marker_icon: 'utensils', marker_color: '#9f1239', parent_id: 'food', sort_order: 14 }
 ];
 
 async function run() {

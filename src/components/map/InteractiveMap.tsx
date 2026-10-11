@@ -156,6 +156,10 @@ export const InteractiveMap: React.FC = () => {
     }
   };
 
+  const cleanLabel = (text: string) => {
+    return text ? text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '').trim() : '';
+  };
+
   return (
     <section id="mappa" className="py-16 sm:py-24 bg-paper/60 border-y border-blush/20">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -187,7 +191,7 @@ export const InteractiveMap: React.FC = () => {
                       : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
                   }`}
                 >
-                  {cat.label}
+                  {cleanLabel(cat.label)}
                 </button>
               ))}
             </div>
@@ -205,7 +209,7 @@ export const InteractiveMap: React.FC = () => {
                         : 'bg-cream text-burgundy/80 border border-blush/40 hover:border-burgundy'
                     }`}
                   >
-                    {sub.label}
+                    {cleanLabel(sub.label)}
                   </button>
                 ))}
               </div>

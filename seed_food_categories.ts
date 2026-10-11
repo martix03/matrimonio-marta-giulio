@@ -4,11 +4,11 @@ const connectionString = 'postgresql://postgres:Boxzic-1woqka-qewqez@db.jnjhqbrt
 const client = new Client({ connectionString });
 
 const foodCategories = [
-  { id: 'all_food', label: 'Tutti i Locali', marker_icon: '🍷', marker_color: '#9f1239', sort_order: 10 },
-  { id: 'colazione', label: '🥐 Colazione & Bakery', marker_icon: '🥐', marker_color: '#9f1239', sort_order: 11 },
-  { id: 'pizza', label: '🍕 Pizzerie', marker_icon: '🍕', marker_color: '#9f1239', sort_order: 12 },
-  { id: 'cena', label: '🍷 Piemontese', marker_icon: '🍷', marker_color: '#9f1239', sort_order: 13 },
-  { id: 'pub', label: '🍔 Pub & Burger', marker_icon: '🍔', marker_color: '#9f1239', sort_order: 14 }
+  { id: 'all_food', label: 'Tutti i Locali', marker_icon: 'utensils', marker_color: '#9f1239', sort_order: 10 },
+  { id: 'colazione', label: 'Colazione & Bakery', marker_icon: 'coffee', marker_color: '#9f1239', sort_order: 11 },
+  { id: 'pizza', label: 'Pizzerie', marker_icon: 'utensils', marker_color: '#9f1239', sort_order: 12 },
+  { id: 'cena', label: 'Cucina Piemontese', marker_icon: 'wine', marker_color: '#9f1239', sort_order: 13 },
+  { id: 'pub', label: 'Pub & Burger', marker_icon: 'utensils', marker_color: '#9f1239', sort_order: 14 }
 ];
 
 async function run() {

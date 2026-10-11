@@ -256,7 +256,12 @@ export const weddingApi = {
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase.from('place_categories').select('*').order('sort_order', { ascending: true });
       if (error) console.error('Error fetching categories', error);
-      else if (data) return data;
+      else if (data) {
+        return data.map(item => ({
+          ...item,
+          label: item.label ? item.label.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '').trim() : item.label
+        }));
+      }
     }
     return [];
   },
@@ -265,7 +270,12 @@ export const weddingApi = {
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase.from('food_categories').select('*').order('sort_order', { ascending: true });
       if (error) console.error('Error fetching food categories', error);
-      else if (data) return data;
+      else if (data) {
+        return data.map(item => ({
+          ...item,
+          label: item.label ? item.label.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '').trim() : item.label
+        }));
+      }
     }
     return [];
   },
