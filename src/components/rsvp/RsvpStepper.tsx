@@ -86,7 +86,8 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   const allDeclined = guestForms.length > 0 && guestForms.every(g => g.is_attending === false);
   const hasAttending = attendingGuests.length > 0;
   const isSingleGuest = guestForms.length === 1;
-  const hasAlreadyResponded = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending !== null);
+  const hasAlreadyResponded = cluster && cluster.guests.length > 0 && cluster.guests.some(g => g.is_attending !== null);
+  const showRecap = (hasAlreadyResponded && !isEditing) || savedSuccess;
 
   const triggerCelebration = () => {
     try {
@@ -168,13 +169,15 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
           <p className="text-xs sm:text-sm text-burgundy/70">
             Gruppo: <strong className="text-burgundy font-semibold">{cluster.family_name}</strong> · {cluster.guests.length} {cluster.guests.length === 1 ? 'ospite' : 'ospiti'}
           </p>
-          <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2">
-            Vi chiediamo gentilmente di confermare entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
-          </p>
+          {!showRecap && (
+            <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2">
+              {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
+            </p>
+          )}
         </div>
 
         {/* Stepper Progress Indicator */}
-        {(isEditing || !hasAlreadyResponded) && !savedSuccess && (
+        {!showRecap && (
           <div className="mb-8 max-w-lg mx-auto px-2">
             <div className="relative grid grid-cols-4 w-full">
               {/* Background connecting track line */}
