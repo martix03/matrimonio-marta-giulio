@@ -277,10 +277,6 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
               <div className="w-16 h-16 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-4 border border-blush/40 shadow-sm">
                 <Check className="w-8 h-8 text-burgundy" strokeWidth={2.5} />
               </div>
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blush-soft text-burgundy text-[11px] font-semibold tracking-wider uppercase mb-3 border border-blush/40">
-                <Check className="w-3.5 h-3.5 text-burgundy" strokeWidth={2.5} />
-                <span>Risposta Inviata</span>
-              </span>
               <h3 className="font-serif text-3xl sm:text-4xl text-burgundy mb-2">
                 {isSingleGuest ? 'Hai già risposto all\'invito!' : 'Avete già risposto all\'invito!'}
               </h3>
