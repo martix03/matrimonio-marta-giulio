@@ -111,14 +111,14 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           </div>
           
           {/* CARLO & BAFFO: 2° sotto su mobile, a destra affiancato su desktop */}
-          <div className="order-2 relative flex justify-end pr-4 sm:pr-8 lg:pr-0 lg:-mr-64 mb-8 lg:mb-16 group">
+          <div className="order-2 relative flex justify-end pr-4 sm:pr-8 lg:pr-0 lg:-mr-72 mb-8 lg:mb-16 group">
             {/* Baffo su mobile sotto Marta & Giulio a sinistra di Carlo */}
             <HomeBaffo className="block lg:hidden absolute left-0 bottom-16 w-44 sm:w-56 pointer-events-none opacity-90 -ml-4 z-0" />
 
             <img
               src={carloHeroImg}
               alt="Carlo con Papillon e Fiori"
-              className="w-48 sm:w-52 lg:w-80 lg:-mt-72 object-contain filter drop-shadow-sm select-none group-hover:scale-105 transition-transform duration-300 relative z-10"
+              className="w-48 sm:w-52 lg:w-80 lg:-mt-72 object-contain filter select-none group-hover:scale-105 transition-transform duration-300 relative z-10"
             />
           </div>
         </div>
@@ -126,7 +126,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
         {/* Contextual Cluster Greeting Card (when guest is logged in) */}
         {cluster && (
-          <div className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-3xl bg-white/95 shadow-wedding border border-blush/40 animate-fade-in text-left">
+          <div className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-3xl bg-white/95 border border-blush/40 animate-fade-in text-left">
             <div className="flex items-center gap-2 text-[#4a151d] text-sm font-semibold mb-1">
               <div className="w-2 h-2 rounded-full bg-[#667b4e]" />
               <span>{welcomeGreeting}, {cluster.family_name}!</span>
@@ -143,8 +143,8 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 <>
                   <p>Siamo davvero felici di condividere con {isSingleGuest ? 'te' : 'voi'} questo giorno speciale.</p>
                   {allResponded ? (
-                    <span className="inline-flex items-center gap-1.5 mt-2 font-medium text-[#4a151d] bg-[#e5edd8] px-3 py-1 rounded-full text-xs border border-[#667b4e]/40">
-                      <Check className="w-3.5 h-3.5 text-[#667b4e]" strokeWidth={2.5} />
+                    <span className="inline-flex items-center gap-1.5 mt-2 font-medium text-[#4a151d]">
+                      
                       <span>Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza</span>
                     </span>
                   ) : (
@@ -160,7 +160,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         )}
 
         {/* Countdown Box Card (Exact match to grafica.svg) */}
-        <div className="max-w-md mx-auto bg-white rounded-3xl shadow-wedding border border-blush/30 mb-5 relative overflow-hidden">
+        <div className="max-w-md mx-auto bg-white rounded-3xl border border-blush/30 mb-5 relative overflow-hidden">
           {/* Card Header */}
           <div className="flex items-center mt-6 justify-center mb-4">
             <HomeCount className="h-7 w-auto" color="#4a151d" />
@@ -175,7 +175,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           <div className="m-6">
           <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center text-[#ebd5d4] relative z-10">
             {/* Days */}
-            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
               <span className="font-sans text-2xl mt-2 mb-2 font-bold tracking-tigh">
                 {timeLeft.days}
               </span>
@@ -186,7 +186,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
             </div>
 
             {/* Hours */}
-            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
               <span className="font-sans text-xl sm:text-2xl mt-2 mb-2  font-bold tracking-tight">
                 {String(timeLeft.hours).padStart(2, '0')}
               </span>
@@ -197,7 +197,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
             </div>
 
             {/* Minutes */}
-            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
               <span className="font-sans text-xl sm:text-2xl mt-2 mb-2  font-bold tracking-tight">
                 {String(timeLeft.minutes).padStart(2, '0')}
               </span>
@@ -208,7 +208,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
             </div>
 
             {/* Seconds */}
-            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
               <span className="font-sans text-xl sm:text-2xl mt-2 mb-2 font-bold tracking-tight">
                 {String(timeLeft.seconds).padStart(2, '0')}
               </span>
@@ -226,7 +226,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           <a
             href="#rsvp"
             onClick={onOpenRsvp}
-            className="w-full py-4 rounded-2xl bg-[#4a151d] hover:bg-[#6d1828] text-white text-sm font-bold uppercase tracking-widest shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all flex items-center justify-center"
+            className="w-full py-4 rounded-2xl bg-[#4a151d] hover:bg-[#6d1828] text-white text-sm font-bold uppercase tracking-widest hover:-translate-y-0.5 transition-all flex items-center justify-center"
           >
             <span>{allResponded ? 'Modifica presenza' : 'Conferma presenza'}</span>
           </a>

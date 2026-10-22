@@ -492,7 +492,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                         disabled={!allAnswered}
                         className="py-3.5 px-7 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm disabled:opacity-50 relative z-10"
                       >
-                        <span>Continua: Menu ({attendingGuests.length} presenti)</span>
+                        <span>Continua</span>
                         <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -593,7 +593,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       onClick={() => setStep(3)}
                       className="py-3 px-6 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm relative z-10"
                     >
-                      <span>Continua: DJ Set</span>
+                      <span>Continua</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -643,7 +643,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       onClick={() => setStep(4)}
                       className="py-3 px-6 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm relative z-10"
                     >
-                      <span>Riepilogo Finale</span>
+                      <span>Riepilogo</span>
                       <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -740,7 +740,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       disabled={isSaving}
                       className="py-4 px-8 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-wedding hover:shadow-wedding-lg relative z-10"
                     >
-                      <span>{isSaving ? 'Salvataggio in corso...' : 'Invia e Salva Risposte'}</span>
+                      <span>{isSaving ? 'Salvataggio in corso...' : 'Invia'}</span>
                     </button>
                   </div>
                 </div>
