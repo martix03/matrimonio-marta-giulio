@@ -98,17 +98,10 @@ export const Navbar: React.FC<NavbarProps> = ({ cluster, onOpenAuth, onLogout })
         <div className="hidden sm:flex items-center gap-3">
           {cluster ? (
             <div className="flex items-center gap-2">
-              <button
-                onClick={onOpenAuth}
-                className="px-3.5 py-1.5 rounded-2xl bg-blush-soft border border-blush/40 text-burgundy text-xs font-medium flex items-center gap-1.5 hover:bg-blush/30 transition-colors"
-                title="Gestisci nucleo familiare"
-              >
-                <UserCheck className="w-3.5 h-3.5 text-burgundy" />
-                <span>{cluster.family_name}</span>
-              </button>
+            
               <button
                 onClick={onLogout}
-                className="text-[11px] text-burgundy/50 hover:text-burgundy underline transition-colors"
+                className="px-3.5 py-1.5 rounded-xl bg-blush-soft border border-blush/40 text-burgundy text-xs font-medium flex items-center gap-1.5 hover:bg-blush/30 transition-colors"
               >
                 Esci
               </button>

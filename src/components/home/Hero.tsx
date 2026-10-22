@@ -97,26 +97,29 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       {/* Top Right: HomeBolle (Burgundy shape, blush blob & sage dots from SVG) */}
       <HomeBolle className="absolute -top-6 -right-6 sm:-right-2 w-1/2 sm:w-1/6 pointer-events-none z-0" />
 
-      {/* Mid Left: Burgundy Painterly Brush Ribbon */}
-      <HomeBaffo className="absolute top-56 sm:top-52 -left-4 sm:left-2 w-56 sm:w-1/6 pointer-events-none opacity-90 z-0" />
+      {/* Mid Left: Burgundy Painterly Brush Ribbon (Desktop) */}
+      <HomeBaffo className="hidden lg:block absolute lg:top-[420px] left-2 w-1/6 pointer-events-none opacity-90 z-0" />
 
       {/* Main Content Container */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* Responsive Container: Carlo sopra su mobile, Marta & Giulio sopra su desktop */}
-        <div className="flex flex-col mt-44" >
-          {/* CARLO: 1° su mobile (sopra), 2° su desktop (sotto) */}
-          <div className="order-1 lg:order-2 flex justify-end pr-6 sm:pr-8 lg:pr-0 lg:-mr-64 lg:mb-16 group">
+        {/* Responsive Container: Marta & Giulio in centro in alto, Carlo e Baffo sotto */}
+        <div className="flex flex-col mt-6 sm:mt-10 lg:mt-44">
+          {/* MARTA & GIULIO: 1° in centro su mobile e desktop */}
+          <div className="order-1 flex justify-center mb-6 lg:mb-4 mt-40 lg:mt-0">
+            <HomeMartaGiulio className="h-44 sm:h-56 lg:h-80 max-w-full w-auto object-contain" />
+          </div>
+          
+          {/* CARLO & BAFFO: 2° sotto su mobile, a destra affiancato su desktop */}
+          <div className="order-2 relative flex justify-end pr-4 sm:pr-8 lg:pr-0 lg:-mr-64 mb-8 lg:mb-16 group">
+            {/* Baffo su mobile sotto Marta & Giulio a sinistra di Carlo */}
+            <HomeBaffo className="block lg:hidden absolute left-0 bottom-16 w-44 sm:w-56 pointer-events-none opacity-90 -ml-4 z-0" />
+
             <img
               src={carloHeroImg}
               alt="Carlo con Papillon e Fiori"
-              className="w-52 sm:w-52 md:w-52 lg:w-80  lg:-mt-72 object-contain filter drop-shadow-sm select-none group-hover:scale-105 transition-transform duration-300"
+              className="w-48 sm:w-52 lg:w-80 lg:-mt-72 object-contain filter drop-shadow-sm select-none group-hover:scale-105 transition-transform duration-300 relative z-10"
             />
-          </div>
-
-          {/* MARTA & GIULIO: 2° su mobile (sotto Carlo), 1° su desktop (sopra Carlo) */}
-          <div className="order-2 lg:order-1 flex justify-start lg:justify-center mb-12 lg:mb-4">
-            <HomeMartaGiulio className="h-60 lg:h-80 w-auto object-contain" />
           </div>
         </div>
      
