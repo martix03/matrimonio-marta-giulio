@@ -21,6 +21,8 @@ import stepperBolle from '../../assets/stepper-bolle.svg';
 import confermaBolle from '../../assets/conferma-bolle.svg';
 import carloFace from '../../assets/carlo-face.svg';
 import viaggioTitle from '../../assets/viaggio-title.svg';
+import mappaTitle from '../../assets/mappa-title.svg';
+import coordinateTitle from '../../assets/coordinate.svg';
 
 export const HomeBolle: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
@@ -175,6 +177,26 @@ export const ViaggioTitle: React.FC<{ className?: string }> = ({ className = '' 
   return (
     <img
       src={viaggioTitle}
+      alt=""
+      className={`pointer-events-none select-none -scale-x-100 ${className}`}
+    />
+  );
+};
+
+export const CoordinateTitle: React.FC<{ className?: string }> = ({ className = '' }) => {
+  return (
+    <img
+      src={coordinateTitle}
+      alt=""
+      className={`pointer-events-none select-none -scale-x-100 ${className}`}
+    />
+  );
+};
+
+export const MappaTitle: React.FC<{ className?: string }> = ({ className = '' }) => {
+  return (
+    <img
+      src={mappaTitle}
       alt=""
       className={`pointer-events-none select-none -scale-x-100 ${className}`}
     />

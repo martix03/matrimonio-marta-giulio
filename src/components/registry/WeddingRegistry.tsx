@@ -6,11 +6,13 @@ import { Cluster } from '../../types';
 import { weddingApi } from '../../services/supabase';
 import { MiniWave,
    TimeBolle,
+   ConfermaBolle,
    Data,
    TimeTitle,
    HourTitle,
    CascinaTitle,
-   ViaggioTitle
+   CoordinateTitle,
+   ViaggioTitle,
 } from '../home/GraficaElements';
 
 interface WeddingRegistryProps {
@@ -59,7 +61,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
   const suggestedReason = `Regalo Matrimonio - ${cluster ? cluster.family_name : 'Marta e Giulio'}`;
 
   return (
-    <section id="lista-nozze" className="py-16 sm:py-24 bg-cream">
+    <section id="lista-nozze" className="bg-[#fffcf7] pb-16 sm:pb-24">
       <div className="relative overflow-hidden bg-[#8c2035] text-white shadow-wedding pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
           {/* Organic soft pink blob at top right */}
           <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
@@ -79,18 +81,18 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
           </div>
         </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-5xl mx-auto">
     
         {/* Stages Grid (No progress bars) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-12 px-4 sm:px-6">
           {mockRegistryStages.map((stage) => {
             return (
               <div
                 key={stage.id}
-                className="rounded-4xl overflow-hidden bg-paper transition-all flex flex-col justify-between"
+                className="rounded-4xl overflow-hidden bg-[#fffcf7] transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-52 sm:h-60 overflow-hidden">
+                  <div className="relative h-52 lg:h-80 overflow-hidden">
                     <img
                       src={stage.image_url}
                       alt={stage.title}
@@ -110,24 +112,29 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
             );
           })}
         </div>
+ <div className="bg-[#fbf5f4]">
+         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
+          {/* Organic soft pink blob at top right */}
+          <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
+
+          <div className="flex flex-col items-start lg:items-center mt-6">
+            <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
+            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <p className="text-xs sm:text-sm text-[#4a151d]/75 max-w-md mx-auto mb-8">
+                             Se volete contribuire al nostro viaggio di nozze, ecco le coordinate bancarie:
+            </p>
+           
+          </div>
+          </div>
 
         {/* Bank Details & Notification Card */}
         <div className="p-8 sm:p-10 rounded-4xl bg-paper shadow-wedding-lg border border-blush/40">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left: IBAN details */}
             <div className="lg:col-span-6 space-y-4">
-              <div>
-                <h3 className="font-serif text-2xl text-burgundy">
-                  Coordinate Bancarie
-                </h3>
-                <span className="text-xs text-burgundy/60">Lista Nozze</span>
-              </div>
+              
 
-              <p className="text-xs text-burgundy/70 leading-relaxed">
-                Se volete contribuire al nostro viaggio di nozze, ecco le coordinate bancarie:
-              </p>
-
-              <div className="p-4 rounded-2xl bg-cream border border-blush/30 space-y-2">
+              <div className="p-4 rounded-2xl bg-[#fffcf7] border border-blush/30 space-y-2">
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60">
                   Intestatario:
                 </div>
@@ -173,6 +180,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
             {/* Right: Notify Transfer Form */}
           
           </div>
+        </div>
         </div>
       </div>
     </section>

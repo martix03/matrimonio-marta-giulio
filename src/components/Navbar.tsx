@@ -120,7 +120,9 @@ export const Navbar: React.FC<NavbarProps> = ({ cluster, onOpenAuth, onLogout })
         {/* Mobile Hamburger Toggle */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-2xl text-burgundy hover:bg-blush-soft transition-colors"
+          className={`lg:hidden p-2 rounded-2xl hover:bg-blush-soft transition-colors ${
+            isScrolled ? 'text-burgundy' : 'text-blush'
+          }`}
           aria-label="Menu"
         >
           {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
