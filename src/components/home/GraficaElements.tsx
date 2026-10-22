@@ -20,6 +20,7 @@ import stepperOnde from '../../assets/stepper-onde.svg';
 import stepperBolle from '../../assets/stepper-bolle.svg';
 import confermaBolle from '../../assets/conferma-bolle.svg';
 import carloFace from '../../assets/carlo-face.svg';
+import viaggioTitle from '../../assets/viaggio-title.svg';
 
 export const HomeBolle: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
@@ -164,6 +165,16 @@ export const StepperOnde: React.FC<{ className?: string }> = ({ className = '' }
   return (
     <img
       src={stepperOnde}
+      alt=""
+      className={`pointer-events-none select-none -scale-x-100 ${className}`}
+    />
+  );
+};
+
+export const ViaggioTitle: React.FC<{ className?: string }> = ({ className = '' }) => {
+  return (
+    <img
+      src={viaggioTitle}
       alt=""
       className={`pointer-events-none select-none -scale-x-100 ${className}`}
     />

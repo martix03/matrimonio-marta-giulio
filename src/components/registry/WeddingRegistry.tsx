@@ -10,8 +10,7 @@ import { MiniWave,
    TimeTitle,
    HourTitle,
    CascinaTitle,
-   Calla,
-   Orchidea
+   ViaggioTitle
 } from '../home/GraficaElements';
 
 interface WeddingRegistryProps {
@@ -66,39 +65,29 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
           <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
           <div className="flex flex-col items-start lg:items-center mt-6">
-            <TimeTitle className="h-16 lg:h-20 w-auto mb-2" />
+            <ViaggioTitle className="scale-x-100 h-16 lg:h-20 w-auto mb-2" />
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
             <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
-              Tutte le informazioni chiave a portata di tocco
-              <br />
-              per raggiungere le sedi dell'evento.
+              Il nostro viaggio di nozze sarà tra la Grande Muraglia, 
+               <br />
+ antiche città imperiali e paesaggi mozzafiato,
+ <br />
+ ecco le tappe del nostro sogno.
+
+             
             </p>
           </div>
         </div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-xl mx-auto mb-14">
-          <span className="text-xs uppercase tracking-widest text-burgundy/60 font-semibold">
-            Il Nostro Sogno
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-burgundy mt-1">
-            Viaggio di Nozze in Cina
-          </h2>
-          <div className="w-12 h-1 bg-blush rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-burgundy/70 leading-relaxed">
-            La vostra presenza è per noi il dono più prezioso! Per chi desiderasse contribuire al
-            nostro viaggio di nozze tra la Grande Muraglia, antiche città imperiali e paesaggi mozzafiato,
-            ecco le tappe del nostro sogno.
-          </p>
-        </div>
-
+    
         {/* Stages Grid (No progress bars) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 mb-12">
           {mockRegistryStages.map((stage) => {
             return (
               <div
                 key={stage.id}
-                className="rounded-4xl overflow-hidden bg-paper shadow-wedding border border-blush/30 hover:shadow-wedding-lg hover:-translate-y-1 transition-all flex flex-col justify-between"
+                className="rounded-4xl overflow-hidden bg-paper transition-all flex flex-col justify-between"
               >
                 <div>
                   <div className="relative h-52 sm:h-60 overflow-hidden">
@@ -107,22 +96,15 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                       alt={stage.title}
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-burgundy/85 via-burgundy/20 to-transparent" />
-                    <div className="absolute bottom-4 left-5 right-5 text-paper">
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-blush block">
-                        {stage.location}
-                      </span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-burgundy/85 via-burgundy/20 to-transparent pointer-events-none" />
+                    <div className="absolute bottom-4 left-5 right-5 text-white z-10">
                       <h3 className="font-serif text-xl sm:text-2xl font-medium leading-tight">
                         {stage.title}
                       </h3>
                     </div>
                   </div>
 
-                  <div className="p-6">
-                    <p className="text-xs text-burgundy/80 leading-relaxed">
-                      {stage.description}
-                    </p>
-                  </div>
+                 
                 </div>
               </div>
             );
