@@ -32,7 +32,7 @@ export function App() {
   }
 
   return (
-    <div className="min-h-screen bg-cream text-burgundy font-sans selection:bg-blush/30 selection:text-burgundy flex flex-col">
+    <div className="min-h-screen bg-[#fbf5f4] text-[#4a151d] font-sans selection:bg-[#e5edd8] selection:text-[#4a151d] flex flex-col">
       {/* Top Fixed Navbar */}
       <Navbar
         cluster={cluster}

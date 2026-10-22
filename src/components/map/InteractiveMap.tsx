@@ -20,6 +20,83 @@ import { weddingApi } from '../../services/supabase';
 
 
 
+class MapErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error: any) {
+    console.warn('MapErrorBoundary captured error:', error);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="w-full h-full min-h-[360px] sm:min-h-[460px] flex flex-col items-center justify-center bg-cream/70 text-burgundy p-6 text-center rounded-3xl">
+          <MapPin className="w-8 h-8 text-burgundy mb-2 opacity-60" />
+          <p className="font-serif text-lg font-medium mb-1">Mappa dei Luoghi</p>
+          <p className="text-xs text-burgundy/70 max-w-xs mb-4">
+            Puoi consultare tutti i dettagli dei luoghi nell'elenco laterale.
+          </p>
+          <button
+            onClick={() => this.setState({ hasError: false })}
+            className="px-4 py-2 bg-burgundy text-paper text-xs rounded-2xl font-semibold uppercase tracking-wider"
+          >
+            Ricarica mappa
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+const MapMarkers: React.FC<{
+  places: PlacePOI[];
+  activePlace: PlacePOI | null;
+  onSelectPlace: (place: PlacePOI) => void;
+  renderPlaceIcon: (place: PlacePOI, className?: string) => React.ReactNode;
+  getPinColor: (place: PlacePOI) => string;
+}> = ({ places, activePlace, onSelectPlace, renderPlaceIcon, getPinColor }) => {
+  const map = useMap();
+  // Do NOT render markers until the map instance is fully created and attached to DOM
+  if (!map) return null;
+
+  return (
+    <>
+      {places.map(place => {
+        const isSelected = activePlace?.id === place.id;
+        const isPrimary = place.category === 'ceremony' || place.category === 'reception';
+        const pinColor = getPinColor(place);
+
+        return (
+          <AdvancedMarker 
+            key={place.id}
+            position={{ lat: place.latitude, lng: place.longitude }}
+            onClick={() => onSelectPlace(place)}
+            zIndex={isSelected ? 100 : isPrimary ? 50 : 10}
+          >
+            <div style={{
+              width: isSelected ? 42 : isPrimary ? 36 : 30,
+              height: isSelected ? 42 : isPrimary ? 36 : 30,
+              background: pinColor,
+              border: '2px solid #ffffff',
+              borderRadius: '9999px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
+              transition: 'all 0.2s ease',
+            }}>
+              {renderPlaceIcon(place, isSelected ? "w-5 h-5 text-white" : isPrimary ? "w-4 h-4 text-white" : "w-3.5 h-3.5 text-white")}
+            </div>
+          </AdvancedMarker>
+        );
+      })}
+    </>
+  );
+};
+
 const MapController: React.FC<{ effect: {type: 'fitBounds' | 'panTo', data: any} }> = ({ effect }) => {
   const map = useMap();
   useEffect(() => {
@@ -185,7 +262,7 @@ export const InteractiveMap: React.FC = () => {
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryChange(cat.id)}
-                  className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                  className={`px-4 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all ${
                     selectedCategory === cat.id
                       ? 'bg-burgundy text-paper shadow-sm'
                       : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
@@ -203,7 +280,7 @@ export const InteractiveMap: React.FC = () => {
                   <button
                     key={sub.id}
                     onClick={() => handleFoodSubFilterChange(sub.id)}
-                    className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all ${
+                    className={`px-3 py-1.5 rounded-2xl text-[11px] font-semibold whitespace-nowrap transition-all ${
                       foodSubFilter === sub.id
                         ? 'bg-burgundy text-paper shadow-sm'
                         : 'bg-cream text-burgundy/80 border border-blush/40 hover:border-burgundy'
@@ -222,50 +299,27 @@ export const InteractiveMap: React.FC = () => {
                   <span>Mappa Google Maps</span>
                 </div>
                 <div className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10">
-                  <APIProvider apiKey={googleMapsApiKey}>
-                    <Map 
-                      defaultZoom={11} 
-                      defaultCenter={{ lat: 45.075, lng: 7.550 }}
-                      mapId="DEMO_MAP_ID"
-                      disableDefaultUI={true}
-                      zoomControl={true}
-                      gestureHandling="greedy"
-                    >
-                      <MapController effect={mapEffect} />
-                      {filteredPlaces.map(place => {
-                        const isSelected = activePlace?.id === place.id;
-                        const isPrimary = place.category === 'ceremony' || place.category === 'reception';
-                        const pinColor = getPinColor(place);
-
-                        return (
-                          <AdvancedMarker 
-                            key={place.id}
-                            position={{ lat: place.latitude, lng: place.longitude }}
-                            onClick={() => handleSelectPlace(place)}
-                            zIndex={isSelected ? 100 : isPrimary ? 50 : 10}
-                          >
-                            
-                          <div style={{
-                            width: isSelected ? 42 : isPrimary ? 36 : 30,
-                            height: isSelected ? 42 : isPrimary ? 36 : 30,
-                            background: pinColor,
-                            border: '2px solid #ffffff',
-                            borderRadius: '9999px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: '#ffffff',
-                            boxShadow: '0 4px 14px rgba(0, 0, 0, 0.35)',
-                            transition: 'all 0.2s ease',
-                          }}>
-                            {renderPlaceIcon(place, isSelected ? "w-5 h-5 text-white" : isPrimary ? "w-4 h-4 text-white" : "w-3.5 h-3.5 text-white")}
-                          </div>
-
-                          </AdvancedMarker>
-                        );
-                      })}
-                    </Map>
-                  </APIProvider>
+                  <MapErrorBoundary>
+                    <APIProvider apiKey={googleMapsApiKey}>
+                      <Map 
+                        defaultZoom={11} 
+                        defaultCenter={{ lat: 45.075, lng: 7.550 }}
+                        mapId="DEMO_MAP_ID"
+                        disableDefaultUI={true}
+                        zoomControl={true}
+                        gestureHandling="greedy"
+                      >
+                        <MapController effect={mapEffect} />
+                        <MapMarkers
+                          places={filteredPlaces}
+                          activePlace={activePlace}
+                          onSelectPlace={handleSelectPlace}
+                          renderPlaceIcon={renderPlaceIcon}
+                          getPinColor={getPinColor}
+                        />
+                      </Map>
+                    </APIProvider>
+                  </MapErrorBoundary>
                 </div>
               </div>
 
@@ -309,7 +363,7 @@ export const InteractiveMap: React.FC = () => {
                         href={`https://maps.google.com/?q=${encodeURIComponent(activePlace.name + ' ' + activePlace.address)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 py-2.5 px-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                        className="flex-1 py-2.5 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                       >
                         <Navigation className="w-3.5 h-3.5" />
                         <span>Indicazioni</span>
@@ -319,7 +373,7 @@ export const InteractiveMap: React.FC = () => {
                           href={activePlace.website_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="py-2.5 px-3 rounded-full bg-cream hover:bg-blush-soft border border-blush/40 text-burgundy text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                          className="py-2.5 px-3 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/40 text-burgundy text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>

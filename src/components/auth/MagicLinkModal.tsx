@@ -61,7 +61,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-burgundy/60 hover:text-burgundy hover:bg-cream transition-colors"
+          className="absolute top-5 right-5 p-2 rounded-2xl text-burgundy/60 hover:text-burgundy hover:bg-cream transition-colors"
           aria-label="Chiudi"
         >
           <X className="w-5 h-5" />
@@ -125,7 +125,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting || !firstName.trim() || !lastName.trim()}
-            className="w-full mt-4 py-3.5 px-6 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold text-sm shadow-wedding hover:shadow-wedding-lg transition-all disabled:opacity-50"
+            className="w-full mt-4 py-3.5 px-6 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper font-semibold text-sm shadow-wedding hover:shadow-wedding-lg transition-all disabled:opacity-50"
           >
             {isSubmitting ? 'Ricerca in corso...' : 'Trova il mio Invito'}
           </button>
@@ -141,21 +141,21 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
             <button
               type="button"
               onClick={() => handleQuickDemo('Marco', 'Spalla')}
-              className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
+              className="px-3 py-1 text-xs rounded-2xl bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
               Fam. Spalla
             </button>
             <button
               type="button"
               onClick={() => handleQuickDemo('Marta', 'Spalla')}
-              className="px-3 py-1 text-xs rounded-full bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
+              className="px-3 py-1 text-xs rounded-2xl bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
             >
               Marta
             </button>
             <button
               type="button"
               onClick={() => handleQuickDemo('Carlo', 'Spalla Palomba')}
-              className="px-3 py-1 text-xs rounded-full bg-burgundy/10 hover:bg-burgundy/20 text-burgundy font-medium border border-burgundy/30 transition-colors"
+              className="px-3 py-1 text-xs rounded-2xl bg-burgundy/10 hover:bg-burgundy/20 text-burgundy font-medium border border-burgundy/30 transition-colors"
             >
               Admin
             </button>

@@ -19,6 +19,12 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
   const [wishes, setWishes] = useState<string>('');
 
   useEffect(() => {
+    if (cluster?.family_name) {
+      setSenderName(cluster.family_name);
+    }
+  }, [cluster?.family_name]);
+
+  useEffect(() => {
     if (senderName) {
       weddingApi.hasSentGiftMessage(senderName).then(setHasSentAlready);
     }
@@ -132,7 +138,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                   </span>
                   <button
                     onClick={handleCopyIban}
-                    className="w-full py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                    className="w-full py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                     title="Copia negli appunti"
                   >
                     {copiedIban ? (
@@ -196,7 +202,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                   </div>
                   <button
                     type="submit"
-                    className="w-full py-2.5 px-4 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                    className="w-full py-2.5 px-4 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-sm transition-all"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Invia Messaggio agli Sposi</span>

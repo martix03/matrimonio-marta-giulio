@@ -3,8 +3,10 @@
 @tailwind utilities;
 
 :root {
-  --burgundy: #51101d;
-  --blush: #d7b8af;
+  --burgundy: #4a151d;
+  --blush: #dfb0b0;
+  --blush-warm: #fde7e2;
+  --sage: #667b4e;
   --cream: #faf2f2;
   --paper: #ffffff;
 }

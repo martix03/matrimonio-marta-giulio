@@ -185,10 +185,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const existingClusters = Array.from(
     new Map(
       guests
-        .filter(g => g.cluster_id && g.clusters?.family_name)
-        .map(g => [g.cluster_id, { id: g.cluster_id, name: g.clusters?.family_name as string }])
+        .filter(g => g?.cluster_id && (g.clusters?.family_name || (Array.isArray(g.clusters) && g.clusters[0]?.family_name)))
+        .map(g => {
+          const familyName = g.clusters?.family_name || (Array.isArray(g.clusters) && g.clusters[0]?.family_name) || 'Gruppo';
+          return [g.cluster_id, { id: g.cluster_id, name: familyName as string }];
+        })
     ).values()
-  ).sort((a, b) => a.name.localeCompare(b.name));
+  ).sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
   const handleSaveSingleGuest = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -293,8 +296,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const filteredGuests = guests.filter(g => {
     const s = searchQuery.toLowerCase();
-    const nameMatch = `${g.first_name} ${g.last_name}`.toLowerCase().includes(s);
-    const familyMatch = g.clusters?.family_name?.toLowerCase().includes(s);
+    const fullName = `${g?.first_name || ''} ${g?.last_name || ''}`.toLowerCase();
+    const familyName = (g?.clusters?.family_name || (Array.isArray(g?.clusters) && g.clusters[0]?.family_name) || '').toLowerCase();
+    const nameMatch = fullName.includes(s);
+    const familyMatch = familyName.includes(s);
     if (!nameMatch && !familyMatch) return false;
 
     if (filterStatus === 'confirmed' && g.is_attending !== true) return false;
@@ -306,8 +311,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
   const filteredPlaces = places.filter(p => {
     const s = placeSearchQuery.toLowerCase();
-    const nameMatch = p.name.toLowerCase().includes(s);
-    const addressMatch = p.address.toLowerCase().includes(s);
+    const nameMatch = (p?.name || '').toLowerCase().includes(s);
+    const addressMatch = (p?.address || '').toLowerCase().includes(s);
     if (!nameMatch && !addressMatch) return false;
 
     if (placeCategoryFilter !== 'all' && p.category !== placeCategoryFilter) return false;
@@ -354,22 +359,22 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex flex-wrap gap-4 mb-8">
-          <button onClick={() => setActiveTab('guests')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'guests' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+          <button onClick={() => setActiveTab('guests')} className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'guests' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <Users className="w-4 h-4 inline-block mr-2" /> Ospiti & Metriche
           </button>
-          <button onClick={() => setActiveTab('places')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'places' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+          <button onClick={() => setActiveTab('places')} className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'places' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <MapPin className="w-4 h-4 inline-block mr-2" /> Luoghi Mappa
           </button>
-          <button onClick={() => setActiveTab('gifts')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'gifts' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+          <button onClick={() => setActiveTab('gifts')} className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'gifts' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <Gift className="w-4 h-4 inline-block mr-2" /> Messaggi Regali
           </button>
-          <button onClick={() => setActiveTab('add')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'add' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+          <button onClick={() => setActiveTab('add')} className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'add' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             + Aggiungi Dati
           </button>
-          <button onClick={() => setActiveTab('faq')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'faq' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+          <button onClick={() => setActiveTab('faq')} className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'faq' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <HelpCircle className="w-4 h-4 inline-block mr-2" /> FAQ
           </button>
-          <button onClick={() => setActiveTab('settings')} className={`px-4 py-2 rounded-full text-sm font-semibold transition-all ${activeTab === 'settings' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
+          <button onClick={() => setActiveTab('settings')} className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'settings' ? 'bg-burgundy text-paper' : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'}`}>
             <Settings className="w-4 h-4 inline-block mr-2" /> Impostazioni
           </button>
         </div>
@@ -380,7 +385,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <div className="space-y-6 animate-fade-in">
             <div className="flex justify-between items-center mb-2">
               <h2 className="font-serif text-3xl font-medium">Gestione FAQ</h2>
-              <button onClick={() => setActiveTab('add')} className="px-4 py-2 text-xs uppercase tracking-widest font-semibold bg-cream text-burgundy hover:bg-blush-soft border border-blush/30 rounded-full transition-colors">
+              <button onClick={() => setActiveTab('add')} className="px-4 py-2 text-xs uppercase tracking-widest font-semibold bg-cream text-burgundy hover:bg-blush-soft border border-blush/30 rounded-2xl transition-colors">
                 + Aggiungi FAQ
               </button>
             </div>
@@ -460,10 +465,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap gap-4">
-                <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-full bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
+                <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
                   <AlertTriangle className="w-4 h-4" /> Scarica CSV Intolleranze
                 </button>
-                <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
+                <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
                   <Music className="w-4 h-4" /> Scarica CSV Canzoni
                 </button>
               </div>
@@ -476,7 +481,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   }));
                   setShowAddGuestModal(true);
                 }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider uppercase shadow-sm transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider uppercase shadow-sm transition-all"
               >
                 <UserPlus className="w-4 h-4" /> Aggiungi Ospite
               </button>

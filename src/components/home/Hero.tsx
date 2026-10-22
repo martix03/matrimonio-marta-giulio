@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Check } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { Cluster } from '../../types';
+import carloHeroImg from '../../assets/carlo-hero.png';
+
+
+import {
+  HomeBolle,
+  HomeRighe,
+  HomeBaffo,
+  HomeMartaGiulio,
+  HomeCount,
+  MiniWave,
+  HomeCountOnde,
+  HomeCountBaffo
+} from './GraficaElements';
 
 interface HeroProps {
   cluster: Cluster | null;
@@ -51,25 +64,22 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
     return () => clearInterval(interval);
   }, [settings.event.date]);
 
-  // Check if all guests in cluster already responded
-  const allResponded = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending !== null);
-  const allDeclined = cluster && cluster.guests.length > 0 && cluster.guests.every(g => g.is_attending === false);
-  const isSingleGuest = cluster && cluster.guests.length === 1;
+  const guests = cluster?.guests || [];
+  const allResponded = guests.length > 0 && guests.every(g => g.is_attending !== null);
+  const allDeclined = guests.length > 0 && guests.every(g => g.is_attending === false);
+  const isSingleGuest = guests.length === 1;
 
   const welcomeGreeting = (() => {
     if (!cluster) return 'Benvenuti';
-    const isFamily = cluster.family_name.toLowerCase().includes('famiglia');
-    if (isFamily) {
-      return 'Benvenuta';
-    }
-    if (cluster.guests.length >= 2) {
-      return 'Benvenuti';
-    }
-    const singleGuest = cluster.guests[0];
+    const familyName = cluster.family_name || '';
+    const isFamily = familyName.toLowerCase().includes('famiglia');
+    if (isFamily) return 'Benvenuta';
+    if (guests.length >= 2) return 'Benvenuti';
+    const singleGuest = guests[0];
     if (singleGuest?.gender) {
       return singleGuest.gender === 'F' ? 'Benvenuta' : 'Benvenuto';
     }
-    const firstName = (singleGuest?.first_name || cluster.family_name).trim().toLowerCase().split(' ')[0];
+    const firstName = (singleGuest?.first_name || familyName).trim().toLowerCase().split(' ')[0] || '';
     const maleNamesEndingInA = ['andrea', 'luca', 'mattia', 'elia', 'nicola'];
     if (firstName.endsWith('a') && !maleNamesEndingInA.includes(firstName)) {
       return 'Benvenuta';
@@ -78,45 +88,51 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
   })();
 
   return (
-    <section id="home" className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 overflow-hidden text-center">
-      {/* Background Soft Gradients */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-cream via-blush-light/40 to-cream pointer-events-none" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -z-10 w-[550px] h-[550px] bg-blush/20 rounded-full blur-3xl pointer-events-none" />
+    <section id="home" className="relative pt-24 pb-16 sm:pt-28 sm:pb-24 overflow-hidden bg-[#fbf5f4] text-center">
+      {/* 1. Abstract Background Elements from grafica.svg */}
+      
+      {/* Top Left: 4 Sage Green Waves */}
+      <HomeRighe className="absolute top-16 left-0 sm:left-4  w-1/3 sm:w-48 opacity-90 z-0" />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Couple Names */}
-        <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl text-burgundy font-normal tracking-tight leading-[0.9] mb-4">
-          {settings.couple.bride}
-          <span className="block my-2 text-3xl sm:text-4xl md:text-5xl text-blush font-serif italic">
-            &amp;
-          </span>
-          {settings.couple.groom}
-        </h1>
+      {/* Top Right: HomeBolle (Burgundy shape, blush blob & sage dots from SVG) */}
+      <HomeBolle className="absolute -top-6 -right-6 sm:-right-2 w-1/2 sm:w-1/6 pointer-events-none z-0" />
 
-        {/* Ornamental divider */}
-        <div className="w-20 h-1 bg-blush rounded-full mx-auto my-6" />
+      {/* Mid Left: Burgundy Painterly Brush Ribbon */}
+      <HomeBaffo className="absolute top-56 sm:top-52 -left-4 sm:left-2 w-56 sm:w-1/6 pointer-events-none opacity-90 z-0" />
 
-        {/* Location & Tagline */}
-        <p className="text-sm sm:text-base md:text-lg font-medium tracking-wide text-burgundy/80 uppercase mb-8 leading-relaxed">
-          {settings.event.city.split(' · ').map((part, index) => (
-            <React.Fragment key={index}>
-              {part}<br />
-            </React.Fragment>
-          ))}
-          {new Date(settings.event.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).replace(/^\w/, c => c.toUpperCase())}
-        </p>
+      {/* Main Content Container */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
+        
+        {/* Responsive Container: Carlo sopra su mobile, Marta & Giulio sopra su desktop */}
+        <div className="flex flex-col mt-44" >
+          {/* CARLO: 1° su mobile (sopra), 2° su desktop (sotto) */}
+          <div className="order-1 lg:order-2 flex justify-end pr-6 sm:pr-8 lg:pr-0 lg:-mr-64 lg:mb-16 group">
+            <img
+              src={carloHeroImg}
+              alt="Carlo con Papillon e Fiori"
+              className="w-52 sm:w-52 md:w-52 lg:w-80  lg:-mt-72 object-contain filter drop-shadow-sm select-none group-hover:scale-105 transition-transform duration-300"
+            />
+          </div>
 
-        {/* Contextual Welcome Card for Cluster */}
-        {cluster ? (
-          <div className="max-w-lg mx-auto mb-10 p-5 rounded-3xl bg-paper shadow-wedding border border-blush/40 animate-fade-in">
-            <div className="flex items-center justify-center text-burgundy text-sm font-semibold mb-1">
+          {/* MARTA & GIULIO: 2° su mobile (sotto Carlo), 1° su desktop (sopra Carlo) */}
+          <div className="order-2 lg:order-1 flex justify-start lg:justify-center mb-12 lg:mb-4">
+            <HomeMartaGiulio className="h-60 lg:h-80 w-auto object-contain" />
+          </div>
+        </div>
+     
+
+        {/* Contextual Cluster Greeting Card (when guest is logged in) */}
+        {cluster && (
+          <div className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-3xl bg-white/95 shadow-wedding border border-blush/40 animate-fade-in text-left">
+            <div className="flex items-center gap-2 text-[#4a151d] text-sm font-semibold mb-1">
+              <div className="w-2 h-2 rounded-full bg-[#667b4e]" />
               <span>{welcomeGreeting}, {cluster.family_name}!</span>
             </div>
-            <div className="text-xs sm:text-sm text-burgundy/70">
+            <div className="text-xs sm:text-sm text-[#4a151d]/80 pl-4">
               {allResponded && allDeclined ? (
                 <>
                   <p>Grazie per aver risposto all'invito.</p>
-                  <span className="block mt-1 font-medium text-burgundy">
+                  <span className="block mt-1 font-medium text-[#4a151d]">
                     Ci dispiace che non {isSingleGuest ? 'puoi' : 'possiate'} esserci, {isSingleGuest ? 'ti' : 'vi'} porteremo comunque nel cuore!
                   </span>
                 </>
@@ -124,83 +140,95 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 <>
                   <p>Siamo davvero felici di condividere con {isSingleGuest ? 'te' : 'voi'} questo giorno speciale.</p>
                   {allResponded ? (
-                    <span className="inline-flex items-center gap-1.5 mt-2 font-medium text-burgundy bg-blush-soft px-3 py-1 rounded-full text-xs border border-blush/40">
-                      <Check className="w-3.5 h-3.5 text-burgundy" strokeWidth={2.5} />
+                    <span className="inline-flex items-center gap-1.5 mt-2 font-medium text-[#4a151d] bg-[#e5edd8] px-3 py-1 rounded-full text-xs border border-[#667b4e]/40">
+                      <Check className="w-3.5 h-3.5 text-[#667b4e]" strokeWidth={2.5} />
                       <span>Grazie per aver confermato la {isSingleGuest ? 'tua' : 'vostra'} presenza</span>
                     </span>
                   ) : (
-                    <span className="block mt-1 text-burgundy/80 font-medium">
-                      {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare la presenza entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
+                    <span className="block mt-1 text-[#4a151d] font-medium">
+                      {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare la presenza entro il{' '}
+                      {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
                     </span>
                   )}
                 </>
               )}
             </div>
           </div>
-        ) : (
-          <p className="max-w-md mx-auto text-xs sm:text-sm text-burgundy/70 mb-10">
-            Una giornata da vivere e ricordare insieme.<br />Benvenuti sul nostro sito di nozze!
-          </p>
         )}
 
-        {/* Countdown Timer */}
-        <div className="max-w-md mx-auto bg-paper/90 rounded-3xl p-6 sm:p-7 shadow-wedding border border-blush/30 mb-10">
-          <div className="text-center text-xs uppercase tracking-widest text-burgundy font-semibold mb-4">
-            <span>Il Conto alla Rovescia</span>
+        {/* Countdown Box Card (Exact match to grafica.svg) */}
+        <div className="max-w-md mx-auto bg-white rounded-3xl shadow-wedding border border-blush/30 mb-5 relative overflow-hidden">
+          {/* Card Header */}
+          <div className="flex items-center mt-6 justify-center mb-4">
+            <HomeCount className="h-7 w-auto" color="#4a151d" />
           </div>
 
-          <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center">
-            <div className="p-3 rounded-2xl bg-cream border border-blush/20">
-              <span className="block font-serif text-2xl sm:text-4xl font-bold text-burgundy">
+          {/* Decorative Baffo in top right (underneath countdown blocks layer) */}
+          <HomeCountBaffo className="absolute top-0 right-0 w-16 h-auto pointer-events-none z-0" />
+
+          <HomeCountOnde className="absolute bottom-0 left-0 w-16 h-auto pointer-events-none z-0" />
+
+          {/* 4 Burgundy Countdown Blocks (Layer on top of Baffo) */}
+          <div className="m-6">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center text-[#ebd5d4] relative z-10">
+            {/* Days */}
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+              <span className="font-sans text-2xl mt-2 mb-2 font-bold tracking-tigh">
                 {timeLeft.days}
               </span>
-              <span className="block text-[10px] sm:text-xs uppercase tracking-wider text-burgundy/70 mt-1 font-medium">
+              <MiniWave color="#ebd5d4" className="w-full" strokeWidth={2} />
+              <span className="text-xs mt-2 mb-2 tracking-wider uppercase font-semibold">
                 Giorni
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-cream border border-blush/20">
-              <span className="block font-serif text-2xl sm:text-4xl font-bold text-burgundy">
+
+            {/* Hours */}
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+              <span className="font-sans text-xl sm:text-2xl mt-2 mb-2  font-bold tracking-tight">
                 {String(timeLeft.hours).padStart(2, '0')}
               </span>
-              <span className="block text-[10px] sm:text-xs uppercase tracking-wider text-burgundy/70 mt-1 font-medium">
+              <MiniWave color="#ebd5d4" className="w-full my-0.5" strokeWidth={2} />
+              <span className="text-xs mt-2 mb-2  tracking-wider uppercase font-semibold">
                 Ore
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-cream border border-blush/20">
-              <span className="block font-serif text-2xl sm:text-4xl font-bold text-burgundy">
+
+            {/* Minutes */}
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+              <span className="font-sans text-xl sm:text-2xl mt-2 mb-2  font-bold tracking-tight">
                 {String(timeLeft.minutes).padStart(2, '0')}
               </span>
-              <span className="block text-[10px] sm:text-xs uppercase tracking-wider text-burgundy/70 mt-1 font-medium">
+              <MiniWave color="#ebd5d4" className="w-full my-0.5" strokeWidth={2} />
+              <span className="text-xs mt-2 mb-2 tracking-wider uppercase font-semibold">
                 Minuti
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-cream border border-blush/20">
-              <span className="block font-serif text-2xl sm:text-4xl font-bold text-burgundy">
+
+            {/* Seconds */}
+            <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center shadow-xs">
+              <span className="font-sans text-xl sm:text-2xl mt-2 mb-2 font-bold tracking-tight">
                 {String(timeLeft.seconds).padStart(2, '0')}
               </span>
-              <span className="block text-[10px] sm:text-xs uppercase tracking-wider text-burgundy/70 mt-1 font-medium">
+              <MiniWave color="#ebd5d4" className="w-full my-0.5" strokeWidth={2} />
+              <span className="text-xs mt-2 mb-2 tracking-wider uppercase font-semibold">
                 Secondi
               </span>
             </div>
           </div>
+            </div>
         </div>
 
-        {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+        {/* Wide Full-Width Burgundy RSVP Button (Matching grafica.svg) */}
+        <div className="max-w-md mx-auto mb-4">
           <a
             href="#rsvp"
             onClick={onOpenRsvp}
-            className="w-full sm:w-auto px-8 py-4 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-sm font-semibold tracking-wider uppercase shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all flex items-center justify-center"
+            className="w-full py-4 rounded-2xl bg-[#4a151d] hover:bg-[#6d1828] text-white text-sm font-bold uppercase tracking-widest shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all flex items-center justify-center"
           >
-            <span>{allResponded ? 'Modifica RSVP' : 'Conferma Presenza (RSVP)'}</span>
-          </a>
-          <a
-            href="#dettagli"
-            className="w-full sm:w-auto px-6 py-4 rounded-full bg-paper hover:bg-blush-soft text-burgundy border border-blush/50 text-sm font-semibold tracking-wider uppercase shadow-sm hover:shadow-md transition-all flex items-center justify-center"
-          >
-            <span>Dettagli e Orari</span>
+            <span>{allResponded ? 'Modifica presenza' : 'Conferma presenza'}</span>
           </a>
         </div>
+
       </div>
     </section>
   );

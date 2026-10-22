@@ -7,6 +7,7 @@ import {
 import { Cluster, Guest, DietaryTag } from '../../types';
 import { weddingApi } from '../../services/supabase';
 import { useSettings } from '../../contexts/SettingsContext';
+import { MiniWave, StepperTitle, StepperOnde, StepperDate, StepperBolle, ConfermaBolle, CarloFace } from '../home/GraficaElements';
 
 interface RsvpStepperProps {
   cluster: Cluster | null;
@@ -28,14 +29,16 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   const { settings } = useSettings();
   const [step, setStep] = useState<number>(1);
   const [declineMessage, setDeclineMessage] = useState<string>('');
-  const [guestForms, setGuestForms] = useState<Guest[]>([]);
+  const [guestForms, setGuestForms] = useState<Guest[]>(() =>
+    cluster?.guests ? JSON.parse(JSON.stringify(cluster.guests)) : []
+  );
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [savedSuccess, setSavedSuccess] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   // Sync cluster guests into local form state
   useEffect(() => {
-    if (cluster && cluster.guests.length > 0) {
+    if (cluster?.guests) {
       setGuestForms(JSON.parse(JSON.stringify(cluster.guests)));
       setIsEditing(false);
       setSavedSuccess(false);
@@ -61,14 +64,15 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
     setGuestForms(prev =>
       prev.map(g => {
         if (g.id !== guestId) return g;
+        const currentTags = g.dietary_tags || [];
 
         if (tag === 'none') {
-          const isSelected = g.dietary_tags.includes('none');
+          const isSelected = currentTags.includes('none');
           // If toggling 'none', clear all other specific tags
           return { ...g, dietary_tags: isSelected ? [] : ['none'] };
         } else {
           // If selecting a specific intolerance, remove 'none'
-          const withoutNone = g.dietary_tags.filter(t => t !== 'none');
+          const withoutNone = currentTags.filter(t => t !== 'none');
           const exists = withoutNone.includes(tag);
           const updated = exists
             ? withoutNone.filter(t => t !== tag)
@@ -79,6 +83,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
     );
   };
 
+  const clusterGuests = cluster?.guests || [];
   const attendingGuests = guestForms.filter(g => g.is_attending === true);
   const declinedGuests = guestForms.filter(g => g.is_attending === false);
   const unconfirmedGuests = guestForms.filter(g => g.is_attending === null);
@@ -86,7 +91,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   const allDeclined = guestForms.length > 0 && guestForms.every(g => g.is_attending === false);
   const hasAttending = attendingGuests.length > 0;
   const isSingleGuest = guestForms.length === 1;
-  const hasAlreadyResponded = cluster && cluster.guests.length > 0 && cluster.guests.some(g => g.is_attending !== null);
+  const hasAlreadyResponded = clusterGuests.length > 0 && clusterGuests.some(g => g.is_attending !== null);
   const showRecap = (hasAlreadyResponded && !isEditing) || savedSuccess;
 
   const triggerCelebration = () => {
@@ -128,65 +133,107 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
 
   if (!cluster) {
     return (
-      <section id="rsvp" className="py-16 sm:py-24 bg-cream">
+      <section id="rsvp" className="bg-[#fbf5f4]">
+        
+
         <div className="max-w-2xl mx-auto px-4 text-center">
-          <div className="p-8 sm:p-12 rounded-4xl bg-paper shadow-wedding border border-blush/30">
-            <h2 className="font-serif text-3xl sm:text-4xl text-burgundy mb-2">
-              Conferma la tua Presenza
-            </h2>
-            <div className="w-12 h-1 bg-blush rounded-full mx-auto my-3" />
-            <p className="text-xs sm:text-sm text-burgundy/70 max-w-md mx-auto mb-8">
+
+           <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
+          {/* Organic soft pink blob at top right */}
+          <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
+
+          <div className="flex flex-col items-start lg:items-center mt-6">
+            <StepperTitle className="h-16 lg:h-20 w-auto mb-2" />
+            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <p className="text-xs sm:text-sm text-[#4a151d]/75 max-w-md mx-auto mb-8">
               Per confermare la partecipazione per te e per i componenti del tuo nucleo familiare,
               accedi inserendo il tuo nome e cognome. <br/><br/>
-              <strong className="font-semibold text-burgundy">Vi chiediamo gentilmente di confermare entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.</strong>
+              <strong className="font-semibold text-[#4a151d]">Vi chiediamo gentilmente di confermare entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.</strong>
             </p>
             <button
               onClick={onOpenAuth}
-              className="px-8 py-4 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-sm font-semibold uppercase tracking-wider shadow-wedding transition-all"
+              className="px-8 py-4 rounded-2xl bg-[#4a151d] hover:bg-[#6d1828] text-white text-sm font-semibold uppercase tracking-wider transition-all"
             >
               Accedi al tuo Invito
             </button>
           </div>
+        </div>
         </div>
       </section>
     );
   }
 
   return (
-    <section id="rsvp" className="py-16 sm:py-24 bg-cream scroll-mt-12">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-8">
-          <span className="text-xs uppercase tracking-widest text-burgundy/60 font-semibold">
-            RSVP Ufficiale
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-burgundy mt-1">
-            Conferma Presenza
-          </h2>
-          <div className="w-14 h-1 bg-blush rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-burgundy/70">
-            Gruppo: <strong className="text-burgundy font-semibold">{cluster.family_name}</strong> · {cluster.guests.length} {cluster.guests.length === 1 ? 'ospite' : 'ospiti'}
+    <section id="rsvp" className="bg-[#fbf5f4] scroll-mt-12">
+
+      {/* 1. Deep Burgundy Banner from grafica.svg */}
+        <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 pb-16">
+          {/* Organic soft pink blob at top right */}
+          <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
+
+          <div className="flex flex-col items-start lg:items-center mt-6">
+            <StepperTitle className="h-16 lg:h-20 w-auto mb-2" />
+            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <p className="text-xs sm:text-sm text-burgundy/70">
+            Gruppo: <strong className="text-burgundy font-semibold">{cluster.family_name}</strong> · {clusterGuests.length} {clusterGuests.length === 1 ? 'ospite' : 'ospiti'}
           </p>
           {!showRecap && (
             <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2">
-              {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.
+              {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare entro il
+              <StepperDate className="w-20 pt-2"/>
             </p>
+            
           )}
+          
+          </div>
         </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        
 
         {/* Stepper Progress Indicator */}
         {!showRecap && (
           <div className="mb-8 max-w-lg mx-auto px-2">
             <div className="relative grid grid-cols-4 w-full">
-              {/* Background connecting track line */}
-              <div className="absolute left-[12.5%] right-[12.5%] top-5 -translate-y-1/2 h-0.5 bg-blush/30 -z-0" />
-              
-              {/* Active connecting track fill line */}
-              <div
-                className="absolute left-[12.5%] top-5 -translate-y-1/2 h-0.5 bg-burgundy transition-all duration-300 -z-0"
-                style={{
-                  width: `${((Math.min(step, 4) - 1) / 3) * 75}%`,
-                }}
-              />
+              {/* Wave track connecting from Circle 1 to Circle 4 */}
+              <div className="absolute left-[12.5%] right-[12.5%] top-5 -translate-y-1/2 h-6 pointer-events-none z-0">
+                {/* Inactive background wave track */}
+                <svg
+                  viewBox="0 0 300 24"
+                  fill="none"
+                  preserveAspectRatio="none"
+                  className="w-full h-full"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M 0 12 C 12.5 6, 37.5 6, 50 12 C 62.5 18, 87.5 18, 100 12 C 112.5 6, 137.5 6, 150 12 C 162.5 18, 187.5 18, 200 12 C 212.5 6, 237.5 6, 250 12 C 262.5 18, 287.5 18, 300 12"
+                    stroke="#667b4e"
+                    strokeOpacity="0.5"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+
+                {/* Active filled wave track */}
+                <svg
+                  viewBox="0 0 300 24"
+                  fill="none"
+                  preserveAspectRatio="none"
+                  className="absolute inset-0 w-full h-full transition-all duration-500 ease-in-out"
+                  style={{
+                    clipPath: `inset(0 ${100 - ((Math.min(step, 4) - 1) / 3) * 100}% 0 0)`,
+                    WebkitClipPath: `inset(0 ${100 - ((Math.min(step, 4) - 1) / 3) * 100}% 0 0)`,
+                  }}
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M 0 12 C 12.5 6, 37.5 6, 50 12 C 62.5 18, 87.5 18, 100 12 C 112.5 6, 137.5 6, 150 12 C 162.5 18, 187.5 18, 200 12 C 212.5 6, 237.5 6, 250 12 C 262.5 18, 287.5 18, 300 12"
+                    stroke="#4a151d"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
 
               {[
                 { num: 1, label: 'Presenze' },
@@ -212,14 +259,14 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                         isPassed
                           ? 'bg-burgundy text-paper hover:bg-burgundy-light group-hover:scale-110'
                           : isActive
-                          ? 'bg-blush text-burgundy ring-4 ring-blush/30 group-hover:scale-110'
+                          ? 'bg-blush text-burgundy ring-blush/30 group-hover:scale-110'
                           : 'bg-paper text-burgundy/60 border border-blush/40 hover:border-burgundy/40 hover:text-burgundy group-hover:scale-110'
                       }`}
                     >
                       {isPassed ? <Check className="w-4 h-4 text-paper" /> : s.num}
                     </div>
                     <span
-                      className={`text-[10px] sm:text-xs mt-1.5 font-medium transition-colors text-center hidden sm:block ${
+                      className={`text-xs mt-1.5 font-medium transition-colors text-center hidden sm:block ${
                         isActive ? 'text-burgundy font-semibold' : 'text-burgundy/60 group-hover:text-burgundy'
                       }`}
                     >
@@ -233,12 +280,15 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
         )}
 
         {/* Main Card */}
-        <div className="p-6 sm:p-10 rounded-4xl bg-paper shadow-wedding-lg border border-blush/30">
-          {savedSuccess ? (
+        <div className="relative p-6 mb-16 rounded-4xl bg-[#fffcf7] border-blush/30 overflow-hidden">
+          <StepperBolle className="absolute top-0 right-0 w-40 lg:w-48 pointer-events-none z-0" />
+
+          <div className="relative z-10">
+            {savedSuccess ? (
             /* Success Completion Screen */
-            <div className="text-center py-6 animate-fade-in">
+            <div className="text-center py-6 animate-fade-in relative">
               <div className="w-16 h-16 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-4 border border-blush/40 shadow-sm">
-                <Check className="w-8 h-8 text-burgundy" strokeWidth={2.5} />
+                <CarloFace className="w-8 h-8 object-contain" />
               </div>
               <h3 className="font-serif text-3xl text-burgundy mb-2">
                 Grazie, {cluster.family_name}!
@@ -257,24 +307,25 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                   </span>
                 )}
               </p>
-              <button
-                onClick={() => {
-                  setSavedSuccess(false);
-                  setIsEditing(true);
-                  setStep(1);
-                }}
-                className="px-6 py-2.5 rounded-full border border-blush text-burgundy text-xs font-semibold hover:bg-cream transition-colors"
-              >
-                Modifica risposte
-              </button>
+              <div className="pt-2">
+                <button
+                  onClick={() => {
+                    setSavedSuccess(false);
+                    setIsEditing(true);
+                    setStep(1);
+                  }}
+                  className="px-6 py-2.5 rounded-2xl border border-blush bg-[#fffcf7] text-burgundy text-xs font-semibold hover:bg-cream transition-colors relative z-10"
+                >
+                  Modifica risposte
+                </button>
+              </div>
+              <StepperOnde className="absolute -bottom-8 -left-10 lg:-bottom-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
             </div>
           ) : hasAlreadyResponded && !isEditing ? (
             /* Already Responded Card */
-            <div className="text-center py-6 animate-fade-in">
-              <div className="w-16 h-16 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-4 border border-blush/40 shadow-sm">
-                <Check className="w-8 h-8 text-burgundy" strokeWidth={2.5} />
-              </div>
-              <h3 className="font-serif text-3xl sm:text-4xl text-burgundy mb-2">
+            <div className="text-center py-6 animate-fade-in relative">
+              <CarloFace className="w-20 h-20 rounded-full p-2 bg-[#FFF] text-burgundy flex items-center justify-center mx-auto mb-4 border border-blush/40 shadow-sm"/>
+              <h3 className="font-serif text-2xl text-burgundy mb-2">
                 {isSingleGuest ? 'Hai già risposto all\'invito!' : 'Avete già risposto all\'invito!'}
               </h3>
               <p className="text-sm text-burgundy/80 max-w-md mx-auto mb-6 leading-relaxed">
@@ -302,7 +353,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                 {guestForms.map(g => (
                   <span
                     key={g.id}
-                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border shadow-xs ${
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium border shadow-xs ${
                       g.is_attending
                         ? 'bg-blush-soft text-burgundy border-blush/40'
                         : 'bg-cream text-burgundy/60 border-blush/20'
@@ -328,72 +379,28 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     setIsEditing(true);
                     setStep(1);
                   }}
-                  className="px-8 py-3.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all inline-flex items-center gap-2"
+                  className="px-8 py-3.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider shadow-wedding hover:shadow-wedding-lg hover:-translate-y-0.5 transition-all inline-flex items-center gap-2 relative z-10"
                 >
-                  <Edit2 className="w-4 h-4 text-blush" />
                   <span>Modifica le risposte</span>
                 </button>
               </div>
+              <StepperOnde className="absolute -bottom-8 -left-10 lg:-bottom-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
             </div>
           ) : (
             <>
               {/* If isEditing is active, offer a cancel link back to already responded recap */}
-              {isEditing && (
-                <div className="flex justify-between items-center pb-4 mb-4 border-b border-blush/20">
-                  <span className="text-xs uppercase tracking-wider font-semibold text-burgundy/60">
-                    Modalità modifica risposte
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (cluster && cluster.guests.length > 0) {
-                        setGuestForms(JSON.parse(JSON.stringify(cluster.guests)));
-                      }
-                      setIsEditing(false);
-                      setStep(1);
-                    }}
-                    className="text-xs text-burgundy hover:text-burgundy-light font-medium underline transition-colors"
-                  >
-                    Annulla e torna al riepilogo
-                  </button>
-                </div>
-              )}
+            
               {/* STEP 1: Individual Member Attendance */}
               {step === 1 && (
-                <div className="space-y-6 animate-fade-in">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-blush/20 pb-3">
-                    <div>
-                      <h3 className="font-serif text-xl text-burgundy font-medium">
-                        Presenza per singolo ospite
-                      </h3>
-                      <p className="text-xs text-burgundy/70">
-                        Indica chi potrà partecipare tra i componenti del gruppo:
-                      </p>
-                    </div>
-
-                    {/* Quick batch selectors */}
-                    {guestForms.length > 1 && (
-                      <div className="flex items-center gap-1.5 self-start sm:self-auto">
-                        <button
-                          type="button"
-                          onClick={() => setAllAttendance(true)}
-                          className="text-[11px] font-semibold text-burgundy hover:text-burgundy-light bg-cream hover:bg-blush-soft px-3 py-1 rounded-full border border-blush/30 transition-colors"
-                        >
-                          Tutti presenti
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setAllAttendance(false)}
-                          className="text-[11px] font-semibold text-burgundy/70 hover:text-burgundy bg-cream hover:bg-blush-soft px-3 py-1 rounded-full border border-blush/30 transition-colors"
-                        >
-                          Tutti assenti
-                        </button>
-                      </div>
-                    )}
+                <div className="animate-fade-in">
+                  <div className="mb-6">
+                    <h3 className="font-serif text-2xl text-burgundy">
+                      Presenza
+                    </h3>
                   </div>
 
                   {/* Individual Guest Cards */}
-                  <div className="space-y-3">
+                  <div>
                     {guestForms.map((guest, idx) => {
                       const isAttending = guest.is_attending === true;
                       const isDeclined = guest.is_attending === false;
@@ -401,27 +408,15 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       return (
                         <div
                           key={guest.id}
-                          className={`p-4 sm:p-5 rounded-3xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-                            isAttending
-                              ? 'bg-blush-soft/40 border-burgundy shadow-sm'
-                              : isDeclined
-                              ? 'bg-cream/40 border-blush/40 opacity-75'
-                              : 'bg-cream/20 border-blush/30 hover:border-blush'
-                          }`}
+                          className={`pb-4 pt-4 rounded-3xl transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 `}
                         >
                           <div className="flex items-center gap-3">
-                            <div className={`w-9 h-9 rounded-full flex items-center justify-center font-serif text-sm font-semibold shrink-0 ${
-                              isAttending
-                                ? 'bg-burgundy text-paper'
-                                : 'bg-blush-soft text-burgundy'
-                            }`}>
-                              {idx + 1}
-                            </div>
+                          
                             <div>
-                              <span className="font-serif text-lg font-medium text-burgundy block leading-tight">
+                              <span className="font-serif text-m font-medium text-burgundy block leading-tight">
                                 {guest.first_name} {guest.last_name}
                               </span>
-                              <span className="text-[11px] text-burgundy/60 font-medium">
+                              <span className="text-xs text-burgundy/60 font-medium">
                                 {guest.is_child ? 'Bambino' : 'Adulto'}
                               </span>
                             </div>
@@ -432,7 +427,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                             <button
                               type="button"
                               onClick={() => updateGuest(guest.id, { is_attending: true })}
-                              className={`flex-1 sm:flex-initial px-4 py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                              className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                                 isAttending
                                   ? 'bg-burgundy text-paper shadow-sm'
                                   : 'bg-paper text-burgundy/80 border border-blush/40 hover:border-burgundy'
@@ -445,7 +440,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                             <button
                               type="button"
                               onClick={() => updateGuest(guest.id, { is_attending: false })}
-                              className={`flex-1 sm:flex-initial px-4 py-2 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                              className={`flex-1 sm:flex-initial px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                                 isDeclined
                                   ? 'bg-burgundy text-paper shadow-sm'
                                   : 'bg-paper text-burgundy/80 border border-blush/40 hover:border-burgundy'
@@ -466,7 +461,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       Presenti: <strong className="text-burgundy font-semibold">{attendingGuests.length}</strong> · Assenti: <strong className="text-burgundy font-semibold">{declinedGuests.length}</strong>
                     </span>
                     {unconfirmedGuests.length > 0 && (
-                      <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 text-[11px]">
+                      <span className="text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200 text-xs">
                         {unconfirmedGuests.length} da confermare
                       </span>
                     )}
@@ -474,36 +469,29 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
 
                   {/* Case A: Everyone Declines */}
                   {allDeclined && (
-                    <div className="mt-4 p-5 rounded-3xl bg-cream border border-blush/40 space-y-3 animate-fade-in">
-                      <div className="text-xs font-semibold uppercase tracking-wider text-burgundy">
-                        {isSingleGuest
-                          ? 'Ci dispiace che non puoi esserci! Lasciaci un saluto:'
-                          : 'Ci dispiace che non possiate esserci! Lasciateci un saluto:'}
+                    <div className="mt-4 space-y-3 animate-fade-in">
+                      
+                      <div className="pt-6 flex justify-end relative">
+                        <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-15 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+                        <button
+                          onClick={handleSaveRsvp}
+                          disabled={isSaving}
+                        className="py-3.5 px-7 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm disabled:opacity-50 relative z-10"
+                        >
+                          {isSaving ? 'Salvataggio in corso...' : 'Invia Risposta'}
+                        </button>
                       </div>
-                      <textarea
-                        rows={3}
-                        value={declineMessage}
-                        onChange={e => setDeclineMessage(e.target.value)}
-                        placeholder={isSingleGuest ? "Scrivici un augurio o un messaggio..." : "Scriveteci un augurio o un messaggio..."}
-                        className="w-full p-3.5 rounded-2xl border border-blush/50 text-xs text-burgundy focus:border-burgundy outline-none resize-none bg-paper"
-                      />
-                      <button
-                        onClick={handleSaveRsvp}
-                        disabled={isSaving}
-                        className="w-full py-3.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider shadow-sm transition-all"
-                      >
-                        {isSaving ? 'Salvataggio in corso...' : 'Invia Risposta'}
-                      </button>
                     </div>
                   )}
 
                   {/* Case B: At least one person attending */}
                   {hasAttending && (
-                    <div className="pt-4 flex justify-end">
+                    <div className="pt-6 flex justify-end relative">
+                      <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
                       <button
                         onClick={() => setStep(2)}
                         disabled={!allAnswered}
-                        className="py-3.5 px-7 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm disabled:opacity-50"
+                        className="py-3.5 px-7 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm disabled:opacity-50 relative z-10"
                       >
                         <span>Continua: Menu ({attendingGuests.length} presenti)</span>
                         <ArrowRight className="w-4 h-4" />
@@ -515,68 +503,42 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
 
               {/* STEP 2: Menu & Dietary Details (ONLY FOR ATTENDING GUESTS) */}
               {step === 2 && (
-                <div className="space-y-8 animate-fade-in">
-                  <div className="flex items-center justify-between border-b border-blush/30 pb-3">
+                <div className="relative z-10 space-y-8 animate-fade-in">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-serif text-xl text-burgundy">
-                        Menu &amp; Esigenze Alimentari
+                      <h3 className="font-serif text-2xl text-burgundy">
+                        Esigenze Alimentari
                       </h3>
-                      <p className="text-xs text-burgundy/70">
-                        Configura le preferenze per i partecipanti confermati ({attendingGuests.length}):
-                      </p>
+                  
                     </div>
-                    <span className="text-xs text-burgundy/60 font-medium">
-                      Passo 2 di 4
-                    </span>
+                  
                   </div>
 
                   <div className="space-y-6">
                     {attendingGuests.map((guest, idx) => (
                       <div
                         key={guest.id}
-                        className="p-5 sm:p-6 rounded-3xl bg-cream/50 border border-blush/40 space-y-4"
+                        className="space-y-4"
                       >
                         {/* Guest Header */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-full bg-burgundy text-paper flex items-center justify-center font-serif text-sm font-semibold">
-                              {idx + 1}
-                            </div>
-                            <span className="font-serif text-lg font-medium text-burgundy">
-                              {guest.first_name} {guest.last_name}
-                            </span>
-                          </div>
-
-                          {/* Adult / Child Switch */}
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => updateGuest(guest.id, { is_child: !guest.is_child })}
-                              className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all ${
-                                guest.is_child
-                                  ? 'bg-accentGold text-paper border-accentGold'
-                                  : 'bg-paper text-burgundy/70 border-blush/40'
-                              }`}
-                            >
-                              {guest.is_child ? 'Menu Bambino' : 'Menu Adulto'}
-                            </button>
-                          </div>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="font-serif text-m font-medium text-burgundy">
+                            {guest.first_name} {guest.last_name}
+                          </span>
                         </div>
 
                         {/* Dietary Tags */}
                         <div>
-                          <label className="block text-[11px] uppercase tracking-wider font-semibold text-burgundy/80 mb-2">
-                            Intolleranze, allergie o preferenze alimentari:
-                          </label>
+                        
                           <div className="flex flex-wrap gap-1.5">
                             {DIETARY_OPTIONS.map(opt => {
-                              const selected = guest.dietary_tags.includes(opt.id);
+                              const selected = (guest.dietary_tags || []).includes(opt.id);
                               return (
                                 <button
                                   key={opt.id}
                                   type="button"
                                   onClick={() => toggleDietaryTag(guest.id, opt.id)}
-                                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                                  className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
                                     selected
                                       ? 'bg-burgundy text-paper shadow-sm'
                                       : 'bg-paper text-burgundy/80 border border-blush/40 hover:border-burgundy'
@@ -593,10 +555,10 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                         <div>
                           <input
                             type="text"
-                            value={guest.dietary_notes}
+                            value={guest.dietary_notes || ''}
                             onChange={e => updateGuest(guest.id, { dietary_notes: e.target.value })}
                             placeholder="Altre allergie gravi o note particolari..."
-                            className="w-full px-4 py-2 rounded-2xl border border-blush/40 text-xs text-burgundy bg-paper outline-none focus:border-burgundy"
+                            className="w-full px-4 py-2 rounded-xl border border-blush/40 text-xs text-burgundy bg-paper outline-none focus:border-burgundy"
                           />
                         </div>
 
@@ -605,7 +567,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                           <label className="flex items-center gap-2.5 cursor-pointer pt-1">
                             <input
                               type="checkbox"
-                              checked={guest.bus_seat_reserved}
+                              checked={Boolean(guest.bus_seat_reserved)}
                               onChange={e => updateGuest(guest.id, { bus_seat_reserved: e.target.checked })}
                               className="w-4 h-4 rounded text-burgundy focus:ring-burgundy accent-burgundy"
                             />
@@ -619,17 +581,18 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     ))}
                   </div>
 
-                  <div className="pt-4 flex justify-between">
+                  <div className="pt-6 flex justify-between items-center relative">
+                    <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
                     <button
                       onClick={() => setStep(1)}
-                      className="py-3 px-5 rounded-full border border-blush/50 text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors"
+                      className="py-3 px-5 rounded-2xl border border-blush/50 bg-[#fffcf7] text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors relative z-10 shadow-xs"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       <span>Indietro</span>
                     </button>
                     <button
                       onClick={() => setStep(3)}
-                      className="py-3 px-6 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm"
+                      className="py-3 px-6 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm relative z-10"
                     >
                       <span>Continua: DJ Set</span>
                       <ArrowRight className="w-4 h-4" />
@@ -641,21 +604,19 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
               {/* STEP 3: DJ Set Songs (ONLY FOR ATTENDING GUESTS) */}
               {step === 3 && (
                 <div className="space-y-6 animate-fade-in">
-                  <div className="text-center max-w-md mx-auto mb-6">
-                    <div className="w-12 h-12 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-3">
-                      <Music className="w-6 h-6 text-burgundy" />
-                    </div>
+                  <div className="text-left">
+                    
                     <h3 className="font-serif text-2xl text-burgundy">
-                      La Canzone per la Festa
+                      La canzone per la festa
                     </h3>
                     <p className="text-xs text-burgundy/70 mt-1">
-                      Quale canzone vi farà assolutamente correre a ballare in pista a Cascina Ranverso?
+                      Quale canzone vi farà correre a ballare?
                     </p>
                   </div>
 
                   <div className="space-y-4">
                     {attendingGuests.map((guest) => (
-                      <div key={guest.id} className="p-4 rounded-2xl bg-cream border border-blush/30">
+                      <div key={guest.id} className="">
                         <label className="block text-xs font-semibold text-burgundy mb-1.5">
                           Canzone preferita di {guest.first_name}:
                         </label>
@@ -670,17 +631,18 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     ))}
                   </div>
 
-                  <div className="pt-4 flex justify-between">
+                  <div className="pt-6 flex justify-between items-center relative">
+                    <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
                     <button
                       onClick={() => setStep(2)}
-                      className="py-3 px-5 rounded-full border border-blush/50 text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors"
+                      className="py-3 px-5 rounded-2xl border border-blush/50 bg-[#fffcf7] text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors relative z-10 shadow-xs"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       <span>Indietro</span>
                     </button>
                     <button
                       onClick={() => setStep(4)}
-                      className="py-3 px-6 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm"
+                      className="py-3 px-6 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-sm relative z-10"
                     >
                       <span>Riepilogo Finale</span>
                       <ArrowRight className="w-4 h-4" />
@@ -692,60 +654,53 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
               {/* STEP 4: Review and Submit */}
               {step === 4 && (
                 <div className="space-y-6 animate-fade-in">
-                  <div className="text-center mb-6">
+                  <div className="text-left mb-6">
                     <h3 className="font-serif text-2xl text-burgundy">
                       Riepilogo Risposte
                     </h3>
                     <p className="text-xs text-burgundy/70 mt-1">
-                      Controlla le scelte prima di confermare definitivamente.
+                      Controlla le scelte prima di confermare.
                     </p>
                   </div>
 
-                  <div className="p-5 rounded-3xl bg-cream border border-blush/40 space-y-4">
-                    <div className="flex items-center justify-between border-b border-blush/20 pb-2">
-                      <span className="text-xs text-burgundy/70 uppercase tracking-wider font-semibold">
-                        Nucleo:
-                      </span>
-                      <span className="text-sm font-semibold text-burgundy">
-                        {cluster.family_name}
-                      </span>
-                    </div>
+                  <div className="pb-4 pt-4">
+                  
 
                     {/* Attending guests list */}
                     {attendingGuests.length > 0 && (
                       <div className="space-y-3">
-                        <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy flex items-center gap-1.5">
-                          <Check className="w-3.5 h-3.5 text-burgundy" strokeWidth={2.5} />
-                          <span>Ospiti Presenti ({attendingGuests.length}):</span>
+                        <div className="text-xs uppercase tracking-wider font-semibold text-burgundy flex items-center gap-1.5">
+                        
+                          <span>Ospiti Presenti:</span>
                         </div>
                         {attendingGuests.map(guest => (
-                          <div key={guest.id} className="text-xs text-burgundy space-y-1 pb-2 border-b border-blush/10 pl-2">
-                            <div className="font-semibold flex items-center justify-between">
+                          <div key={guest.id} className="text-s text-burgundy space-y-1 pb-2 border-b border-blush/10">
+                            <div className="font-semibold flex items-baseline">
                               <span>{guest.first_name} {guest.last_name}</span>
-                              <span className="text-[11px] text-burgundy bg-blush-soft px-2.5 py-0.5 rounded-full border border-blush/40">
+                              <span className="text-xs text-burgundy pl-2">
                                 {guest.is_child ? 'Bambino' : 'Adulto'}
                               </span>
                             </div>
-                            {guest.dietary_tags.length > 0 && (
-                              <div className="text-[11px] text-burgundy/70">
-                                Menu: {guest.dietary_tags.includes('none')
+                            {(guest.dietary_tags || []).length > 0 && (
+                              <div className="text-xs text-burgundy/70">
+                                Menu: {(guest.dietary_tags || []).includes('none')
                                   ? 'Nessuna intolleranza'
-                                  : guest.dietary_tags.map(t => DIETARY_OPTIONS.find(o => o.id === t)?.label || t).join(', ')}
+                                  : (guest.dietary_tags || []).map(t => DIETARY_OPTIONS.find(o => o.id === t)?.label || t).join(', ')}
                               </div>
                             )}
                             {guest.dietary_notes && (
-                              <div className="text-[11px] text-burgundy/70 italic">
+                              <div className="text-xs text-burgundy/70 italic">
                                 Note: "{guest.dietary_notes}"
                               </div>
                             )}
                             {settings.features?.enableShuttleBuses && guest.bus_seat_reserved && (
-                              <div className="text-[11px] text-burgundy/80 font-medium flex items-center gap-1.5">
+                              <div className="text-xs text-burgundy/80 font-medium flex items-center gap-1.5">
                                 <Bus className="w-3.5 h-3.5 text-burgundy" />
                                 <span>Posto navetta riservato</span>
                               </div>
                             )}
                             {guest.song_request && (
-                              <div className="text-[11px] text-burgundy/80 flex items-center gap-1.5">
+                              <div className="text-xs text-burgundy/80 flex items-center gap-1.5">
                                 <Music className="w-3.5 h-3.5 text-burgundy" />
                                 <span>Brano per il DJ: "{guest.song_request}"</span>
                               </div>
@@ -758,7 +713,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     {/* Declined guests list */}
                     {declinedGuests.length > 0 && (
                       <div className="space-y-1.5 pt-2 border-t border-blush/20">
-                        <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 flex items-center gap-1.5">
+                        <div className="text-xs uppercase tracking-wider font-semibold text-burgundy/60 flex items-center gap-1.5">
                           <X className="w-3.5 h-3.5 text-burgundy/60" />
                           <span>Ospiti Assenti ({declinedGuests.length}):</span>
                         </div>
@@ -772,10 +727,11 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     )}
                   </div>
 
-                  <div className="pt-4 flex justify-between">
+                  <div className="pt-6 flex justify-between items-center relative">
+                    <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
                     <button
                       onClick={() => setStep(3)}
-                      className="py-3 px-5 rounded-full border border-blush/50 text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors"
+                      className="py-3 px-5 rounded-2xl border border-blush/50 bg-[#fffcf7] text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors relative z-10 shadow-xs"
                     >
                       <ArrowLeft className="w-4 h-4" />
                       <span>Modifica</span>
@@ -783,9 +739,8 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     <button
                       onClick={handleSaveRsvp}
                       disabled={isSaving}
-                      className="py-4 px-8 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-wedding hover:shadow-wedding-lg"
+                      className="py-4 px-8 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-wedding hover:shadow-wedding-lg relative z-10"
                     >
-                      <Sparkles className="w-4 h-4 text-accentGold" />
                       <span>{isSaving ? 'Salvataggio in corso...' : 'Invia e Salva Risposte'}</span>
                     </button>
                   </div>
@@ -793,6 +748,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
               )}
             </>
           )}
+          </div>
         </div>
       </div>
     </section>

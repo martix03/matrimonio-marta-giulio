@@ -52,6 +52,30 @@ function saveLocalCarpooling(posts: CarpoolingPost[]) {
   localStorage.setItem(STORAGE_KEYS.CARPOOLING, JSON.stringify(posts));
 }
 
+function normalizeGuest(guest: any): Guest {
+  return {
+    ...guest,
+    first_name: guest?.first_name || '',
+    last_name: guest?.last_name || '',
+    dietary_tags: Array.isArray(guest?.dietary_tags) ? guest.dietary_tags : [],
+    dietary_notes: guest?.dietary_notes || '',
+    song_request: guest?.song_request || '',
+    bus_seat_reserved: Boolean(guest?.bus_seat_reserved),
+    is_attending: typeof guest?.is_attending === 'boolean' ? guest.is_attending : null,
+    is_child: Boolean(guest?.is_child),
+  };
+}
+
+function normalizeCluster(cluster: any): Cluster | null {
+  if (!cluster) return null;
+  const rawGuests = Array.isArray(cluster.guests) ? cluster.guests : [];
+  return {
+    ...cluster,
+    family_name: cluster.family_name || 'Ospite',
+    guests: rawGuests.map(normalizeGuest),
+  };
+}
+
 // Data service methods
 export const weddingApi = {
   async getClusterByCode(code: string): Promise<Cluster | null> {
@@ -65,13 +89,13 @@ export const weddingApi = {
         .single();
 
       if (clusterError || !cluster) return null;
-      return cluster as Cluster;
+      return normalizeCluster(cluster);
     }
 
     // Local fallback
     const clusters = getLocalClusters();
     const found = clusters.find(c => c.invite_code.toUpperCase() === cleanCode);
-    return found || null;
+    return normalizeCluster(found);
   },
 
   async getClusterById(clusterId: string): Promise<Cluster | null> {
@@ -83,13 +107,13 @@ export const weddingApi = {
         .single();
 
       if (clusterError || !cluster) return null;
-      return cluster as Cluster;
+      return normalizeCluster(cluster);
     }
 
     // Local fallback
     const clusters = getLocalClusters();
     const found = clusters.find(c => c.id === clusterId);
-    return found || null;
+    return normalizeCluster(found);
   },
 
   async searchClusterByName(firstName: string, lastName: string): Promise<Cluster | null> {
@@ -110,7 +134,7 @@ export const weddingApi = {
           .select('*, guests(*)')
           .eq('id', guests[0].cluster_id)
           .single();
-        return cluster as Cluster || null;
+        return normalizeCluster(cluster);
       }
       return null;
     }
@@ -118,10 +142,10 @@ export const weddingApi = {
     // Local fallback
     const clusters = getLocalClusters();
     for (const cluster of clusters) {
-      const match = cluster.guests.some(
+      const match = (cluster.guests || []).some(
         g => g.first_name.toLowerCase().includes(fn) && g.last_name.toLowerCase().includes(ln)
       );
-      if (match) return cluster;
+      if (match) return normalizeCluster(cluster);
     }
     return null;
   },

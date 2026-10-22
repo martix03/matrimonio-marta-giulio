@@ -69,7 +69,7 @@ export const FaqSection: React.FC = () => {
             <button
               key={tag.id}
               onClick={() => setSelectedTag(tag.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedTag === tag.id
                   ? 'bg-burgundy text-paper shadow-sm'
                   : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
@@ -162,7 +162,7 @@ export const FaqSection: React.FC = () => {
                 href="https://wa.me/393466121512"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 w-full py-2 px-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                className="mt-2 w-full py-2 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-blush" />
                 <span>Scrivi a Marta</span>
@@ -200,7 +200,7 @@ export const FaqSection: React.FC = () => {
                 href="https://wa.me/393492481715"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 w-full py-2 px-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
+                className="mt-2 w-full py-2 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-blush" />
                 <span>Scrivi a Giulio</span>

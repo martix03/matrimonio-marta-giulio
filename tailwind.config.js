@@ -8,16 +8,25 @@ export default {
     extend: {
       colors: {
         burgundy: {
-          DEFAULT: '#51101d',
+          DEFAULT: '#4a151d',
+          deep: '#380a13',
           light: '#6d1828',
-          dark: '#380a13',
-          soft: 'rgba(81, 16, 29, 0.08)',
+          ribbon: '#8a1e32',
+          soft: 'rgba(74, 21, 29, 0.08)',
         },
         blush: {
-          DEFAULT: '#d7b8af',
+          DEFAULT: '#dfb0b0',
+          warm: '#fde7e2',
           light: '#f7eeec',
-          soft: 'rgba(215, 184, 175, 0.25)',
+          soft: 'rgba(223, 176, 176, 0.25)',
           dark: '#bfa096',
+          bg: '#fbf5f4',
+        },
+        sage: {
+          DEFAULT: '#667b4e',
+          light: '#e5edd8',
+          dark: '#4a5b37',
+          soft: 'rgba(102, 123, 78, 0.15)',
         },
         cream: '#faf2f2',
         paper: '#ffffff',

@@ -154,7 +154,7 @@ export const LogisticsHub: React.FC = () => {
               </div>
               <button
                 onClick={() => setShowOfferForm(!showOfferForm)}
-                className="px-4 py-2 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
+                className="px-4 py-2 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>{showOfferForm ? 'Chiudi Form' : 'Offri un Passaggio'}</span>
@@ -240,13 +240,13 @@ export const LogisticsHub: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowOfferForm(false)}
-                        className="px-4 py-2 rounded-full border border-blush/40 text-burgundy hover:bg-cream"
+                        className="px-4 py-2 rounded-2xl border border-blush/40 text-burgundy hover:bg-cream"
                       >
                         Annulla
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold shadow-sm"
+                        className="px-6 py-2 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper font-semibold shadow-sm"
                       >
                         Pubblica Passaggio
                       </button>
@@ -292,7 +292,7 @@ export const LogisticsHub: React.FC = () => {
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider transition-all shadow-sm shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider transition-all shadow-sm shrink-0"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>Scrivi su WhatsApp</span>
