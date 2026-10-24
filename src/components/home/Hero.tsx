@@ -113,7 +113,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           {/* CARLO & BAFFO: 2° sotto su mobile, a destra affiancato su desktop */}
           <div className="order-2 relative flex justify-end pr-4 sm:pr-8 lg:pr-0 lg:-mr-72 mb-8 lg:mb-16 group">
             {/* Baffo su mobile sotto Marta & Giulio a sinistra di Carlo */}
-            <HomeBaffo className="block lg:hidden absolute left-0 bottom-16 w-44 sm:w-56 pointer-events-none opacity-90 -ml-4 z-0" />
+            <HomeBaffo className="block lg:hidden absolute -left-8 bottom-16 w-44 sm:w-56 pointer-events-none opacity-90 -ml-4 z-0" />
 
             <img
               src={carloHeroImg}

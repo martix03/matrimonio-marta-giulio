@@ -7,7 +7,7 @@ import homeBaffo from '../../assets/home-baffo.svg';
 import homeMartaGiulio from '../../assets/home-title.svg';
 import homeCountBaffo from '../../assets/count-baffo.svg';
 import homeCountOnde from '../../assets/count-onde.svg';
-import timeBolle from '../../assets/bolle-new.svg';
+import timeBolle from '../../assets/time-bolle.svg';
 import timeTitle from '../../assets/time-title.svg';
 import data from '../../assets/data.svg';
 import ora from '../../assets/ora.svg';

@@ -283,26 +283,19 @@ export const InteractiveMap: React.FC = () => {
   return (
     <section id="mappa" className="bg-[#fffcf7]">
       <div className="relative overflow-hidden">
-        <img
-          src={backgroundRed}
-          alt=""
-          className="absolute inset-0 w-full h-fit lg:h-[600px] object-fill pointer-events-none select-none z-0"
-        />
-
+      
         {/* Burgundy Header Banner with wave background */}
-        <div className="relative overflow-hidden pl-8 pr-8 pt-32 lg:pt-32">
+        <div className="relative overflow-hidden  bg-[#8c2035] pl-8 pr-8 pb-4 lg:pb-10">
 
           {/* Contenuto sopra l'SVG */}
           <div className="relative z-10 text-white">
             {/* Organic soft pink blob at top right */}
-            <TimeBolle className="absolute -top-8 -right-16 w-[40%] lg:w-[15%]" />
+            <TimeBolle className="absolute -top-12 lg:-top-20 -right-8 w-[35%] lg:w-[13%]" />
 
-            <div className="flex flex-col items-start lg:items-center mt-6">
+            <div className="flex flex-col items-start lg:items-center mt-12 lg:mt-20">
               <MappaTitle className="scale-x-100 h-12 lg:h-20 w-auto mb-2" />
               <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-              <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
-                I luoghi della cerimonia, del ricevimento e una selezione<br />curata per chi soggiorna nei dintorni.
-              </p>
+              
             </div>
           </div>
         </div>
