@@ -146,7 +146,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
             <Orchidea className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-6 w-28 lg:w-32 h-auto -scale-x-100 pointer-events-none select-none z-0 opacity-80" />
 
             {/* Carlo Cina: vertically centered on the right on mobile, and on the left on desktop */}
-            <CarloCina className="absolute top-1/2 -translate-y-1/2 right-3 sm:right-6 w-1/4 lg:w-1/6 lg:left-6 lg:right-auto lg:-scale-x-100 h-auto pointer-events-none select-none z-0" />
+            <CarloCina className="absolute top-1/2 -translate-y-1/2 right-3 sm:right-6 w-1/5 lg:w-1/6 lg:left-6 lg:right-auto lg:-scale-x-100 h-auto pointer-events-none select-none z-0" />
 
             {/* Bank Details Content - safe zone on mobile, perfectly centered on desktop (lg) */}
             <div className="relative z-10 space-y-3.5 text-left lg:text-center pr-24 sm:pr-28 lg:pr-0 lg:mx-auto lg:max-w-md">
