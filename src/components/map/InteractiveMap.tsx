@@ -308,7 +308,7 @@ export const InteractiveMap: React.FC = () => {
             <MappaTitle className="h-16 lg:h-20 w-auto mb-2" />
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
             <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
-                              I luoghi della cerimonia, del ricevimento e una selezione<br />curata per chi soggiorna nei dintorni.
+                              I luoghi della cerimonia, del ricevimento e una selezione curata per chi soggiorna nei dintorni.
 
             </p>
           </div>

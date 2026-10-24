@@ -74,7 +74,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
             <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
               Il nostro viaggio di nozze sarà tra la Grande Muraglia, 
-               <br />antiche città imperiali e paesaggi mozzafiato,<br />ecco le tappe del nostro sogno.
+            antiche città imperiali e paesaggi mozzafiato.
             </p>
           </div>
         </div>
