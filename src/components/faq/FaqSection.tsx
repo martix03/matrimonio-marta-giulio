@@ -60,7 +60,7 @@ export const FaqSection: React.FC = () => {
           <div className="flex flex-col items-start lg:items-center mt-6">
             <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-            <p className="text-xs sm:text-sm text-[#4a151d]/75 lg:text-center max-w-md mx-auto mb-8">
+            <p className="text-xs sm:text-sm text-[#4a151d]/75 text-left lg:text-center max-w-md lg:mx-auto mb-8">
                             Tutto quello che c'è da sapere per godersi la festa senza pensieri.
             </p>
            
@@ -69,17 +69,7 @@ export const FaqSection: React.FC = () => {
 
       
 
-        {/* Search Input */}
-        <div className="relative max-w-md mx-auto mb-4">
-          <Search className="w-4 h-4 text-burgundy/40 absolute left-4 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            placeholder="Cerca una risposta..."
-            className="w-full pl-11 pr-4 py-3 rounded-full bg-paper border border-blush/40 text-xs sm:text-sm text-burgundy shadow-sm outline-none focus:border-burgundy transition-all"
-          />
-        </div>
+        
 
         {/* Tag Filters */}
         <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-6 ml-6 no-scrollbar">

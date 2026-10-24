@@ -393,7 +393,7 @@ export const InteractiveMap: React.FC = () => {
                 <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
 
                   <div className="relative overflow-hidden p-6 rounded-3xl bg-paper shadow-wedding border-1 border-blush/40 animate-fade-in space-y-4">
-                    <TimeBolle className="absolute bottom-0 -right-8 w-24 z-0 pointer-events-none" />
+                    <TimeBolle className="absolute bottom-0 -right-0 w-24 z-0 -scale-y-100 pointer-events-none" />
 
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
