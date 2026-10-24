@@ -164,7 +164,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                   IBAN:
                 </div>
                 <div className="flex flex-col gap-3 lg:items-center mt-1">
-                  <span className="inline-block mr-8 py-1.5 rounded-xl bg-[#fffcf7] relative z-20 font-mono text-xs sm:text-sm md:text-base font-bold text-burgundy break-all select-all">
+                  <span className="font-mono text-xs sm:text-sm md:text-base font-bold text-burgundy break-all select-all">
                     {settings.registry.iban}
                   </span>
                   <button
