@@ -250,22 +250,24 @@ export const InteractiveMap: React.FC = () => {
       const container = poiListRef.current;
       const item = itemRefs.current[placeId];
       if (container && item) {
-        const containerRect = container.getBoundingClientRect();
-        const itemRect = item.getBoundingClientRect();
-        const targetTop = container.scrollTop + (itemRect.top - containerRect.top) - 4;
+        let itemTop = item.offsetTop;
+        if (item.offsetParent !== container) {
+          const containerRect = container.getBoundingClientRect();
+          const itemRect = item.getBoundingClientRect();
+          itemTop = container.scrollTop + (itemRect.top - containerRect.top);
+        }
+        const targetTop = Math.max(0, itemTop - 4);
         container.scrollTo({
-          top: Math.max(0, targetTop),
+          top: targetTop,
           behavior: 'smooth'
         });
       }
-    }, 50);
+    }, 40);
   };
 
-  const handleSelectPlace = (place: PlacePOI, scrollToList = false) => {
+  const handleSelectPlace = (place: PlacePOI) => {
     setActivePlace(place);
-    if (scrollToList) {
-      scrollToPlace(place.id);
-    }
+    scrollToPlace(place.id);
   };
 
   const handleCategoryChange = (catId: string) => {
@@ -377,7 +379,7 @@ export const InteractiveMap: React.FC = () => {
                         <MapMarkers
                           places={filteredPlaces}
                           activePlace={activePlace}
-                          onSelectPlace={(place) => handleSelectPlace(place, true)}
+                          onSelectPlace={handleSelectPlace}
                           renderPlaceIcon={renderPlaceIcon}
                           getPinColor={getPinColor}
                         />
@@ -444,7 +446,7 @@ export const InteractiveMap: React.FC = () => {
                         <button
                           key={place.id}
                           ref={el => { itemRefs.current[place.id] = el; }}
-                          onClick={() => handleSelectPlace(place, false)}
+                          onClick={() => handleSelectPlace(place)}
                           className={`w-full p-3 rounded-xl text-left text-xs transition-all flex items-center justify-between ${
                             activePlace.id === place.id
                               ? 'bg-burgundy text-paper font-semibold shadow-sm'

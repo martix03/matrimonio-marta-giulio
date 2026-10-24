@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Search, ChevronDown, Phone, Mail, MessageCircle } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
 import { weddingApi } from '../../services/supabase';
+import {
+  MiniWave,
+ TimeBolle,
+   ConfermaBolle,
+   Data,
+   TimeTitle,
+   HourTitle,
+   CascinaTitle,
+   CoordinateTitle,
+   ViaggioTitle,
+   Orchidea,
+   CarloCina
+} from '../home/GraficaElements';
 
 export const FaqSection: React.FC = () => {
   const { settings } = useSettings();
@@ -36,23 +49,28 @@ export const FaqSection: React.FC = () => {
   });
 
   return (
-    <section id="faq" className="py-16 sm:py-24 bg-cream">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center max-w-xl mx-auto mb-10">
-          <span className="text-xs uppercase tracking-widest text-burgundy/60 font-semibold">
-            Domande Frequenti
-          </span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-burgundy mt-1">
-            Dubbi o Curiosità?
-          </h2>
-          <div className="w-12 h-1 bg-blush rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-burgundy/70">
-            Tutto quello che c'è da sapere per godersi la festa senza pensieri.
-          </p>
-        </div>
+    <section id="faq" className="bg-cream">
+      <div className="max-w-4xl mx-auto">
+
+
+           <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
+          {/* Organic soft pink blob at top right */}
+          <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
+
+          <div className="flex flex-col items-start lg:items-center mt-6">
+            <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
+            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <p className="text-xs sm:text-sm text-[#4a151d]/75 lg:text-center max-w-md mx-auto mb-8">
+                            Tutto quello che c'è da sapere per godersi la festa senza pensieri.
+            </p>
+           
+          </div>
+          </div>
+
+      
 
         {/* Search Input */}
-        <div className="relative max-w-md mx-auto mb-6">
+        <div className="relative max-w-md mx-auto mb-4">
           <Search className="w-4 h-4 text-burgundy/40 absolute left-4 top-1/2 -translate-y-1/2" />
           <input
             type="text"
@@ -64,14 +82,14 @@ export const FaqSection: React.FC = () => {
         </div>
 
         {/* Tag Filters */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-6 ml-6 no-scrollbar">
           {tags.map(tag => (
             <button
               key={tag.id}
               onClick={() => setSelectedTag(tag.id)}
-              className={`px-3.5 py-1.5 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                 selectedTag === tag.id
-                  ? 'bg-burgundy text-paper shadow-sm'
+                  ? 'bg-[#de868a] text-paper shadow-sm'
                   : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
               }`}
             >
@@ -81,14 +99,14 @@ export const FaqSection: React.FC = () => {
         </div>
 
         {/* Accordion List */}
-        <div className="space-y-3">
+        <div className="space-y-3 ml-6 mr-6">
           {filteredFaqs.length > 0 ? (
             filteredFaqs.map(faq => {
               const isOpen = openIds.includes(faq.id);
               return (
                 <div
                   key={faq.id}
-                  className="rounded-3xl bg-paper shadow-wedding border border-blush/30 overflow-hidden transition-all duration-300"
+                  className="rounded-2xl bg-paper  border-blush/30 overflow-hidden transition-all duration-300"
                 >
                   <button
                     onClick={() => toggleAccordion(faq.id)}
