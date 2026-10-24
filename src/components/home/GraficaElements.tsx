@@ -200,7 +200,7 @@ export const MappaTitle: React.FC<{ className?: string }> = ({ className = '' })
     <img
       src={mappaTitle}
       alt=""
-      className={`pointer-events-none select-none -scale-x-100 ${className}`}
+      className={`pointer-events-none select-none ${className}`}
     />
   );
 };

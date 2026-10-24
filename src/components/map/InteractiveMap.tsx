@@ -284,21 +284,36 @@ export const InteractiveMap: React.FC = () => {
     <section id="mappa" className="bg-[#fffcf7]">
       <div className="relative overflow-hidden">
       
-        {/* Burgundy Header Banner with wave background */}
-        <div className="relative overflow-hidden  bg-[#8c2035] pl-8 pr-8 pb-4 lg:pb-10">
 
-          {/* Contenuto sopra l'SVG */}
-          <div className="relative z-10 text-white">
-            {/* Organic soft pink blob at top right */}
-            <TimeBolle className="absolute -top-12 lg:-top-20 -right-8 w-[35%] lg:w-[13%]" />
+  {/* 1. Deep Burgundy Banner from grafica.svg */}
+        <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-8 lg:pt-16 pb-16 lg:pb-32 ">
+         
+          {/* ONDA A 2 CURVE (sale e scende) */}
+  <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
+    <svg
+      className="relative block w-full h-12 sm:h-20 lg:h-28"
+      viewBox="0 0 1200 360"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M 0,56 C 257,56 461,358 725,358 C 909,358 1106,206 1200,127 L 1200,360 L 0,360 Z"
+        fill="#fffcf7"
+      />
+    </svg>
+  </div>
+          
+          <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
-            <div className="flex flex-col items-start lg:items-center mt-12 lg:mt-20">
-              <MappaTitle className="scale-x-100 h-12 lg:h-20 w-auto mb-2" />
-              <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-              
-            </div>
+          <div className="flex flex-col items-start lg:items-center mt-6">
+            <MappaTitle className="h-16 lg:h-20 w-auto mb-2" />
+            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
+                              I luoghi della cerimonia, del ricevimento e una selezione<br />curata per chi soggiorna nei dintorni.
+
+            </p>
           </div>
         </div>
+
 
         <div className=" relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
           {/* Category Filter Pills */}

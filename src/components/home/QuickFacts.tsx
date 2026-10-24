@@ -39,7 +39,7 @@ export const QuickFacts: React.FC = () => {
       <div className="pb-24 bg-[#fffcf7]">
         
         {/* 1. Deep Burgundy Banner from grafica.svg */}
-        <div className="relative overflow-hidden bg-[#8c2035] text-white shadow-wedding pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
+        <div className="relative overflow-hidden bg-[#8c2035] text-white shadow-wedding pl-8 pr-8 pt-8 lg:pt-16 pb-8 lg:pb-32">
           {/* Organic soft pink blob at top right */}
           <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
