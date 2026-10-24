@@ -7,7 +7,7 @@ import homeBaffo from '../../assets/home-baffo.svg';
 import homeMartaGiulio from '../../assets/home-title.svg';
 import homeCountBaffo from '../../assets/count-baffo.svg';
 import homeCountOnde from '../../assets/count-onde.svg';
-import timeBolle from '../../assets/time-bolle.svg';
+import timeBolle from '../../assets/bolle-new.svg';
 import timeTitle from '../../assets/time-title.svg';
 import data from '../../assets/data.svg';
 import ora from '../../assets/ora.svg';
@@ -23,6 +23,8 @@ import carloFace from '../../assets/carlo-face.svg';
 import viaggioTitle from '../../assets/viaggio-title.svg';
 import mappaTitle from '../../assets/mappa-title.svg';
 import coordinateTitle from '../../assets/coordinate.svg';
+import carloCina from '../../assets/carlo-cina.svg';
+import backgroundRed from '../../assets/background-red.svg';
 
 export const HomeBolle: React.FC<{ className?: string }> = ({ className = '' }) => {
   return (
@@ -216,6 +218,33 @@ export const CarloFace: React.FC<{ className?: string; alt?: string }> = ({
   );
 };
 
+export const CarloCina: React.FC<{ className?: string; alt?: string }> = ({
+  className = '',
+  alt = 'Carlo',
+}) => {
+  return (
+    <img
+      src={carloCina}
+      alt={alt}
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+
+export const BackgroundRed: React.FC<{ className?: string; alt?: string }> = ({
+  className = '',
+  alt = 'Carlo',
+}) => {
+  return (
+    <img
+      src={backgroundRed}
+      alt={alt}
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
 export const HomeCount: React.FC<{ className?: string; color?: string }> = ({
   className = 'h-5 sm:h-6 w-auto',
   color = '#4a151d',
@@ -337,3 +366,10 @@ export const TimelineTargetNode: React.FC<{
     </div>
   );
 };
+
+export { backgroundRed };
+
+
+
+
+

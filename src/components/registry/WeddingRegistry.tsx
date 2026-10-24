@@ -13,6 +13,8 @@ import { MiniWave,
    CascinaTitle,
    CoordinateTitle,
    ViaggioTitle,
+   Orchidea,
+   CarloCina
 } from '../home/GraficaElements';
 
 interface WeddingRegistryProps {
@@ -61,8 +63,8 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
   const suggestedReason = `Regalo Matrimonio - ${cluster ? cluster.family_name : 'Marta e Giulio'}`;
 
   return (
-    <section id="lista-nozze" className="bg-[#fffcf7] pb-16 sm:pb-24">
-      <div className="relative overflow-hidden bg-[#8c2035] text-white shadow-wedding pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
+    <section id="lista-nozze" className="bg-[#fffcf7]">
+      <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
           {/* Organic soft pink blob at top right */}
           <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
@@ -71,20 +73,14 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
             <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
               Il nostro viaggio di nozze sarà tra la Grande Muraglia, 
-               <br />
- antiche città imperiali e paesaggi mozzafiato,
- <br />
- ecco le tappe del nostro sogno.
-
-             
+               <br />antiche città imperiali e paesaggi mozzafiato,<br />ecco le tappe del nostro sogno.
             </p>
           </div>
         </div>
 
-      <div className="max-w-5xl mx-auto">
-    
+      <div className="max-w-3xl lg:max-w-6xl mx-auto px-4 sm:px-6">
         {/* Stages Grid (No progress bars) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-12 px-4 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-12">
           {mockRegistryStages.map((stage) => {
             return (
               <div
@@ -92,7 +88,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                 className="rounded-4xl overflow-hidden bg-[#fffcf7] transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-52 lg:h-80 overflow-hidden">
+                  <div className="relative h-64 lg:h-80 overflow-hidden">
                     <img
                       src={stage.image_url}
                       alt={stage.title}
@@ -112,15 +108,17 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
             );
           })}
         </div>
+      </div>
  <div className="bg-[#fbf5f4]">
-         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
+
+         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
           {/* Organic soft pink blob at top right */}
           <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
           <div className="flex flex-col items-start lg:items-center mt-6">
             <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-            <p className="text-xs sm:text-sm text-[#4a151d]/75 max-w-md mx-auto mb-8">
+            <p className="text-xs sm:text-sm text-[#4a151d]/75 lg:text-center max-w-md mx-auto mb-8">
                              Se volete contribuire al nostro viaggio di nozze, ecco le coordinate bancarie:
             </p>
            
@@ -128,59 +126,50 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
           </div>
 
         {/* Bank Details & Notification Card */}
-        <div className="p-8 sm:p-10 rounded-4xl bg-paper shadow-wedding-lg border border-blush/40">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Left: IBAN details */}
-            <div className="lg:col-span-6 space-y-4">
-              
-
-              <div className="p-4 rounded-2xl bg-[#fffcf7] border border-blush/30 space-y-2">
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60">
-                  Intestatario:
-                </div>
-                <div className="text-sm font-semibold text-burgundy">
-                  {settings.registry.holder}
-                </div>
-
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 pt-2 border-t border-blush/20">
-                  IBAN:
-                </div>
-                <div className="flex flex-col gap-3">
-                  <span className="font-mono text-sm sm:text-base font-bold text-burgundy break-all select-all text-center bg-paper/50 py-3 rounded-xl border border-blush/20">
-                    {settings.registry.iban}
-                  </span>
-                  <button
-                    onClick={handleCopyIban}
-                    className="w-full py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
-                    title="Copia negli appunti"
-                  >
-                    {copiedIban ? (
-                      <>
-                        <Check className="w-3.5 h-3.5" />
-                        <span>Copiato!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5" />
-                        <span>Copia IBAN</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 pt-2 border-t border-blush/20">
-                  Causale suggerita:
-                </div>
-                <div className="text-xs font-medium text-burgundy/80 italic">
-                  "{suggestedReason}"
-                </div>
-              </div>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16">
+          <div className="relative p-5 sm:p-6 rounded-2xl bg-[#fffcf7] border border-blush/30 shadow-xs space-y-3 text-left lg:text-center">
+            <Orchidea className="hidden lg:block absolute lg:top-4 lg:right-8 w-32 h-auto -scale-x-100" />
+            <CarloCina className="absolute lg:-scale-x-100 top-8 lg:top-20 right-8 lg:left-8 w-36 h-auto" />
+            <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60">
+              Intestatario:
+            </div>
+            <div className="text-sm font-semibold text-burgundy pr-20 sm:pr-24 lg:pr-0">
+              {settings.registry.holder}
             </div>
 
-            {/* Right: Notify Transfer Form */}
-          
+            <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 pt-2">
+              IBAN:
+            </div>
+            <div className="flex flex-col gap-3 lg:items-center">
+              <span className="font-mono text-sm sm:text-base font-bold text-burgundy break-all select-all">
+                {settings.registry.iban}
+              </span>
+              <button
+                onClick={handleCopyIban}
+                className="w-fit px-5 py-2.5 rounded-xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm lg:mx-auto"
+                title="Copia negli appunti"
+              >
+                {copiedIban ? (
+                  <>
+                    <Check className="w-3.5 h-3.5" />
+                    <span>Copiato!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copia IBAN</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60 pt-2">
+              Causale suggerita:
+            </div>
+            <div className="text-xs font-medium text-burgundy/80 italic">
+              "{suggestedReason}"
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </section>

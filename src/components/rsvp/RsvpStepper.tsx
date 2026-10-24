@@ -136,7 +136,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
       <section id="rsvp" className="bg-[#fbf5f4]">
         
 
-        <div className="max-w-2xl mx-auto px-4 text-center">
+        <div className="text-left lg:text-center">
 
            <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 pb-16 lg:pb-32">
           {/* Organic soft pink blob at top right */}
@@ -145,10 +145,11 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
           <div className="flex flex-col items-start lg:items-center mt-6">
             <StepperTitle className="h-16 lg:h-20 w-auto mb-2" />
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-            <p className="text-xs sm:text-sm text-[#4a151d]/75 max-w-md mx-auto mb-8">
+            <p className="text-xs sm:text-sm text-[#4a151d]/75 max-w-md mb-8 text-left lg:text-center">
               Per confermare la partecipazione per te e per i componenti del tuo nucleo familiare,
               accedi inserendo il tuo nome e cognome. <br/><br/>
-              <strong className="font-semibold text-[#4a151d]">Vi chiediamo gentilmente di confermare entro il {settings.event.rsvpDeadline || settings.rsvp?.deadline || '29 Aprile 2027'}.</strong>
+              <strong className="font-semibold text-[#4a151d] block">Vi chiediamo gentilmente di confermare entro il</strong>
+              <StepperDate className="w-20 pt-2 block mx-0 lg:mx-auto"/>
             </p>
             <button
               onClick={onOpenAuth}
@@ -174,13 +175,13 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
           <div className="flex flex-col items-start lg:items-center mt-6">
             <StepperTitle className="h-16 lg:h-20 w-auto mb-2" />
             <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-            <p className="text-xs sm:text-sm text-burgundy/70">
+            <p className="text-xs sm:text-sm text-burgundy/70 text-left lg:text-center">
             Gruppo: <strong className="text-burgundy font-semibold">{cluster.family_name}</strong> · {clusterGuests.length} {clusterGuests.length === 1 ? 'ospite' : 'ospiti'}
           </p>
           {!showRecap && (
-            <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2">
-              {isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare entro il
-              <StepperDate className="w-20 pt-2"/>
+            <p className="text-xs sm:text-sm font-semibold text-burgundy mt-2 text-left lg:text-center">
+              <span className="block">{isSingleGuest ? 'Ti' : 'Vi'} chiediamo gentilmente di confermare entro il</span>
+              <StepperDate className="w-20 pt-2 block mx-0 lg:mx-auto"/>
             </p>
             
           )}
