@@ -165,7 +165,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
   }
 
   return (
-    <section id="rsvp" className="bg-[#fbf5f4] scroll-mt-12">
+    <section id="rsvp" className="bg-[#fbf5f4]">
 
       {/* 1. Deep Burgundy Banner from grafica.svg */}
         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-8 pb-10">

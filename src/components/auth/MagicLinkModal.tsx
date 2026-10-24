@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, UserSearch, Sparkles, Check } from 'lucide-react';
 
 interface MagicLinkModalProps {
@@ -22,6 +22,17 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
   const [lastName, setLastName] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -106,8 +117,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="es. Marco"
-              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-sm text-burgundy outline-none transition-all"
-              autoFocus
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-base sm:text-sm text-burgundy outline-none transition-all"
             />
           </div>
           <div>
@@ -119,7 +129,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="es. Rossi"
-              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-sm text-burgundy outline-none transition-all"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-base sm:text-sm text-burgundy outline-none transition-all"
             />
           </div>
           <button

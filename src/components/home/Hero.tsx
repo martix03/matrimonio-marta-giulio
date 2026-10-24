@@ -13,7 +13,8 @@ import {
   HomeCount,
   MiniWave,
   HomeCountOnde,
-  HomeCountBaffo
+  HomeCountBaffo,
+  Calla
 } from './GraficaElements';
 
 interface HeroProps {
@@ -98,7 +99,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       <HomeBolle className="absolute -top-6 -right-6 sm:-right-2 w-1/2 sm:w-1/6 pointer-events-none z-0" />
 
       {/* Mid Left: Burgundy Painterly Brush Ribbon (Desktop) */}
-      <HomeBaffo className="hidden lg:block absolute lg:top-[420px] left-2 w-1/6 pointer-events-none opacity-90 z-0" />
+      <Calla className="hidden lg:block absolute lg:top-[420px] left-2 w-1/6 pointer-events-none opacity-90 z-0" />
 
       {/* Main Content Container */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
@@ -113,7 +114,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           {/* CARLO & BAFFO: 2° sotto su mobile, a destra affiancato su desktop */}
           <div className="order-2 relative flex justify-end pr-4 sm:pr-8 lg:pr-0 lg:-mr-72 mb-8 lg:mb-16 group">
             {/* Baffo su mobile sotto Marta & Giulio a sinistra di Carlo */}
-            <HomeBaffo className="block lg:hidden absolute -left-8 bottom-16 w-44 sm:w-56 pointer-events-none opacity-90 -ml-4 z-0" />
+            <Calla className="block lg:hidden absolute -left-8 bottom-16 w-44 sm:w-56 pointer-events-none opacity-90 -ml-4 z-0" />
 
             <img
               src={carloHeroImg}
@@ -166,10 +167,10 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
             <HomeCount className="h-7 w-auto" color="#4a151d" />
           </div>
 
-          {/* Decorative Baffo in top right (underneath countdown blocks layer) */}
+          {/* Decorative Baffo in top right (underneath countdown blocks layer) 
           <HomeCountBaffo className="absolute top-0 right-0 w-16 h-auto pointer-events-none z-0" />
 
-          <HomeCountOnde className="absolute bottom-0 left-0 w-16 h-auto pointer-events-none z-0" />
+          <HomeCountOnde className="absolute bottom-0 left-0 w-16 h-auto pointer-events-none z-0" />*/}
 
           {/* 4 Burgundy Countdown Blocks (Layer on top of Baffo) */}
           <div className="m-6">

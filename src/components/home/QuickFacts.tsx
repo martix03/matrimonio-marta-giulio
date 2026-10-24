@@ -39,7 +39,21 @@ export const QuickFacts: React.FC = () => {
       <div className="pb-24 bg-[#fffcf7]">
         
         {/* 1. Deep Burgundy Banner from grafica.svg */}
-        <div className="relative overflow-hidden bg-[#8c2035] text-white shadow-wedding pl-8 pr-8 pt-8 lg:pt-16 pb-8 lg:pb-32">
+        <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-8 lg:pt-16 pb-16 lg:pb-32 ">
+         
+            {/* ONDA A 2 CURVE (sale e scende) */}
+  <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
+    <svg
+      className="relative block w-full h-12 sm:h-20 lg:h-28"
+      viewBox="0 0 1200 360"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M 0,56 C 257,56 461,358 725,358 C 909,358 1106,206 1200,127 L 1200,360 L 0,360 Z"
+        fill="#fffcf7"
+      />
+    </svg>
+  </div>
           {/* Organic soft pink blob at top right */}
           <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 

@@ -164,8 +164,8 @@ export const InteractiveMap: React.FC = () => {
 
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || 'AIzaSyDummyKeyForDevelopmentAndDemo';
-  const mapInstanceRef = useRef<L.Map | null>(null);
-  const markersRef = useRef<{ [key: string]: L.Marker }>({});
+  const poiListRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<{ [key: string]: HTMLElement | null }>({});
 
   useEffect(() => {
     weddingApi.getPlaces().then(p => {
@@ -245,9 +245,27 @@ export const InteractiveMap: React.FC = () => {
 
 
 
-  const handleSelectPlace = (place: PlacePOI) => {
-    setActivePlace(place);
+  const scrollToPlace = (placeId: string) => {
+    setTimeout(() => {
+      const container = poiListRef.current;
+      const item = itemRefs.current[placeId];
+      if (container && item) {
+        const containerRect = container.getBoundingClientRect();
+        const itemRect = item.getBoundingClientRect();
+        const targetTop = container.scrollTop + (itemRect.top - containerRect.top) - 4;
+        container.scrollTo({
+          top: Math.max(0, targetTop),
+          behavior: 'smooth'
+        });
+      }
+    }, 50);
+  };
 
+  const handleSelectPlace = (place: PlacePOI, scrollToList = false) => {
+    setActivePlace(place);
+    if (scrollToList) {
+      scrollToPlace(place.id);
+    }
   };
 
   const handleCategoryChange = (catId: string) => {
@@ -262,9 +280,10 @@ export const InteractiveMap: React.FC = () => {
     if (placesInCat.length > 0) {
       setActivePlace(placesInCat[0]);
       setMapEffect({ type: 'fitBounds', data: placesInCat });
+      setTimeout(() => {
+        poiListRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 50);
     }
-
-
   };
 
   const handleFoodSubFilterChange = (subId: string) => {
@@ -358,7 +377,7 @@ export const InteractiveMap: React.FC = () => {
                         <MapMarkers
                           places={filteredPlaces}
                           activePlace={activePlace}
-                          onSelectPlace={handleSelectPlace}
+                          onSelectPlace={(place) => handleSelectPlace(place, true)}
                           renderPlaceIcon={renderPlaceIcon}
                           getPinColor={getPinColor}
                         />
@@ -411,30 +430,39 @@ export const InteractiveMap: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-burgundy/60 px-1">
+                  <div className="flex flex-col min-h-0">
+                    <div className="text-[11px] font-semibold uppercase tracking-wider text-burgundy/60 px-1 mb-2">
                       Tutti i punti consigliati ({filteredPlaces.length}):
                     </div>
-                    {filteredPlaces.map(place => (
-                      <button
-                        key={place.id}
-                        onClick={() => handleSelectPlace(place)}
-                        className={`w-full p-3 rounded-xl text-left text-xs transition-all flex items-center justify-between ${activePlace.id === place.id
-                            ? 'bg-burgundy text-paper font-semibold shadow-sm'
-                            : 'bg-paper hover:bg-cream border border-blush/30 text-burgundy'
+                    <div
+                      ref={poiListRef}
+                      className={`space-y-2 max-h-56 overflow-y-auto pt-1 pr-1 relative ${
+                        filteredPlaces.length > 3 ? 'pb-44' : ''
+                      }`}
+                    >
+                      {filteredPlaces.map(place => (
+                        <button
+                          key={place.id}
+                          ref={el => { itemRefs.current[place.id] = el; }}
+                          onClick={() => handleSelectPlace(place, false)}
+                          className={`w-full p-3 rounded-xl text-left text-xs transition-all flex items-center justify-between ${
+                            activePlace.id === place.id
+                              ? 'bg-burgundy text-paper font-semibold shadow-sm'
+                              : 'bg-paper hover:bg-cream border border-blush/30 text-burgundy'
                           }`}
-                      >
-                        <span className="flex items-center gap-2 truncate pr-2">
-                          <span className={`shrink-0 ${activePlace.id === place.id ? 'text-blush' : 'text-burgundy'}`}>
-                            {renderPlaceIcon(place, "w-3.5 h-3.5")}
+                        >
+                          <span className="flex items-center gap-2 truncate pr-2">
+                            <span className={`shrink-0 ${activePlace.id === place.id ? 'text-blush' : 'text-burgundy'}`}>
+                              {renderPlaceIcon(place, "w-3.5 h-3.5")}
+                            </span>
+                            <span className="truncate">{place.name}</span>
                           </span>
-                          <span className="truncate">{place.name}</span>
-                        </span>
-                        <span className="text-[10px] opacity-70 shrink-0">
-                          {place.category === 'ceremony' ? 'Chiesa' : place.category === 'reception' ? 'Cascina' : place.food_type ? place.food_type : place.category}
-                        </span>
-                      </button>
-                    ))}
+                          <span className="text-[10px] opacity-70 shrink-0">
+                            {place.category === 'ceremony' ? 'Chiesa' : place.category === 'reception' ? 'Cascina' : place.food_type ? place.food_type : place.category}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
