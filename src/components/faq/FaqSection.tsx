@@ -13,7 +13,8 @@ import {
    CoordinateTitle,
    ViaggioTitle,
    Orchidea,
-   CarloCina
+   CarloCina,
+   MappaTitle
 } from '../home/GraficaElements';
 
 export const FaqSection: React.FC = () => {
@@ -66,9 +67,6 @@ export const FaqSection: React.FC = () => {
            
           </div>
           </div>
-
-      
-
         
 
         {/* Tag Filters */}
@@ -129,32 +127,53 @@ export const FaqSection: React.FC = () => {
           )}
         </div>
 
-        {/* Direct Contacts Box (Burgundy Style) */}
-        <div className="mt-12 p-6 sm:p-8 rounded-4xl bg-paper shadow-wedding border border-blush/30 text-center max-w-xl mx-auto">
-          <h4 className="font-serif text-2xl text-burgundy font-medium mb-1">
-            Hai un'altra domanda o curiosità?
-          </h4>
-          <p className="text-xs text-burgundy/70 mb-6 max-w-md mx-auto">
-            Siamo a tua completa disposizione! Contattaci liberamente tramite telefono o email:
-          </p>
+ {/* 1. Deep Burgundy Banner from grafica.svg */}
+ <div className="bg-[#fffcf7]">
+        <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-8 lg:pt-16 pb-16 lg:pb-32 ">
+         
+          {/* ONDA A 2 CURVE (sale e scende) */}
+  <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
+    <svg
+      className="relative block w-full h-12 sm:h-20 lg:h-28"
+      viewBox="0 0 1200 360"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M 0,56 C 257,56 461,358 725,358 C 909,358 1106,206 1200,127 L 1200,360 L 0,360 Z"
+        fill="#fffcf7"
+      />
+    </svg>
+  </div>
+          
+          <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
+          <div className="flex flex-col items-start lg:items-center mt-6">
+            <MappaTitle className="h-16 lg:h-20 w-auto mb-2" />
+            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
+                              Siamo a tua completa disposizione! Contattaci liberamente tramite telefono o email:
+
+            </p>
+          </div>
+        </div>
+
+        {/* Direct Contacts Box (Burgundy Style) */}
+        <div className=" p-6 sm:p-8 rounded-4xl bg-[#fffcf7] text-center max-w-xl mx-auto">
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
             {/* Marta Card */}
-            <div className="p-4 rounded-3xl bg-cream/60 border border-blush/40 space-y-2.5">
-              <div className="flex items-center justify-between border-b border-blush/30 pb-1.5">
+            <div className="p-4 rounded-2xl bg-white border border-blush/40 space-y-2.5">
+              <div className="flex items-center justify-between">
                 <span className="font-serif text-base font-semibold text-burgundy">
                   Marta
                 </span>
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-burgundy/60">
-                  La Sposa
-                </span>
+               
               </div>
               <div className="space-y-1.5 text-xs">
                 <a
                   href="tel:+393466121512"
                   className="flex items-center gap-2 text-burgundy hover:text-burgundy-light font-medium transition-colors"
                 >
-                  <Phone className="w-3.5 h-3.5 text-blush shrink-0" />
                   <span>346 612 1512</span>
                 </a>
                 <a
@@ -162,7 +181,6 @@ export const FaqSection: React.FC = () => {
                   className="flex items-center gap-2 text-burgundy/80 hover:text-burgundy text-[11px] truncate transition-colors"
                   title="Invia email a Marta"
                 >
-                  <Mail className="w-3.5 h-3.5 text-blush shrink-0" />
                   <span className="truncate">spalla.marta@gmail.com</span>
                 </a>
               </div>
@@ -172,27 +190,23 @@ export const FaqSection: React.FC = () => {
                 rel="noopener noreferrer"
                 className="mt-2 w-full py-2 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-blush" />
                 <span>Scrivi a Marta</span>
               </a>
             </div>
 
             {/* Giulio Card */}
-            <div className="p-4 rounded-3xl bg-cream/60 border border-blush/40 space-y-2.5">
-              <div className="flex items-center justify-between border-b border-blush/30 pb-1.5">
+            <div className="p-4 rounded-2xl bg-white border border-blush/40 space-y-2.5">
+              <div className="flex items-center justify-between">
                 <span className="font-serif text-base font-semibold text-burgundy">
                   Giulio
                 </span>
-                <span className="text-[10px] uppercase tracking-wider font-semibold text-burgundy/60">
-                  Lo Sposo
-                </span>
+              
               </div>
               <div className="space-y-1.5 text-xs">
                 <a
                   href="tel:+393492481715"
                   className="flex items-center gap-2 text-burgundy hover:text-burgundy-light font-medium transition-colors"
                 >
-                  <Phone className="w-3.5 h-3.5 text-blush shrink-0" />
                   <span>349 248 1715</span>
                 </a>
                 <a
@@ -200,7 +214,6 @@ export const FaqSection: React.FC = () => {
                   className="flex items-center gap-2 text-burgundy/80 hover:text-burgundy text-[11px] truncate transition-colors"
                   title="Invia email a Giulio"
                 >
-                  <Mail className="w-3.5 h-3.5 text-blush shrink-0" />
                   <span className="truncate">giulio.palomba@gmail.com</span>
                 </a>
               </div>
@@ -210,12 +223,12 @@ export const FaqSection: React.FC = () => {
                 rel="noopener noreferrer"
                 className="mt-2 w-full py-2 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-[11px] font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
               >
-                <MessageCircle className="w-3.5 h-3.5 text-blush" />
                 <span>Scrivi a Giulio</span>
               </a>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

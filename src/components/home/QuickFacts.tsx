@@ -168,7 +168,7 @@ export const QuickFacts: React.FC = () => {
       {/* Navigation App Chooser Modal (Google / Apple / Waze) */}
       {navModalPlace && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#4a151d]/60 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-sm bg-white rounded-3xl p-6 shadow-wedding-lg border border-blush/40 text-center">
+          <div className="relative w-full max-w-sm bg-white rounded-2xl p-6 shadow-wedding-lg border border-blush/40 text-center">
             <div className="w-12 h-12 rounded-full bg-[#e5edd8] flex items-center justify-center mx-auto mb-3">
               <MapPin className="w-6 h-6 text-[#667b4e]" />
             </div>

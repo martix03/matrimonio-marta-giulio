@@ -102,7 +102,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       <Calla className="hidden lg:block absolute lg:top-[420px] left-2 w-1/6 pointer-events-none opacity-90 z-0" />
 
       {/* Main Content Container */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 relative z-10">
         
         {/* Responsive Container: Marta & Giulio in centro in alto, Carlo e Baffo sotto */}
         <div className="flex flex-col mt-6 sm:mt-10 lg:mt-44">
@@ -127,7 +127,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
         {/* Contextual Cluster Greeting Card (when guest is logged in) */}
         {cluster && (
-          <div className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-3xl bg-white/95 border border-blush/40 animate-fade-in text-left">
+          <div className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-2xl bg-white/95 border border-blush/40 animate-fade-in text-left">
             <div className="flex items-center gap-2 text-[#4a151d] text-sm font-semibold mb-1">
               <div className="w-2 h-2 rounded-full bg-[#667b4e]" />
               <span>{welcomeGreeting}, {cluster.family_name}!</span>
@@ -161,7 +161,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         )}
 
         {/* Countdown Box Card (Exact match to grafica.svg) */}
-        <div className="max-w-md mx-auto bg-white rounded-3xl border border-blush/30 mb-5 relative overflow-hidden">
+        <div className="max-w-md mx-auto bg-white rounded-2xl border border-blush/30 mb-5 relative overflow-hidden">
           {/* Card Header */}
           <div className="flex items-center mt-6 justify-center mb-4">
             <HomeCount className="h-7 w-auto" color="#4a151d" />

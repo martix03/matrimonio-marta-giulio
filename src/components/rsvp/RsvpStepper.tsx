@@ -408,7 +408,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       return (
                         <div
                           key={guest.id}
-                          className={`pb-4 pt-4 rounded-3xl transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 `}
+                          className={`pb-4 pt-4 rounded-2xl transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 `}
                         >
                           <div className="flex items-center gap-3">
                           

@@ -141,15 +141,15 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
 
         {/* Bank Details & Notification Card */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16">
-          <div className="relative p-5 sm:p-7 rounded-3xl bg-[#fffcf7] border border-blush/30 shadow-xs overflow-hidden">
+          <div className="relative p-5 sm:p-7 rounded-2xl bg-[#fffcf7] border border-blush/30 shadow-xs overflow-hidden">
             {/* Orchidea on desktop right side, vertically centered */}
             <Orchidea className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-6 w-28 lg:w-32 h-auto -scale-x-100 pointer-events-none select-none z-0 opacity-80" />
 
             {/* Carlo Cina: vertically centered on the right on mobile, and on the left on desktop */}
-            <CarloCina className="absolute top-1/2 -translate-y-1/2 right-3 sm:right-6 w-1/5 lg:w-1/6 lg:left-6 lg:right-auto lg:-scale-x-100 h-auto pointer-events-none select-none z-0" />
+            <CarloCina className="absolute -bottom-12 lg:top-1/2 -translate-y-1/2 right-3 sm:right-6 w-1/4 lg:w-1/6 lg:left-6 lg:right-auto lg:-scale-x-100 h-auto pointer-events-none select-none z-0" />
 
             {/* Bank Details Content - safe zone on mobile, perfectly centered on desktop (lg) */}
-            <div className="relative z-10 space-y-3.5 text-left lg:text-center pr-24 sm:pr-28 lg:pr-0 lg:mx-auto lg:max-w-md">
+            <div className="relative z-10 space-y-3.5 text-left lg:text-center pr-4 sm:pr-28 lg:pr-0 lg:mx-auto lg:max-w-md">
               <div>
                 <div className="text-[11px] uppercase tracking-wider font-semibold text-burgundy/60">
                   Intestatario:
@@ -164,7 +164,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                   IBAN:
                 </div>
                 <div className="flex flex-col gap-3 lg:items-center mt-1">
-                  <span className="font-mono text-sm sm:text-sm md:text-base font-bold text-burgundy break-all select-all">
+                  <span className="font-mono w-fit pr-4 rounded-md text-sm bg-[#fffcf7] sm:text-sm md:text-base font-bold text-burgundy break-all select-all">
                     {settings.registry.iban}
                   </span>
                   <button

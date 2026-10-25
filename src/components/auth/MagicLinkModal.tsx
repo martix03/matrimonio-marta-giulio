@@ -83,7 +83,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <div className="w-12 h-12 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-3">
             <UserSearch className="w-6 h-6 text-burgundy" />
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl text-burgundy">
+          <h2 className="font-serif text-2xl sm:text-2xl text-burgundy">
             {currentFamily ? 'Il tuo Invito Personale' : 'Accedi al tuo Invito'}
           </h2>
           <p className="text-xs sm:text-sm text-burgundy/70 mt-1">

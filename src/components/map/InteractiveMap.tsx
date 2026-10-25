@@ -64,7 +64,7 @@ class MapErrorBoundary extends React.Component<{ children: React.ReactNode }, { 
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-full h-full min-h-[360px] sm:min-h-[460px] flex flex-col items-center justify-center bg-cream/70 text-burgundy p-6 text-center rounded-3xl">
+        <div className="w-full h-full min-h-[360px] sm:min-h-[460px] flex flex-col items-center justify-center bg-cream/70 text-burgundy p-6 text-center rounded-2xl">
           <MapPin className="w-8 h-8 text-burgundy mb-2 opacity-60" />
           <p className="font-serif text-lg font-medium mb-1">Mappa dei Luoghi</p>
           <p className="text-xs text-burgundy/70 max-w-xs mb-4">
@@ -392,7 +392,7 @@ export const InteractiveMap: React.FC = () => {
               {activePlace && (
                 <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
 
-                  <div className="relative overflow-hidden p-6 rounded-3xl bg-paper shadow-wedding border-1 border-blush/40 animate-fade-in space-y-4">
+                  <div className="relative overflow-hidden p-6 rounded-2xl bg-paper shadow-wedding border-1 border-blush/40 animate-fade-in space-y-4">
                     <TimeBolle className="absolute bottom-0 -right-0 w-24 z-0 -scale-y-100 pointer-events-none" />
 
                     <div>
