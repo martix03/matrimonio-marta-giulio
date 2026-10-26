@@ -281,7 +281,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
 
         {/* Main Card */}
         <div className="relative p-6 mb-16 rounded-4xl bg-[#fffcf7] border-blush/30 overflow-hidden">
-          <StepperBolle className="absolute top-0 right-0 w-40 lg:w-48 pointer-events-none z-0" />
+          <StepperBolle className="absolute top-0 right-0 w-1/4 lg:w-48 pointer-events-none z-0" />
 
           <div className="relative z-10">
             {savedSuccess ? (
@@ -384,7 +384,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                   <span>Modifica le risposte</span>
                 </button>
               </div>
-              <StepperOnde className="absolute -bottom-8 -left-10 lg:-bottom-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+              {/*<StepperOnde className="absolute -bottom-8 -left-10 lg:-bottom-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />*/}
             </div>
           ) : (
             <>
@@ -472,7 +472,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                     <div className="mt-4 space-y-3 animate-fade-in">
                       
                       <div className="pt-6 flex justify-end relative">
-                        <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-15 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+                        {/*<StepperOnde className="absolute -bottom-8 -left-10 lg:-left-15 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />*/}
                         <button
                           onClick={handleSaveRsvp}
                           disabled={isSaving}
@@ -487,7 +487,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                   {/* Case B: At least one person attending */}
                   {hasAttending && (
                     <div className="pt-6 flex justify-end relative">
-                      <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+                      {/*<StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />*/}
                       <button
                         onClick={() => setStep(2)}
                         disabled={!allAnswered}
@@ -552,13 +552,13 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                         </div>
 
                         {/* Notes input */}
-                        <div>
+                        <div className="w-full h-10 px-3.5 rounded-xl border border-blush/40 bg-paper flex items-center focus-within:border-burgundy transition-colors overflow-hidden">
                           <input
                             type="text"
                             value={guest.dietary_notes || ''}
                             onChange={e => updateGuest(guest.id, { dietary_notes: e.target.value })}
                             placeholder="Altre allergie gravi o note particolari..."
-                            className="w-full px-4 py-2 rounded-xl border border-blush/40 text-xs text-burgundy bg-paper outline-none focus:border-burgundy"
+                            className="w-[125%] origin-left scale-[0.8] text-base text-burgundy bg-transparent border-0 outline-none p-0 placeholder:text-burgundy/40"
                           />
                         </div>
 
@@ -582,7 +582,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                   </div>
 
                   <div className="pt-6 flex justify-between items-center relative">
-                    <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+                    {/*<StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />*/}
                     <button
                       onClick={() => setStep(1)}
                       className="py-3 px-5 rounded-2xl border border-blush/50 bg-[#fffcf7] text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors relative z-10 shadow-xs"
@@ -606,7 +606,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                 <div className="space-y-6 animate-fade-in">
                   <div className="text-left">
                     
-                    <h3 className="font-serif text-2xl text-burgundy">
+                    <h3 className="font-serif text-2xl w-fit text-burgundy">
                       La canzone per la festa
                     </h3>
                     <p className="text-xs text-burgundy/70 mt-1">
@@ -620,19 +620,21 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                         <label className="block text-xs font-semibold text-burgundy mb-1.5">
                           Canzone preferita di {guest.first_name}:
                         </label>
-                        <input
-                          type="text"
-                          value={guest.song_request}
-                          onChange={e => updateGuest(guest.id, { song_request: e.target.value })}
-                          placeholder="es. Gloria Gaynor - I Will Survive"
-                          className="w-full px-4 py-2.5 rounded-xl border border-blush/50 text-xs text-burgundy bg-paper outline-none focus:border-burgundy"
-                        />
+                        <div className="w-full h-10 px-3.5 rounded-xl border border-blush/50 bg-paper flex items-center focus-within:border-burgundy transition-colors overflow-hidden">
+                          <input
+                            type="text"
+                            value={guest.song_request}
+                            onChange={e => updateGuest(guest.id, { song_request: e.target.value })}
+                            placeholder="es. Gigi D'Agostino - L'Amour Toujours"
+                            className="w-[125%] origin-left scale-[0.8] text-base text-burgundy bg-transparent border-0 outline-none p-0 placeholder:text-burgundy/40"
+                          />
+                        </div>
                       </div>
                     ))}
                   </div>
 
                   <div className="pt-6 flex justify-between items-center relative">
-                    <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+                    {/*<StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />*/}
                     <button
                       onClick={() => setStep(2)}
                       className="py-3 px-5 rounded-2xl border border-blush/50 bg-[#fffcf7] text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors relative z-10 shadow-xs"
@@ -728,7 +730,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                   </div>
 
                   <div className="pt-6 flex justify-between items-center relative">
-                    <StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
+                    {/*<StepperOnde className="absolute -bottom-8 -left-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />*/}
                     <button
                       onClick={() => setStep(3)}
                       className="py-3 px-5 rounded-2xl border border-blush/50 bg-[#fffcf7] text-burgundy text-xs font-semibold uppercase tracking-wider flex items-center gap-2 hover:bg-cream transition-colors relative z-10 shadow-xs"
@@ -741,7 +743,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({ cluster, onOpenAuth, o
                       disabled={isSaving}
                       className="py-4 px-8 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-wedding hover:shadow-wedding-lg relative z-10"
                     >
-                      <span>{isSaving ? 'Salvataggio in corso...' : 'Invia'}</span>
+                      <span>{isSaving ? 'Salvataggio...' : 'Invia'}</span>
                     </button>
                   </div>
                 </div>

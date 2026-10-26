@@ -51,7 +51,7 @@ export const FaqSection: React.FC = () => {
 
   return (
     <section id="faq" className="bg-cream">
-      <div className="max-w-4xl mx-auto">
+      <div className="">
 
 
            <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
@@ -87,7 +87,7 @@ export const FaqSection: React.FC = () => {
         </div>
 
         {/* Accordion List */}
-        <div className="space-y-3 ml-6 mr-6">
+        <div className="space-y-3 ml-6 mr-6 mb-16">
           {filteredFaqs.length > 0 ? (
             filteredFaqs.map(faq => {
               const isOpen = openIds.includes(faq.id);
@@ -158,9 +158,9 @@ export const FaqSection: React.FC = () => {
         </div>
 
         {/* Direct Contacts Box (Burgundy Style) */}
-        <div className=" p-6 sm:p-8 rounded-4xl bg-[#fffcf7] text-center max-w-xl mx-auto">
+        <div className="p-6 sm:p-8 rounded-4xl bg-[#fffcf7] text-center max-w-xl mx-auto">
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mt-8  mb-8">
             {/* Marta Card */}
             <div className="p-4 rounded-2xl bg-white border border-blush/40 space-y-2.5">
               <div className="flex items-center justify-between">

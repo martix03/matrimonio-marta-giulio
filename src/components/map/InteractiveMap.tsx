@@ -438,9 +438,7 @@ export const InteractiveMap: React.FC = () => {
                     </div>
                     <div
                       ref={poiListRef}
-                      className={`space-y-2 max-h-56 overflow-y-auto pt-1 pr-1 relative ${
-                        filteredPlaces.length > 3 ? 'pb-44' : ''
-                      }`}
+                      className="space-y-2 max-h-56 overflow-y-auto pt-1 pr-1 pb-1 relative"
                     >
                       {filteredPlaces.map(place => (
                         <button
