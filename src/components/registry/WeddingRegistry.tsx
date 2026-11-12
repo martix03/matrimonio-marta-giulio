@@ -80,7 +80,7 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
       />
 
       <div className="mb-16 mt-4 max-w-6xl lg:max-w-7xl mx-auto px-2">
-        <Tappe className="w-full lg:w-1/2 h-auto mx-auto" />
+        <Tappe className="w-full sm:w-[70%] lg:w-[70%] h-auto mx-auto" />
       </div>
       <div className="bg-[#fbf5f4]">
         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
