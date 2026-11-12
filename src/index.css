@@ -22,6 +22,7 @@
   --btn-font-size: 0.75rem;       /* Dimensione testo (12px = text-xs) */
   --btn-font-weight: 600;         /* Spessore testo (font-semibold) */
 
+  --bordeaux: #4a151d;
   --burgundy: #8c2035;
   --blush: #d7b8af;
   --cream: #faf2f2;
@@ -142,21 +143,25 @@ body {
     text-decoration: none;
   }
 
-  .btn:hover,
-  .btn-primary:hover {
+  .btn:hover:not(:disabled),
+  .btn-primary:hover:not(:disabled) {
     background-color: var(--btn-bg-hover);
   }
 
-  .btn:active,
-  .btn-primary:active {
+  .btn:active:not(:disabled),
+  .btn-primary:active:not(:disabled) {
     transform: translateY(1px);
   }
 
   .btn:disabled,
   .btn-primary:disabled {
-    opacity: 0.5;
+    background-color: #f2e8e6;
+    color: #bfa096;
+    border-color: rgba(223, 176, 176, 0.4);
+    box-shadow: none;
     cursor: not-allowed;
     transform: none;
+    opacity: 1;
   }
 
   .btn-secondary,
@@ -180,22 +185,26 @@ body {
     text-decoration: none;
   }
 
-  .btn-secondary:hover,
-  .btn-outline:hover {
+  .btn-secondary:hover:not(:disabled),
+  .btn-outline:hover:not(:disabled) {
     background-color: #faf2f2;
     border-color: #4a151d;
   }
 
-  .btn-secondary:active,
-  .btn-outline:active {
+  .btn-secondary:active:not(:disabled),
+  .btn-outline:active:not(:disabled) {
     transform: translateY(1px);
   }
 
   .btn-secondary:disabled,
   .btn-outline:disabled {
-    opacity: 0.5;
+    background-color: #fbf5f4;
+    color: #bfa096;
+    border-color: rgba(223, 176, 176, 0.3);
+    box-shadow: none;
     cursor: not-allowed;
     transform: none;
+    opacity: 1;
   }
 }
 
@@ -276,3 +285,15 @@ section[id] {
 .custom-leaflet-pin:hover {
   transform: scale(1.15);
 }
+
+/* Sfondo rombi RSVP responsive: 4 unità (16px) su mobile, 8 unità (32px) su schermi grandi lg */
+.rsvp-bg-rombi {
+  background-position: -16px -16px;
+}
+
+@media (min-width: 1024px) {
+  .rsvp-bg-rombi {
+    background-position: -32px -32px;
+  }
+}
+

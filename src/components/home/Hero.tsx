@@ -4,17 +4,11 @@ import { useSettings } from "../../contexts/SettingsContext";
 import { Cluster } from "../../types";
 
 import {
-  HomeBolle,
-  HomeRighe,
-  HomeBaffo,
   MartaGiulio,
   CascinaRanverso,
   Data,
   Count,
   LineaRosa,
-  HomeCountOnde,
-  HomeCountBaffo,
-  Calla,
   Anthurium,
   CarloBicchiere,
   RombiAngolo,
@@ -125,7 +119,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
             </div>
 
             <div className="relative flex justify-start ml-4 sm:ml-8 -mt-28 mb-12 group">
-              <CarloBicchiere className="w-48 sm:w-52 lg:w-80 object-contain filter select-none group-hover:scale-105 transition-transform duration-300 relative z-10" />
+              <CarloBicchiere className="w-48 sm:w-52 lg:w-80 object-contain filter select-none transition-transform duration-300 relative z-10" />
             </div>
           </div>
         </div>
@@ -146,7 +140,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
               <RombiAngolo className="w-full h-auto -scale-y-100 pointer-events-none select-none" />
 
               {/* CarloBicchiere sopra */}
-              <CarloBicchiere className="absolute w-72 lg:w-80 object-contain filter select-none group-hover:scale-105 transition-transform duration-300 z-10" />
+              <CarloBicchiere className="absolute w-72 lg:w-80 object-contain filter select-none transition-transform duration-300 z-10" />
             </div>
           </div>
         </div>
@@ -205,11 +199,6 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           <div className="flex items-center mt-6 justify-center mb-4">
             <Count className="h-7 w-auto" />
           </div>
-
-          {/* Decorative Baffo in top right (underneath countdown blocks layer) 
-          <HomeCountBaffo className="absolute top-0 right-0 w-16 h-auto pointer-events-none z-0" />
-
-          <HomeCountOnde className="absolute bottom-0 left-0 w-16 h-auto pointer-events-none z-0" />*/}
 
           {/* 4 Burgundy Countdown Blocks (Layer on top of Baffo) */}
           <div className="m-6">

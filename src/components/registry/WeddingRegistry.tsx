@@ -7,7 +7,6 @@ import { weddingApi } from "../../services/supabase";
 import {
   MiniWave,
   TimeBolle,
-  ConfermaBolle,
   Data,
   CascinaTitle,
   CoordinateTitle,
@@ -106,7 +105,6 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
       <div className="bg-[#fbf5f4]">
         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
           {/* Organic soft pink blob at top right */}
-          <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
           <div className="flex flex-col items-start lg:items-center mt-6">
             <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />

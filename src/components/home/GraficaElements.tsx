@@ -15,65 +15,23 @@ import data from "../../assets/data.svg";
 import count from "../../assets/count.svg";
 import dettagli from "../../assets/dettagli.svg";
 import ore17 from "../../assets/ore-17.svg";
+import rsvp from "../../assets/RSPV.svg";
 
 import carloCina from "../../assets/carlo-cina.svg";
 import carloBicchiere from "../../assets/carlo_bicchiere.svg";
+import martini from "../../assets/martini.svg";
 
-import homeBolle from "../../assets/bolle-home.svg";
-import homeRighe from "../../assets/home-righe.svg";
-import homeBaffo from "../../assets/home-baffo.svg";
-
-import homeCountBaffo from "../../assets/count-baffo.svg";
-import homeCountOnde from "../../assets/count-onde.svg";
 import timeBolle from "../../assets/time-bolle.svg";
 import cascina from "../../assets/cascina.svg";
-import stepperTitle from "../../assets/stepper-title.svg";
 import stepperDate from "../../assets/stepper-date.svg";
 import stepperOnde from "../../assets/stepper-onde.svg";
 import stepperBolle from "../../assets/stepper-bolle.svg";
-import confermaBolle from "../../assets/conferma-bolle.svg";
 import carloFace from "../../assets/carlo-face.svg";
 import viaggioTitle from "../../assets/viaggio-title.svg";
 import mappaTitle from "../../assets/mappa-title.svg";
 import coordinateTitle from "../../assets/coordinate.svg";
 
 import backgroundRed from "../../assets/background-red.svg";
-
-export const HomeBolle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={homeBolle}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-
-export const HomeRighe: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={homeRighe}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-
-export const HomeBaffo: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={homeBaffo}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
 
 export const MartaGiulio: React.FC<{ className?: string }> = ({
   className = "",
@@ -226,12 +184,10 @@ export const Orchidea2: React.FC<{ className?: string }> = ({
   );
 };
 
-export const StepperTitle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
+export const Rsvp: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <img
-      src={stepperTitle}
+      src={rsvp}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -250,17 +206,6 @@ export const StepperBolle: React.FC<{ className?: string }> = ({
   );
 };
 
-export const ConfermaBolle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={confermaBolle}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
 export const StepperDate: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
@@ -359,6 +304,19 @@ export const CarloBicchiere: React.FC<{ className?: string; alt?: string }> = ({
   );
 };
 
+export const Martini: React.FC<{ className?: string; alt?: string }> = ({
+  className = "",
+  alt = "Carlo",
+}) => {
+  return (
+    <img
+      src={martini}
+      alt={alt}
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
 export const BackgroundRed: React.FC<{ className?: string; alt?: string }> = ({
   className = "",
   alt = "Carlo",
@@ -372,29 +330,7 @@ export const BackgroundRed: React.FC<{ className?: string; alt?: string }> = ({
   );
 };
 
-export const HomeCountBaffo: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={homeCountBaffo}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
 
-export const HomeCountOnde: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={homeCountOnde}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
 
 export const Data: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (

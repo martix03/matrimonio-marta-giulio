@@ -7,6 +7,12 @@ export default {
   theme: {
     extend: {
       colors: {
+        bordeaux: {
+          DEFAULT: '#4a151d',
+          deep: '#380a13',
+          light: '#6d1828',
+          soft: 'rgba(74, 21, 29, 0.08)',
+        },
         burgundy: {
           DEFAULT: '#8c2035',
           deep: '#380a13',

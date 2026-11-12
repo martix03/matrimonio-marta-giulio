@@ -10,13 +10,10 @@ import {
 } from "lucide-react";
 import { useSettings } from "../../contexts/SettingsContext";
 import {
-  MiniWave,
-  TimeBolle,
   Data,
   Ore17,
   CascinaRanverso,
-  Calla,
-  Orchidea,
+  Martini,
   Dettagli,
 } from "./GraficaElements";
 import { SectionBanner } from "../common/SectionBanner";
@@ -56,7 +53,7 @@ export const QuickFacts: React.FC = () => {
 
   return (
     <section id="dettagli" className="bg-white border-y border-blush/20">
-      <div className="pb-24 bg-[#fffcf7]">
+      <div className="pb-12 lg:pb-24 bg-[#fffcf7]">
         {/* Banner testata con titolo grafico e sottotitolo */}
         <SectionBanner
           title={Dettagli}
@@ -70,25 +67,24 @@ export const QuickFacts: React.FC = () => {
         />
 
         {/* 2. Timeline Card (Centered and enlarged for desktop) */}
-        <div className="bg-avorio p-8 sm:p-12 lg:p-16">
+        <div className="bg-avorio">
           <div className="max-w-2xl mx-auto flex flex-col items-center text-center">
-            <div className="w-full space-y-10 lg:space-y-14 my-2">
+            <div className="w-full mt-4 space-y-8 lg:space-y-14 my-2">
               {/* Stop 1: La Data */}
               <div className=" relative flex flex-col items-center text-center">
-                <Orchidea className="absolute right-0 lg:-right-8 top-16 -translate-y-1/2 w-1/4 h-auto -scale-x-100 pointer-events-none" />
-                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <span className="body uppercase tracking-widest text-bordeaux/70 font-bold block mb-1">
                   La data
                 </span>
-                <Data className="mt-2 h-7 sm:h-8 lg:h-12 w-auto mx-auto" />
+                <Data className="h-6 sm:h-8 lg:h-10 w-auto mx-auto" />
               </div>
 
               {/* Stop 2: Gli Orari */}
               <div className="flex flex-col items-center text-center">
-                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
-                  L'orari
+                <span className="body uppercase tracking-widest text-bordeaux/70 font-bold block mb-1">
+                  L'orario
                 </span>
-                <Ore17 className="mt-2 mb-2 h-5 sm:h-6 lg:h-8 w-auto mx-auto" />
-                <p className="body text-[#4a151d]/75 mt-1 max-w-md">
+                <Ore17 className=" mb-2 h-6 sm:h-6 lg:h-8 w-auto mx-auto" />
+                <p className="body text-bordeaux/75 max-w-md">
                   {settings.event.ceremonyTime ||
                     "Arrivo gradito entro le 16:45"}
                 </p>
@@ -96,10 +92,10 @@ export const QuickFacts: React.FC = () => {
 
               {/* Stop 3: La Cerimonia */}
               <div className="flex flex-col items-center text-center">
-                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <span className="body uppercase tracking-widest text-bordeaux/70 font-bold block mb-1">
                   La cerimonia
                 </span>
-                <CascinaRanverso className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
+                <CascinaRanverso className="h-8 sm:h-9 lg:h-12 w-auto mx-auto" />
                 <p className="body text-[#4a151d]/75 mt-1 max-w-md">
                   {settings.locations.ceremony.address.includes(", ") ? (
                     <>
@@ -119,25 +115,16 @@ export const QuickFacts: React.FC = () => {
                     settings.locations.ceremony.address
                   )}
                 </p>
-                {ceremonyNav && (
-                  <button
-                    onClick={() => setNavModalPlace(ceremonyNav)}
-                    className="mt-3.5 inline-flex items-center gap-2 px-5 py-2 lg:px-6 lg:py-2.5 rounded-xl bg-white hover:bg-[#e5edd8] border border-[#667b4e]/30 text-[#4a151d] body font-semibold tracking-wide transition-all shadow-xs hover:shadow-sm"
-                  >
-                    <Navigation className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#667b4e]" />
-                    <span>Apri Navigatore</span>
-                  </button>
-                )}
               </div>
 
               {/* Stop 4: La Festa / Il Ricevimento */}
               <div className="relative flex flex-col items-center text-center">
-                <Calla className="absolute -left-20 lg:-left-56 -translate-y-1/2 w-1/2 h-auto pointer-events-none" />
+                <Martini className="absolute right-4 top-0 lg:-top-36 sm:-top-36 lg:-right-8 sm:-right-8 w-[20%] h-auto pointer-events-none" />
 
-                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <span className="body uppercase tracking-widest text-bordeaux/70 font-bold block mb-1">
                   La festa
                 </span>
-                <CascinaRanverso className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
+                <CascinaRanverso className="h-8 sm:h-9 lg:h-12 w-auto mx-auto" />
                 <p className="body text-[#4a151d]/75 mt-1 max-w-md">
                   {(() => {
                     const text =
@@ -174,66 +161,6 @@ export const QuickFacts: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {/* Navigation App Chooser Modal (Google / Apple / Waze) */}
-      {navModalPlace && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#4a151d]/60 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full max-w-sm bg-white rounded-2xl p-6 shadow-wedding-lg border border-blush/40 text-center">
-            <div className="w-12 h-12 rounded-full bg-[#e5edd8] flex items-center justify-center mx-auto mb-3">
-              <MapPin className="w-6 h-6 text-[#667b4e]" />
-            </div>
-            <h3 className="titolo font-semibold text-[#4a151d] mb-1">
-              Naviga verso
-            </h3>
-            <p className="body text-[#4a151d]/80 mb-5 font-medium">
-              {navModalPlace.name}
-            </p>
-
-            <div className="flex flex-col gap-2.5">
-              {navModalPlace.google && (
-                <a
-                  href={navModalPlace.google}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] body font-semibold flex items-center justify-between transition-colors"
-                >
-                  <span>Apri in Google Maps</span>
-                  <ExternalLink className="w-4 h-4 text-[#4a151d]/60" />
-                </a>
-              )}
-              {navModalPlace.apple && (
-                <a
-                  href={navModalPlace.apple}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] body font-semibold flex items-center justify-between transition-colors"
-                >
-                  <span>Apri in Apple Maps</span>
-                  <ExternalLink className="w-4 h-4 text-[#4a151d]/60" />
-                </a>
-              )}
-              {navModalPlace.waze && (
-                <a
-                  href={navModalPlace.waze}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] body font-semibold flex items-center justify-between transition-colors"
-                >
-                  <span>Apri in Waze</span>
-                  <ExternalLink className="w-4 h-4 text-[#4a151d]/60" />
-                </a>
-              )}
-            </div>
-
-            <button
-              onClick={() => setNavModalPlace(null)}
-              className="mt-5 body text-[#4a151d]/60 hover:text-[#4a151d] underline transition-colors"
-            >
-              Chiudi
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

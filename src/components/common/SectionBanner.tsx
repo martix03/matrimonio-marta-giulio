@@ -102,8 +102,8 @@ export const SectionBanner: React.FC<SectionBannerProps> = ({
   const RenderOrchidee = () => {
     return (
       <div className="pointer-events-none select-none">
-        <Orchidea className="absolute top-16 -left-2 w-[18%] lg:w-[8%] rotate-[45deg] pointer-events-none" />
-        <Orchidea2 className="absolute top-8 -right-2 w-[22%] lg:w-[9%] -rotate-[55deg]" />
+        <Orchidea className="absolute top-16 sm:top-10 -left-2 w-[18%] sm:w-[12%] lg:w-[8%] rotate-[45deg] pointer-events-none" />
+        <Orchidea2 className="absolute top-8 -right-2 w-[22%]  sm:w-[13%] lg:w-[9%] -rotate-[55deg]" />
       </div>
     );
   };

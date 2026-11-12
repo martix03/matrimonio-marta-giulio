@@ -27,7 +27,6 @@ import { mockPlaces } from "../../services/mockData";
 import {
   MiniWave,
   TimeBolle,
-  ConfermaBolle,
   Data,
   MappaTitle,
   CascinaTitle,
