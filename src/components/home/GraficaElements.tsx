@@ -5,6 +5,7 @@ import orchidea from "../../assets/orchidea.svg";
 import anthurium from "../../assets/anthurium.svg";
 
 import rombiAngolo from "../../assets/rombi-3.svg";
+import lineaRosa from "../../assets/linea.svg";
 
 import logo from "../../assets/logo.svg";
 import martaGiulio from "../../assets/marta-giulio-title.svg";
@@ -182,6 +183,19 @@ export const RombiAngolo: React.FC<{ className?: string }> = ({
   return (
     <img
       src={rombiAngolo}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const LineaRosa: React.FC<{
+  className?: string;
+  strokeWidth?: number;
+}> = ({ className = "" }) => {
+  return (
+    <img
+      src={lineaRosa}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />

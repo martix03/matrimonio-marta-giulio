@@ -8,11 +8,11 @@ export default {
     extend: {
       colors: {
         burgundy: {
-          DEFAULT: '#4a151d',
+          DEFAULT: '#8c2035',
           deep: '#380a13',
           light: '#6d1828',
           ribbon: '#8a1e32',
-          soft: 'rgba(74, 21, 29, 0.08)',
+          soft: 'rgba(140, 32, 53, 0.08)',
         },
         blush: {
           DEFAULT: '#dfb0b0',

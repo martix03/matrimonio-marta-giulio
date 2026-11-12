@@ -11,7 +11,7 @@ import {
   CascinaRanverso,
   Data,
   HomeCount,
-  MiniWave,
+  LineaRosa,
   HomeCountOnde,
   HomeCountBaffo,
   Calla,
@@ -116,7 +116,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       <div className="max-w-2xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Mobile */}
         <div className="flex flex-col lg:hidden mb-12">
-        {/* Responsive Container: Marta & Giulio in centro in alto, Carlo e Baffo sotto */}
+          {/* Responsive Container: Marta & Giulio in centro in alto, Carlo e Baffo sotto */}
           <div className="flex flex-col mt-36">
             <div className="flex flex-col items-end mb-6">
               <MartaGiulio className="h-24" />
@@ -213,13 +213,13 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
           {/* 4 Burgundy Countdown Blocks (Layer on top of Baffo) */}
           <div className="m-6">
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center text-[#ebd5d4] relative z-10">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center text-lightRosa relative z-10">
               {/* Days */}
-              <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
-                <span className="font-sans titolo mt-2 mb-2 font-bold tracking-tigh">
+              <div className="bg-[#8c2035] text-lightRosa rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
+                <span className="titolo mt-2 mb-2 font-bold tracking-tigh">
                   {timeLeft.days}
                 </span>
-                <MiniWave color="#ebd5d4" className="w-full" strokeWidth={2} />
+                <LineaRosa className="w-full" strokeWidth={2} />
                 <span className="body mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Giorni
                 </span>
@@ -230,11 +230,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 <span className="font-sans titolo mt-2 mb-2  font-bold tracking-tight">
                   {String(timeLeft.hours).padStart(2, "0")}
                 </span>
-                <MiniWave
-                  color="#ebd5d4"
-                  className="w-full my-0.5"
-                  strokeWidth={2}
-                />
+                <LineaRosa className="w-full my-0.5" strokeWidth={2} />
                 <span className="body mt-2 mb-2  tracking-wider uppercase font-semibold">
                   Ore
                 </span>
@@ -245,11 +241,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 <span className="font-sans titolo mt-2 mb-2  font-bold tracking-tight">
                   {String(timeLeft.minutes).padStart(2, "0")}
                 </span>
-                <MiniWave
-                  color="#ebd5d4"
-                  className="w-full my-0.5"
-                  strokeWidth={2}
-                />
+                <LineaRosa className="w-full my-0.5" strokeWidth={2} />
                 <span className="body mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Minuti
                 </span>
@@ -260,11 +252,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
                 <span className="font-sans titolo mt-2 mb-2 font-bold tracking-tight">
                   {String(timeLeft.seconds).padStart(2, "0")}
                 </span>
-                <MiniWave
-                  color="#ebd5d4"
-                  className="w-full my-0.5"
-                  strokeWidth={2}
-                />
+                <LineaRosa className="w-full my-0.5" strokeWidth={2} />
                 <span className="body mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Secondi
                 </span>
