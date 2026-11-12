@@ -55,8 +55,8 @@ export const SectionBannerRosa: React.FC<SectionBannerProps> = ({
   const RenderAnthurium = () => {
     return (
       <div className="pointer-events-none select-none">
-        <Anthurium2 className="absolute -top-0 -left-2 w-[13%] sm:w-[12%] lg:w-[8%] rotate-[130deg] pointer-events-none" />
-        <Anthurium3 className="absolute bottom-8 -right-4 w-[18%]  sm:w-[13%] lg:w-[9%] -rotate-[45deg]" />
+        <Anthurium2 className="absolute -top-0 -left-2 w-[13%] sm:w-[7%] lg:w-[6%] rotate-[130deg] pointer-events-none" />
+        <Anthurium3 className="absolute bottom-8 -right-4 w-[18%]  sm:w-[10%] lg:w-[9%] -rotate-[45deg]" />
       </div>
     );
   };
