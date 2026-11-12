@@ -9,8 +9,8 @@ Applicazione web progressiva (PWA) moderna, raffinata e mobile-first per il matr
   - Sfondo caldo: `#faf2f2`
   - Card & Paper: `#ffffff`
 - **Tipografia:**
-  - Titoli & Intestazioni: **DM Serif Display** (Google Fonts)
-  - Corpo del testo & Controlli: **Montserrat** (Google Fonts)
+  - Font unico per tutto il sito: **Montserrat** (Google Fonts)
+  - *Punto unico di configurazione:* Modificabile in `src/index.css` alla variabile `--font-site`.
 - **Favicon & Icona:** Logo monogramma personalizzato `favicon.png`
 
 ---

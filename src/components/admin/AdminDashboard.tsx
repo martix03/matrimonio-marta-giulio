@@ -24,7 +24,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   const [foodCategories, setFoodCategories] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
-  
+
   const [placeSearchQuery, setPlaceSearchQuery] = useState('');
   const [placeCategoryFilter, setPlaceCategoryFilter] = useState<string>('all');
 
@@ -69,10 +69,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     if (!editingGuestId) return;
     const success = await weddingApi.updateGuest(editingGuestId, editData);
     if (success) {
-       setEditingGuestId(null);
-       fetchData();
+      setEditingGuestId(null);
+      fetchData();
     } else {
-       alert('Errore durante l\'aggiornamento');
+      alert('Errore durante l\'aggiornamento');
     }
   };
 
@@ -106,10 +106,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
     const success = await weddingApi.updatePlace(editingPlaceId, dataToSave);
     if (success) {
-       setEditingPlaceId(null);
-       fetchData();
+      setEditingPlaceId(null);
+      fetchData();
     } else {
-       alert('Errore durante l\'aggiornamento');
+      alert('Errore durante l\'aggiornamento');
     }
   };
 
@@ -169,7 +169,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     if (!newFamilyName) return alert('Inserisci il nome della famiglia');
     const validGuests = newGuests.filter(g => g.firstName && g.lastName);
     if (validGuests.length === 0) return alert('Inserisci almeno un ospite valido');
-    
+
     const success = await weddingApi.createClusterAndGuests(newFamilyName, validGuests);
     if (success) {
       alert('Famiglia e ospiti aggiunti con successo!');
@@ -232,7 +232,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  
+
   const handleAddFaq = async (e: React.FormEvent) => {
     e.preventDefault();
     const success = await weddingApi.createFaq(newFaq);
@@ -243,7 +243,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
     }
   };
 
-  
+
   const handleUpdateFaq = async (id: string) => {
     const success = await weddingApi.updateFaq(id, {
       question: editFaqData.question,
@@ -272,7 +272,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
       longitude: parseFloat(newPlace.longitude),
       food_type: newPlace.category === 'food' ? newPlace.food_type : null,
     };
-    
+
     if (isNaN(placeData.latitude) || isNaN(placeData.longitude)) {
       return alert('Coordinate non valide');
     }
@@ -321,7 +321,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   });
 
   const downloadCSV = (filename: string, rows: string[][]) => {
-    const csvContent = "data:text/csv;charset=utf-8," 
+    const csvContent = "data:text/csv;charset=utf-8,"
       + rows.map(e => e.join(",")).join("\n");
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
@@ -351,7 +351,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
   return (
     <div className="min-h-screen bg-cream text-burgundy font-sans">
       <nav className="bg-paper border-b border-blush/20 py-4 px-6 flex justify-between items-center sticky top-0 z-50 shadow-sm">
-        <h1 className="font-serif text-2xl font-bold">Portale Admin Matrimonio</h1>
+        <h1 className="text-2xl font-bold">Portale Admin Matrimonio</h1>
         <button onClick={onLogout} className="flex items-center gap-2 text-sm font-semibold opacity-80 hover:opacity-100 transition-opacity">
           <LogOut className="w-4 h-4" /> Esci
         </button>
@@ -384,8 +384,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
         {activeTab === 'faq' && (
           <div className="space-y-6 animate-fade-in">
             <div className="flex justify-between items-center mb-2">
-              <h2 className="font-serif text-3xl font-medium">Gestione FAQ</h2>
-              <button onClick={() => setActiveTab('add')} className="px-4 py-2 text-xs uppercase tracking-widest font-semibold bg-cream text-burgundy hover:bg-blush-soft border border-blush/30 rounded-2xl transition-colors">
+              <h2 className="text-3xl font-semibold">Gestione FAQ</h2>
+              <button onClick={() => setActiveTab('add')} className="px-4 py-2 body uppercase tracking-widest font-semibold bg-cream text-burgundy hover:bg-blush-soft border border-blush/30 rounded-2xl transition-colors">
                 + Aggiungi FAQ
               </button>
             </div>
@@ -394,27 +394,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 <div key={faq.id} className="flex justify-between items-center p-4 bg-paper border border-blush/20 rounded-xl hover:bg-cream/20 shadow-sm">
                   {editingFaqId === faq.id ? (
                     <div className="flex-1 space-y-3 mr-4">
-                      <input type="text" value={editFaqData.question} onChange={e=>setEditFaqData({...editFaqData, question: e.target.value})} className="w-full px-3 py-1.5 rounded-lg border border-blush/40 text-sm bg-cream/30 focus:outline-none focus:border-burgundy" placeholder="Domanda" />
-                      <textarea value={editFaqData.answer} onChange={e=>setEditFaqData({...editFaqData, answer: e.target.value})} className="w-full px-3 py-1.5 rounded-lg border border-blush/40 text-sm bg-cream/30 focus:outline-none focus:border-burgundy resize-y" rows={2} placeholder="Risposta" />
-                      <select value={editFaqData.category} onChange={e=>setEditFaqData({...editFaqData, category: e.target.value})} className="w-full px-3 py-1.5 rounded-lg border border-blush/40 text-sm bg-cream/30 focus:outline-none focus:border-burgundy">
+                      <input type="text" value={editFaqData.question} onChange={e => setEditFaqData({ ...editFaqData, question: e.target.value })} className="w-full px-3 py-1.5 rounded-lg border border-blush/40 text-sm bg-cream/30 focus:outline-none focus:border-burgundy" placeholder="Domanda" />
+                      <textarea value={editFaqData.answer} onChange={e => setEditFaqData({ ...editFaqData, answer: e.target.value })} className="w-full px-3 py-1.5 rounded-lg border border-blush/40 text-sm bg-cream/30 focus:outline-none focus:border-burgundy resize-y" rows={2} placeholder="Risposta" />
+                      <select value={editFaqData.category} onChange={e => setEditFaqData({ ...editFaqData, category: e.target.value })} className="w-full px-3 py-1.5 rounded-lg border border-blush/40 text-sm bg-cream/30 focus:outline-none focus:border-burgundy">
                         <option value="info">Info Utili</option>
                         <option value="locations">Location</option>
                         <option value="gifts">Regali</option>
                       </select>
                       <div className="flex gap-2">
-                        <button onClick={() => handleUpdateFaq(faq.id)} className="px-4 py-1.5 bg-burgundy text-paper text-xs rounded-lg font-semibold hover:bg-burgundy-light transition-colors">Salva</button>
-                        <button onClick={() => setEditingFaqId(null)} className="px-4 py-1.5 bg-cream text-burgundy text-xs rounded-lg border border-blush/40 hover:border-burgundy transition-colors">Annulla</button>
+                        <button onClick={() => handleUpdateFaq(faq.id)} className="px-4 py-1.5 bg-burgundy text-paper body rounded-lg font-semibold hover:bg-burgundy-light transition-colors">Salva</button>
+                        <button onClick={() => setEditingFaqId(null)} className="px-4 py-1.5 bg-cream text-burgundy body rounded-lg border border-blush/40 hover:border-burgundy transition-colors">Annulla</button>
                       </div>
                     </div>
                   ) : (
                     <>
                       <div className="flex-1 mr-4">
                         <p className="font-semibold text-burgundy text-sm">{faq.question}</p>
-                        <p className="text-xs text-burgundy/70 mt-1 whitespace-pre-wrap">{faq.answer}</p>
+                        <p className="body text-burgundy/70 mt-1 whitespace-pre-wrap">{faq.answer}</p>
                         <span className="inline-block mt-2 text-[10px] uppercase font-bold tracking-widest text-blush bg-blush-soft px-2 py-0.5 rounded-full">{faq.category}</span>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
-                        <button onClick={() => { setEditingFaqId(faq.id); setEditFaqData({...faq}); }} className="p-2 text-burgundy/60 hover:text-burgundy hover:bg-cream rounded-full transition-all">
+                        <button onClick={() => { setEditingFaqId(faq.id); setEditFaqData({ ...faq }); }} className="p-2 text-burgundy/60 hover:text-burgundy hover:bg-cream rounded-full transition-all">
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button onClick={() => handleDeleteFaq(faq.id)} className="p-2 text-rose-600 hover:bg-rose-50 rounded-full transition-all">
@@ -440,7 +440,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-burgundy">{confirmed.length}</div>
-                  <div className="text-xs uppercase tracking-wider font-semibold opacity-70">Confermati</div>
+                  <div className="body uppercase tracking-wider font-semibold opacity-70">Confermati</div>
                 </div>
               </div>
               <div className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm flex items-center gap-4">
@@ -449,7 +449,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-amber-700">{pending.length}</div>
-                  <div className="text-xs uppercase tracking-wider font-semibold opacity-70">In Attesa</div>
+                  <div className="body uppercase tracking-wider font-semibold opacity-70">In Attesa</div>
                 </div>
               </div>
               <div className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm flex items-center gap-4">
@@ -458,17 +458,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-rose-700">{declined.length}</div>
-                  <div className="text-xs uppercase tracking-wider font-semibold opacity-70">Declinati</div>
+                  <div className="body uppercase tracking-wider font-semibold opacity-70">Declinati</div>
                 </div>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap gap-4">
-                <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-rose-50 text-rose-700 text-xs font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
+                <button onClick={handleDownloadIntolerances} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-rose-50 text-rose-700 body font-semibold border border-rose-200 hover:bg-rose-100 transition-colors">
                   <AlertTriangle className="w-4 h-4" /> Scarica CSV Intolleranze
                 </button>
-                <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-blue-50 text-blue-700 text-xs font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
+                <button onClick={handleDownloadSongs} className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-blue-50 text-blue-700 body font-semibold border border-blue-200 hover:bg-blue-100 transition-colors">
                   <Music className="w-4 h-4" /> Scarica CSV Canzoni
                 </button>
               </div>
@@ -481,7 +481,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   }));
                   setShowAddGuestModal(true);
                 }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider uppercase shadow-sm transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold tracking-wider uppercase shadow-sm transition-all"
               >
                 <UserPlus className="w-4 h-4" /> Aggiungi Ospite
               </button>
@@ -489,13 +489,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
             <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
               <div className="p-4 border-b border-blush/20 bg-cream/50 flex flex-col lg:flex-row items-center justify-between gap-4">
-                <h3 className="font-serif text-xl font-medium shrink-0">Lista Ospiti</h3>
+                <h3 className="text-xl font-semibold shrink-0">Lista Ospiti</h3>
                 <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                   <div className="relative flex-1 sm:w-64">
                     <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
-                    <input type="text" placeholder="Cerca per nome o famiglia..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
+                    <input type="text" placeholder="Cerca per nome o famiglia..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full body border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
                   </div>
-                  <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
+                  <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} className="px-3 py-2 rounded-full body border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
                     <option value="all">Tutti gli Stati</option>
                     <option value="confirmed">Confermati</option>
                     <option value="pending">In Attesa</option>
@@ -505,7 +505,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm whitespace-nowrap">
-                  <thead className="bg-cream/50 text-xs uppercase tracking-wider opacity-70">
+                  <thead className="bg-cream/50 body uppercase tracking-wider opacity-70">
                     <tr>
                       <th className="p-4 font-semibold">Nome</th>
                       <th className="p-4 font-semibold">Cognome</th>
@@ -523,30 +523,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         {editingGuestId === g.id ? (
                           <>
                             <td className="p-2">
-                              <input type="text" value={editData.first_name} onChange={e => setEditData({...editData, first_name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                              <input type="text" value={editData.first_name} onChange={e => setEditData({ ...editData, first_name: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2">
-                              <input type="text" value={editData.last_name} onChange={e => setEditData({...editData, last_name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                              <input type="text" value={editData.last_name} onChange={e => setEditData({ ...editData, last_name: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2 text-center">
-                              <select value={editData.gender || 'M'} onChange={e => setEditData({...editData, gender: e.target.value as 'M' | 'F'})} className="px-2 py-1 rounded text-xs border border-blush/40 bg-white">
+                              <select value={editData.gender || 'M'} onChange={e => setEditData({ ...editData, gender: e.target.value as 'M' | 'F' })} className="px-2 py-1 rounded body border border-blush/40 bg-white">
                                 <option value="M">M</option>
                                 <option value="F">F</option>
                               </select>
                             </td>
                             <td className="p-4 opacity-80">{g.clusters?.family_name}</td>
                             <td className="p-2">
-                              <select value={editData.is_attending === null ? 'null' : editData.is_attending.toString()} onChange={e => setEditData({...editData, is_attending: e.target.value === 'null' ? null : e.target.value === 'true'})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white">
+                              <select value={editData.is_attending === null ? 'null' : editData.is_attending.toString()} onChange={e => setEditData({ ...editData, is_attending: e.target.value === 'null' ? null : e.target.value === 'true' })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white">
                                 <option value="null">In Attesa</option>
                                 <option value="true">Confermato</option>
                                 <option value="false">Declinato</option>
                               </select>
                             </td>
                             <td className="p-2">
-                              <input type="text" value={editData.dietary_notes} onChange={e => setEditData({...editData, dietary_notes: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" placeholder="Nessuna" />
+                              <input type="text" value={editData.dietary_notes} onChange={e => setEditData({ ...editData, dietary_notes: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" placeholder="Nessuna" />
                             </td>
                             <td className="p-2">
-                              <input type="text" value={editData.song_request} onChange={e => setEditData({...editData, song_request: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" placeholder="Nessuna" />
+                              <input type="text" value={editData.song_request} onChange={e => setEditData({ ...editData, song_request: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" placeholder="Nessuna" />
                             </td>
                             <td className="p-2 text-center">
                               <button onClick={handleSaveEdit} className="p-1.5 text-burgundy hover:bg-blush-soft rounded-full transition-colors mx-1">
@@ -562,9 +562,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             <td className="p-4 font-medium">{g.first_name}</td>
                             <td className="p-4 font-medium">{g.last_name}</td>
                             <td className="p-4 text-center">
-                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                                g.gender === 'F' ? 'bg-pink-50 text-pink-700 border-pink-200' : 'bg-blue-50 text-blue-700 border-blue-200'
-                              }`}>
+                              <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${g.gender === 'F' ? 'bg-pink-50 text-pink-700 border-pink-200' : 'bg-blue-50 text-blue-700 border-blue-200'
+                                }`}>
                                 {g.gender === 'F' ? 'Femmina (F)' : 'Maschio (M)'}
                               </span>
                             </td>
@@ -576,7 +575,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             </td>
                             <td className="p-4">
                               {g.dietary_notes && (
-                                <div className="flex items-center gap-1.5 text-xs text-rose-600 bg-rose-50 px-2 py-1 rounded-md border border-rose-100 inline-flex">
+                                <div className="flex items-center gap-1.5 body text-rose-600 bg-rose-50 px-2 py-1 rounded-md border border-rose-100 inline-flex">
                                   <AlertTriangle className="w-3.5 h-3.5" />
                                   <span className="truncate max-w-[150px]" title={g.dietary_notes}>{g.dietary_notes}</span>
                                 </div>
@@ -584,7 +583,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             </td>
                             <td className="p-4">
                               {g.song_request && (
-                                <div className="flex items-center gap-1.5 text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-md border border-blue-100 inline-flex">
+                                <div className="flex items-center gap-1.5 body text-blue-600 bg-blue-50 px-2 py-1 rounded-md border border-blue-100 inline-flex">
                                   <Music className="w-3.5 h-3.5" />
                                   <span className="truncate max-w-[150px]" title={g.song_request}>{g.song_request}</span>
                                 </div>
@@ -617,7 +616,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
                 <div className="bg-paper w-full max-w-lg rounded-3xl border border-blush/40 shadow-2xl p-6 sm:p-8 space-y-6">
                   <div className="flex items-center justify-between pb-3 border-b border-blush/20">
-                    <h3 className="font-serif text-2xl font-semibold text-burgundy flex items-center gap-2">
+                    <h3 className="text-2xl font-semibold text-burgundy flex items-center gap-2">
                       <UserPlus className="w-5 h-5 text-blush" /> Aggiungi Nuovo Ospite
                     </h3>
                     <button
@@ -632,7 +631,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   <form onSubmit={handleSaveSingleGuest} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome</label>
+                        <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Nome</label>
                         <input
                           type="text"
                           required
@@ -643,7 +642,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Cognome</label>
+                        <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Cognome</label>
                         <input
                           type="text"
                           required
@@ -657,18 +656,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
                     {/* Sesso / Genere */}
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-2">
+                      <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-2">
                         Sesso
                       </label>
                       <div className="grid grid-cols-2 gap-3">
                         <button
                           type="button"
                           onClick={() => setSingleGuestData({ ...singleGuestData, gender: 'M' })}
-                          className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${
-                            singleGuestData.gender === 'M'
+                          className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl body font-bold border transition-all ${singleGuestData.gender === 'M'
                               ? 'bg-blue-50 border-blue-400 text-blue-800 shadow-sm'
                               : 'bg-cream/40 border-blush/30 text-burgundy/70 hover:border-blush'
-                          }`}
+                            }`}
                         >
                           <span className="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block" />
                           Maschio (M)
@@ -676,11 +674,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         <button
                           type="button"
                           onClick={() => setSingleGuestData({ ...singleGuestData, gender: 'F' })}
-                          className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${
-                            singleGuestData.gender === 'F'
+                          className={`flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl body font-bold border transition-all ${singleGuestData.gender === 'F'
                               ? 'bg-pink-50 border-pink-400 text-pink-800 shadow-sm'
                               : 'bg-cream/40 border-blush/30 text-burgundy/70 hover:border-blush'
-                          }`}
+                            }`}
                         >
                           <span className="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block" />
                           Femmina (F)
@@ -690,7 +687,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
                     {/* Bambino */}
                     <div className="pt-1">
-                      <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
+                      <label className="flex items-center gap-2 body font-semibold cursor-pointer">
                         <input
                           type="checkbox"
                           checked={singleGuestData.isChild}
@@ -703,10 +700,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
                     {/* Assegna Famiglia o Gruppo */}
                     <div className="pt-2 border-t border-blush/20 space-y-3">
-                      <label className="block text-xs font-semibold uppercase tracking-wider opacity-70">
+                      <label className="block body font-semibold uppercase tracking-wider opacity-70">
                         Famiglia o Gruppo
                       </label>
-                      <div className="flex gap-4 text-xs font-semibold">
+                      <div className="flex gap-4 body font-semibold">
                         <label className="flex items-center gap-2 cursor-pointer">
                           <input
                             type="radio"
@@ -735,14 +732,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                             <select
                               value={singleGuestData.clusterId}
                               onChange={e => setSingleGuestData({ ...singleGuestData, clusterId: e.target.value })}
-                              className="w-full px-4 py-2.5 rounded-xl border border-blush/40 bg-cream/30 text-xs font-medium focus:outline-none focus:border-burgundy"
+                              className="w-full px-4 py-2.5 rounded-xl border border-blush/40 bg-cream/30 body font-medium focus:outline-none focus:border-burgundy"
                             >
                               {existingClusters.map(c => (
                                 <option key={c.id} value={c.id}>{c.name}</option>
                               ))}
                             </select>
                           ) : (
-                            <p className="text-xs text-burgundy/60 italic">Nessuna famiglia esistente, creane una nuova sotto.</p>
+                            <p className="body text-burgundy/60 italic">Nessuna famiglia esistente, creane una nuova sotto.</p>
                           )}
                         </div>
                       ) : (
@@ -761,13 +758,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                       <button
                         type="button"
                         onClick={() => setShowAddGuestModal(false)}
-                        className="flex-1 py-2.5 rounded-full border border-blush/40 hover:bg-cream text-xs font-semibold uppercase tracking-wider text-burgundy/80 transition-colors"
+                        className="flex-1 py-2.5 rounded-full border border-blush/40 hover:bg-cream body font-semibold uppercase tracking-wider text-burgundy/80 transition-colors"
                       >
                         Annulla
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider shadow-sm transition-all"
+                        className="flex-1 py-2.5 rounded-full bg-burgundy hover:bg-burgundy-light text-paper body font-semibold uppercase tracking-wider shadow-sm transition-all"
                       >
                         Salva Ospite
                       </button>
@@ -781,17 +778,17 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
         {activeTab === 'gifts' && (
           <div className="space-y-6 animate-fade-in">
-            <h2 className="font-serif text-3xl font-medium mb-2">Messaggi Regali Ricevuti</h2>
+            <h2 className="text-3xl font-semibold mb-2">Messaggi Regali Ricevuti</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {gifts.map(g => (
                 <div key={g.id} className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm flex flex-col justify-between">
                   <div>
-                    <div className="text-xs uppercase tracking-wider font-semibold opacity-60 mb-1">{new Date(g.created_at).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })}</div>
-                    <div className="font-serif text-xl font-medium mb-3 text-burgundy">{g.sender_name}</div>
+                    <div className="body uppercase tracking-wider font-semibold opacity-60 mb-1">{new Date(g.created_at).toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'short' })}</div>
+                    <div className="text-xl font-semibold mb-3 text-burgundy">{g.sender_name}</div>
                     {g.wishes && <div className="text-sm italic opacity-80 mb-3 line-clamp-4">"{g.wishes}"</div>}
                   </div>
                   {g.amount_note && (
-                    <div className="mt-4 pt-4 border-t border-blush/20 text-xs font-semibold text-burgundy bg-blush-soft px-3 py-2 rounded-xl text-center">
+                    <div className="mt-4 pt-4 border-t border-blush/20 body font-semibold text-burgundy bg-blush-soft px-3 py-2 rounded-xl text-center">
                       Bonifico comunicato: {g.amount_note}
                     </div>
                   )}
@@ -808,13 +805,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
           <div className="space-y-8 animate-fade-in">
             <div className="bg-paper rounded-3xl border border-blush/30 shadow-sm overflow-hidden">
               <div className="p-4 border-b border-blush/20 bg-cream/50 flex flex-col lg:flex-row items-center justify-between gap-4">
-                <h3 className="font-serif text-xl font-medium shrink-0">Lista Luoghi Mappa</h3>
+                <h3 className="text-xl font-semibold shrink-0">Lista Luoghi Mappa</h3>
                 <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                   <div className="relative flex-1 sm:w-64">
                     <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 opacity-50" />
-                    <input type="text" placeholder="Cerca luogo o indirizzo..." value={placeSearchQuery} onChange={e => setPlaceSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
+                    <input type="text" placeholder="Cerca luogo o indirizzo..." value={placeSearchQuery} onChange={e => setPlaceSearchQuery(e.target.value)} className="w-full pl-9 pr-3 py-2 rounded-full body border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors" />
                   </div>
-                  <select value={placeCategoryFilter} onChange={e => setPlaceCategoryFilter(e.target.value)} className="px-3 py-2 rounded-full text-xs border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
+                  <select value={placeCategoryFilter} onChange={e => setPlaceCategoryFilter(e.target.value)} className="px-3 py-2 rounded-full body border border-blush/40 bg-paper focus:outline-none focus:border-burgundy transition-colors appearance-none">
                     <option value="all">Tutte le Categorie</option>
                     {categories.map(c => (
                       <option key={c.id} value={c.id}>{c.label}</option>
@@ -824,7 +821,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm whitespace-nowrap">
-                  <thead className="bg-cream/50 text-xs uppercase tracking-wider opacity-70">
+                  <thead className="bg-cream/50 body uppercase tracking-wider opacity-70">
                     <tr>
                       <th className="p-4 font-semibold">Nome</th>
                       <th className="p-4 font-semibold">Categoria</th>
@@ -840,15 +837,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                         {editingPlaceId === p.id ? (
                           <>
                             <td className="p-2">
-                              <input type="text" value={editPlaceData.name} onChange={e => setEditPlaceData({...editPlaceData, name: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                              <input type="text" value={editPlaceData.name} onChange={e => setEditPlaceData({ ...editPlaceData, name: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2">
                               <div className="flex gap-1 flex-col">
-                                <select value={editPlaceData.category} onChange={e => setEditPlaceData({...editPlaceData, category: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white">
+                                <select value={editPlaceData.category} onChange={e => setEditPlaceData({ ...editPlaceData, category: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white">
                                   {categories.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
                                 </select>
                                 {editPlaceData.category === 'food' && (
-                                  <select value={editPlaceData.food_type} onChange={e => setEditPlaceData({...editPlaceData, food_type: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white mt-1">
+                                  <select value={editPlaceData.food_type} onChange={e => setEditPlaceData({ ...editPlaceData, food_type: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white mt-1">
                                     <option value="">Seleziona...</option>
                                     {foodCategories.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
                                   </select>
@@ -856,13 +853,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                               </div>
                             </td>
                             <td className="p-2">
-                              <input type="text" value={editPlaceData.address} onChange={e => setEditPlaceData({...editPlaceData, address: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                              <input type="text" value={editPlaceData.address} onChange={e => setEditPlaceData({ ...editPlaceData, address: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2">
-                              <input type="number" step="any" value={editPlaceData.latitude} onChange={e => setEditPlaceData({...editPlaceData, latitude: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                              <input type="number" step="any" value={editPlaceData.latitude} onChange={e => setEditPlaceData({ ...editPlaceData, latitude: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2">
-                              <input type="number" step="any" value={editPlaceData.longitude} onChange={e => setEditPlaceData({...editPlaceData, longitude: e.target.value})} className="w-full px-2 py-1 rounded text-xs border border-blush/40 bg-white" />
+                              <input type="number" step="any" value={editPlaceData.longitude} onChange={e => setEditPlaceData({ ...editPlaceData, longitude: e.target.value })} className="w-full px-2 py-1 rounded body border border-blush/40 bg-white" />
                             </td>
                             <td className="p-2 text-center whitespace-nowrap">
                               <button onClick={handleSavePlaceEdit} className="p-1.5 text-burgundy hover:bg-blush-soft rounded-full transition-colors mx-0.5">
@@ -880,13 +877,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                               {p.name}
                             </td>
                             <td className="p-4 opacity-80">
-                              {p.category === 'food' 
+                              {p.category === 'food'
                                 ? (foodCategories.find(c => c.id === p.food_type)?.label || p.food_type)
                                 : (categories.find(c => c.id === p.category)?.label || p.category)}
                             </td>
-                            <td className="p-4 opacity-80 text-xs">{p.address}</td>
-                            <td className="p-4 opacity-80 text-xs">{p.latitude}</td>
-                            <td className="p-4 opacity-80 text-xs">{p.longitude}</td>
+                            <td className="p-4 opacity-80 body">{p.address}</td>
+                            <td className="p-4 opacity-80 body">{p.latitude}</td>
+                            <td className="p-4 opacity-80 body">{p.longitude}</td>
                             <td className="p-4 text-center whitespace-nowrap">
                               <button onClick={() => startEditingPlace(p)} className="p-1.5 text-burgundy opacity-60 hover:opacity-100 hover:bg-cream rounded-full transition-all mx-0.5">
                                 <Edit2 className="w-4 h-4" />
@@ -916,78 +913,78 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
 
             {/* Aggiungi FAQ */}
             <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm mt-8">
-              <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi FAQ</h2>
+              <h2 className="text-3xl font-semibold mb-6 text-center">Aggiungi FAQ</h2>
               <form onSubmit={handleAddFaq} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Domanda</label>
-                  <input required type="text" value={newFaq.question} onChange={e=>setNewFaq({...newFaq, question: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Domanda</label>
+                  <input required type="text" value={newFaq.question} onChange={e => setNewFaq({ ...newFaq, question: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Risposta</label>
-                  <input required type="text" value={newFaq.answer} onChange={e=>setNewFaq({...newFaq, answer: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Risposta</label>
+                  <input required type="text" value={newFaq.answer} onChange={e => setNewFaq({ ...newFaq, answer: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
-                  <select value={newFaq.category} onChange={e=>setNewFaq({...newFaq, category: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
+                  <select value={newFaq.category} onChange={e => setNewFaq({ ...newFaq, category: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
                     <option value="info">Info Utili</option>
                     <option value="locations">Location</option>
                     <option value="gifts">Regali</option>
                   </select>
                 </div>
                 <div className="pt-6 border-t border-blush/20">
-                  <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva FAQ</button>
+                  <button type="submit" className="btn-primary w-full py-3 body sm:text-sm">Salva FAQ</button>
                 </div>
               </form>
             </div>
 
             {/* Aggiungi Famiglia */}
             <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm">
-              <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Nuova Famiglia</h2>
+              <h2 className="text-3xl font-semibold mb-6 text-center">Aggiungi Nuova Famiglia</h2>
               <form onSubmit={handleSaveGuests} className="space-y-6">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome Famiglia o Gruppo</label>
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Nome Famiglia o Gruppo</label>
                   <input type="text" required value={newFamilyName} onChange={e => setNewFamilyName(e.target.value)} placeholder="es. Famiglia Rossi, Amici Uni..." className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
                 <div className="space-y-4">
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Membri (Ospiti)</label>
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Membri (Ospiti)</label>
                   {newGuests.map((g, idx) => (
                     <div key={idx} className="flex flex-wrap sm:flex-nowrap gap-3 items-center">
                       <input type="text" required placeholder="Nome" value={g.firstName} onChange={e => { const updated = [...newGuests]; updated[idx].firstName = e.target.value; setNewGuests(updated); }} className="flex-1 min-w-[120px] px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                       <input type="text" required placeholder="Cognome" value={g.lastName} onChange={e => { const updated = [...newGuests]; updated[idx].lastName = e.target.value; setNewGuests(updated); }} className="flex-1 min-w-[120px] px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                       <div className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-blush/40 bg-cream/30 shrink-0">
-                        <span className="text-xs font-semibold text-burgundy/70">Sesso:</span>
-                        <select value={g.gender} onChange={e => { const updated = [...newGuests]; updated[idx].gender = e.target.value as 'M' | 'F'; setNewGuests(updated); }} className="bg-transparent text-xs font-bold text-burgundy focus:outline-none cursor-pointer">
+                        <span className="body font-semibold text-burgundy/70">Sesso:</span>
+                        <select value={g.gender} onChange={e => { const updated = [...newGuests]; updated[idx].gender = e.target.value as 'M' | 'F'; setNewGuests(updated); }} className="bg-transparent body font-bold text-burgundy focus:outline-none cursor-pointer">
                           <option value="M">Maschio (M)</option>
                           <option value="F">Femmina (F)</option>
                         </select>
                       </div>
-                      <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer shrink-0">
+                      <label className="flex items-center gap-2 body font-semibold cursor-pointer shrink-0">
                         <input type="checkbox" checked={g.isChild} onChange={e => { const updated = [...newGuests]; updated[idx].isChild = e.target.checked; setNewGuests(updated); }} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
                         Bambino
                       </label>
                     </div>
                   ))}
                 </div>
-                <button type="button" onClick={handleAddGuestRow} className="text-xs font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity flex items-center gap-1">+ Aggiungi Ospite</button>
-                
+                <button type="button" onClick={handleAddGuestRow} className="body font-semibold uppercase tracking-wider opacity-70 hover:opacity-100 transition-opacity flex items-center gap-1">+ Aggiungi Ospite</button>
+
                 <div className="pt-6 border-t border-blush/20">
-                  <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva nel Database</button>
+                  <button type="submit" className="btn-primary w-full py-3 body sm:text-sm">Salva nel Database</button>
                 </div>
               </form>
             </div>
 
             {/* Aggiungi Luogo */}
             <div className="bg-paper p-6 sm:p-10 rounded-3xl border border-blush/30 shadow-sm">
-              <h2 className="font-serif text-3xl font-medium mb-6 text-center">Aggiungi Luogo Mappa</h2>
+              <h2 className="text-3xl font-semibold mb-6 text-center">Aggiungi Luogo Mappa</h2>
               <form onSubmit={handleSavePlace} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nome del Luogo</label>
-                  <input type="text" required value={newPlace.name} onChange={e => setNewPlace({...newPlace, name: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Nome del Luogo</label>
+                  <input type="text" required value={newPlace.name} onChange={e => setNewPlace({ ...newPlace, name: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
-                    <select required value={newPlace.category} onChange={e => setNewPlace({...newPlace, category: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
+                    <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Categoria</label>
+                    <select required value={newPlace.category} onChange={e => setNewPlace({ ...newPlace, category: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
                       {categories.map(c => (
                         <option key={c.id} value={c.id}>{c.label}</option>
                       ))}
@@ -995,8 +992,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   </div>
                   {newPlace.category === 'food' && (
                     <div>
-                      <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Tipo di Cibo</label>
-                      <select required value={newPlace.food_type} onChange={e => setNewPlace({...newPlace, food_type: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
+                      <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Tipo di Cibo</label>
+                      <select required value={newPlace.food_type} onChange={e => setNewPlace({ ...newPlace, food_type: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy">
                         <option value="">-- Seleziona --</option>
                         {foodCategories.map(c => (
                           <option key={c.id} value={c.id}>{c.label}</option>
@@ -1006,40 +1003,40 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ onLogout }) => {
                   )}
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Indirizzo</label>
-                  <input type="text" required value={newPlace.address} onChange={e => setNewPlace({...newPlace, address: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Indirizzo</label>
+                  <input type="text" required value={newPlace.address} onChange={e => setNewPlace({ ...newPlace, address: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Latitudine</label>
-                    <input type="number" step="any" required value={newPlace.latitude} onChange={e => setNewPlace({...newPlace, latitude: e.target.value})} placeholder="Es. 45.075" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                    <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Latitudine</label>
+                    <input type="number" step="any" required value={newPlace.latitude} onChange={e => setNewPlace({ ...newPlace, latitude: e.target.value })} placeholder="Es. 45.075" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Longitudine</label>
-                    <input type="number" step="any" required value={newPlace.longitude} onChange={e => setNewPlace({...newPlace, longitude: e.target.value})} placeholder="Es. 7.689" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                    <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Longitudine</label>
+                    <input type="number" step="any" required value={newPlace.longitude} onChange={e => setNewPlace({ ...newPlace, longitude: e.target.value })} placeholder="Es. 7.689" className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Telefono (Opzionale)</label>
-                    <input type="text" value={newPlace.phone} onChange={e => setNewPlace({...newPlace, phone: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                    <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Telefono (Opzionale)</label>
+                    <input type="text" value={newPlace.phone} onChange={e => setNewPlace({ ...newPlace, phone: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                   </div>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Sito Web (Opzionale)</label>
-                    <input type="url" value={newPlace.website_url} onChange={e => setNewPlace({...newPlace, website_url: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
+                    <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Sito Web (Opzionale)</label>
+                    <input type="url" value={newPlace.website_url} onChange={e => setNewPlace({ ...newPlace, website_url: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy" />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Nota degli sposi (Opzionale)</label>
-                  <textarea rows={2} value={newPlace.sposi_note} onChange={e => setNewPlace({...newPlace, sposi_note: e.target.value})} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy resize-none" />
+                  <label className="block body font-semibold uppercase tracking-wider opacity-70 mb-1">Nota degli sposi (Opzionale)</label>
+                  <textarea rows={2} value={newPlace.sposi_note} onChange={e => setNewPlace({ ...newPlace, sposi_note: e.target.value })} className="w-full px-4 py-2 rounded-xl border border-blush/40 bg-cream/30 focus:outline-none focus:border-burgundy resize-none" />
                 </div>
-                <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer">
-                  <input type="checkbox" checked={newPlace.is_primary} onChange={e => setNewPlace({...newPlace, is_primary: e.target.checked})} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
+                <label className="flex items-center gap-2 body font-semibold cursor-pointer">
+                  <input type="checkbox" checked={newPlace.is_primary} onChange={e => setNewPlace({ ...newPlace, is_primary: e.target.checked })} className="w-4 h-4 rounded border-blush text-burgundy focus:ring-burgundy" />
                   Luogo Principale (Cerimonia / Ricevimento)
                 </label>
 
                 <div className="pt-6 border-t border-blush/20">
-                  <button type="submit" className="w-full py-3 rounded-full bg-burgundy hover:bg-burgundy-light text-paper font-semibold uppercase tracking-widest text-sm shadow-sm transition-all">Salva nel Database</button>
+                  <button type="submit" className="btn-primary w-full py-3 body sm:text-sm">Salva nel Database</button>
                 </div>
               </form>
             </div>

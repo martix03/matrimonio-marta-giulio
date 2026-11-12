@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heart, ArrowUp } from 'lucide-react';
 import { useSettings } from '../contexts/SettingsContext';
-import martaGiulioTitle from '../assets/marta-giulio-title.png';
+import martaGiulioTitle from '../assets/marta-giulio-title.svg';
 import { MiniWave, CarloFace } from './home/GraficaElements';
 
 export const Footer: React.FC = () => {
@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
   return (
     <footer className="py-14 bg-[#fbf5f4] border-t border-blush/30 text-center relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-        
+
         {/* Carlo Face Icon */}
         <div className="mb-3">
           <div className="w-12 h-12 rounded-full bg-[#fde7e2] p-1 border border-[#dfb0b0]/60 mx-auto flex items-center justify-center shadow-xs">
@@ -31,13 +31,13 @@ export const Footer: React.FC = () => {
           />
         </div>
 
-        <p className="text-xs uppercase tracking-widest text-[#4a151d]/70 mb-4 font-semibold">
+        <p className="body uppercase tracking-widest text-[#4a151d]/70 mb-4 font-semibold">
           {settings.event.displayDate} · Cascina Ranverso
         </p>
 
         <MiniWave color="#667b4e" className="w-14 h-3 mx-auto mb-4" strokeWidth={2.5} />
 
-        <p className="text-xs text-[#4a151d]/80 flex items-center justify-center gap-1.5 font-medium">
+        <p className="body text-[#4a151d]/80 flex items-center justify-center gap-1.5 font-medium">
           <span>Non vediamo l'ora di festeggiare con voi</span>
           <Heart className="w-3.5 h-3.5 text-[#8a1e32] fill-[#8a1e32]" />
         </p>

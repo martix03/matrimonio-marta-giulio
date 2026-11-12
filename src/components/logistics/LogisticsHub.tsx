@@ -60,14 +60,14 @@ export const LogisticsHub: React.FC = () => {
     <section id="logistica" className="py-16 sm:py-24 bg-paper/60 border-y border-blush/20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         <div className="text-center max-w-xl mx-auto mb-14">
-          <span className="text-xs uppercase tracking-widest text-burgundy/60 font-semibold">
+          <span className="body uppercase tracking-widest text-burgundy/60 font-semibold">
             Trasporti &amp; Navette
           </span>
-          <h2 className="font-serif text-3xl sm:text-5xl text-burgundy mt-1">
+          <h2 className="text-3xl sm:text-5xl text-burgundy font-medium mt-1">
             Hub Logistico
           </h2>
           <div className="w-12 h-1 bg-blush rounded-full mx-auto my-3" />
-          <p className="text-xs sm:text-sm text-burgundy/70">
+          <p className="sottotitolo text-burgundy/70">
             Organizza il tuo viaggio e rientra in totale serenità e sicurezza.
           </p>
         </div>
@@ -82,23 +82,23 @@ export const LogisticsHub: React.FC = () => {
                     <Bus className="w-5 h-5 text-burgundy" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-xl text-burgundy font-medium">
+                    <h3 className="text-xl text-burgundy font-semibold">
                       Bus Navetta del Rientro
                     </h3>
-                    <span className="text-[11px] text-burgundy/60 uppercase tracking-wider font-semibold">
+                    <span className="body text-burgundy/60 uppercase tracking-wider font-semibold">
                       Cascina Ranverso &rarr; Torino
                     </span>
                   </div>
                 </div>
 
-                <p className="text-xs text-burgundy/80 leading-relaxed mb-6">
+                <p className="body text-burgundy/80 leading-relaxed mb-6">
                   Per permettervi di brindare e festeggiare senza pensieri, abbiamo predisposto un
                   servizio navetta gratuito dedicato per il rientro a Torino.
                 </p>
 
                 {/* Progress Bar of Available Seats */}
                 <div className="space-y-2 mb-6">
-                  <div className="flex justify-between text-xs font-semibold">
+                  <div className="flex justify-between body font-semibold">
                     <span className="text-burgundy">Posti prenotati</span>
                     <span className="text-burgundy">
                       {busInfo.reserved} / {busInfo.total} ({seatsAvailable} rimasti)
@@ -110,14 +110,14 @@ export const LogisticsHub: React.FC = () => {
                       style={{ width: `${busPercentage}%` }}
                     />
                   </div>
-                  <div className="text-[11px] text-burgundy/60 text-right">
+                  <div className="body text-burgundy/60 text-right">
                     {seatsAvailable > 10 ? 'Disponibilità regolare' : 'Posti in esaurimento'}
                   </div>
                 </div>
 
                 {/* Schedule badges */}
                 <div className="space-y-3 pt-3 border-t border-blush/20">
-                  <div className="text-xs font-semibold uppercase tracking-wider text-burgundy/70">
+                  <div className="body font-semibold uppercase tracking-wider text-burgundy/70">
                     Orari di Partenza Navetta:
                   </div>
                   <div className="grid grid-cols-2 gap-2">
@@ -125,7 +125,7 @@ export const LogisticsHub: React.FC = () => {
                       <span className="text-[10px] uppercase tracking-wider text-burgundy/60 block font-semibold">
                         Prima Corsa
                       </span>
-                      <span className="font-serif text-lg font-bold text-burgundy">
+                      <span className="titolo">
                         Ore 01:30
                       </span>
                     </div>
@@ -133,7 +133,7 @@ export const LogisticsHub: React.FC = () => {
                       <span className="text-[10px] uppercase tracking-wider text-burgundy/60 block font-semibold">
                         Seconda Corsa
                       </span>
-                      <span className="font-serif text-lg font-bold text-burgundy">
+                      <span className="titolo">
                         Ore 03:00
                       </span>
                     </div>
@@ -148,13 +148,13 @@ export const LogisticsHub: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Car className="w-5 h-5 text-burgundy" />
-                <h3 className="font-serif text-xl sm:text-2xl text-burgundy font-medium">
+                <h3 className="text-xl sm:text-2xl text-burgundy font-semibold">
                   Bacheca Carpooling
                 </h3>
               </div>
               <button
                 onClick={() => setShowOfferForm(!showOfferForm)}
-                className="px-4 py-2 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold uppercase tracking-wider flex items-center gap-1.5 shadow-sm transition-all"
+                className="btn-primary"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>{showOfferForm ? 'Chiudi Form' : 'Offri un Passaggio'}</span>
@@ -165,9 +165,9 @@ export const LogisticsHub: React.FC = () => {
             {showOfferForm && (
               <form
                 onSubmit={handleCreatePost}
-                className="p-6 rounded-3xl bg-paper shadow-wedding border border-blush/40 animate-fade-in space-y-4 text-xs"
+                className="p-6 rounded-3xl bg-paper shadow-wedding border border-blush/40 animate-fade-in space-y-4 body"
               >
-                <div className="font-serif text-base text-burgundy font-semibold">
+                <div className="text-base text-burgundy font-semibold">
                   Offri posti in auto ad altri invitati
                 </div>
 
@@ -180,7 +180,7 @@ export const LogisticsHub: React.FC = () => {
                   <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-[11px] font-semibold uppercase text-burgundy/80 mb-1">
+                        <label className="block body font-semibold uppercase text-burgundy/80 mb-1">
                           Il tuo Nome
                         </label>
                         <input
@@ -193,7 +193,7 @@ export const LogisticsHub: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold uppercase text-burgundy/80 mb-1">
+                        <label className="block body font-semibold uppercase text-burgundy/80 mb-1">
                           Telefono / WhatsApp
                         </label>
                         <input
@@ -209,7 +209,7 @@ export const LogisticsHub: React.FC = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                       <div className="sm:col-span-2">
-                        <label className="block text-[11px] font-semibold uppercase text-burgundy/80 mb-1">
+                        <label className="block body font-semibold uppercase text-burgundy/80 mb-1">
                           Città o Punto di Partenza
                         </label>
                         <input
@@ -222,7 +222,7 @@ export const LogisticsHub: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-semibold uppercase text-burgundy/80 mb-1">
+                        <label className="block body font-semibold uppercase text-burgundy/80 mb-1">
                           Posti disponibili
                         </label>
                         <input
@@ -240,13 +240,13 @@ export const LogisticsHub: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => setShowOfferForm(false)}
-                        className="px-4 py-2 rounded-2xl border border-blush/40 text-burgundy hover:bg-cream"
+                        className="btn-secondary"
                       >
                         Annulla
                       </button>
                       <button
                         type="submit"
-                        className="px-6 py-2 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper font-semibold shadow-sm"
+                        className="btn-primary"
                       >
                         Pubblica Passaggio
                       </button>
@@ -271,18 +271,18 @@ export const LogisticsHub: React.FC = () => {
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-serif text-base font-semibold text-burgundy">
+                        <span className="text-base font-semibold text-burgundy">
                           {post.driver_name}
                         </span>
-                        <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-cream text-burgundy border border-blush/30 font-medium">
+                        <span className="body px-2.5 py-0.5 rounded-full bg-cream text-burgundy border border-blush/30 font-medium">
                           {post.available_seats} {post.available_seats === 1 ? 'posto' : 'posti'}
                         </span>
                       </div>
-                      <div className="text-xs text-burgundy/80 flex items-center gap-1.5">
+                      <div className="body text-burgundy/80 flex items-center gap-1.5">
                         <MapPin className="w-3.5 h-3.5 text-blush" />
                         <span>Partenza: <strong>{post.departure_location}</strong></span>
                       </div>
-                      <div className="text-[11px] text-burgundy/60 flex items-center gap-1.5">
+                      <div className="body text-burgundy/60 flex items-center gap-1.5">
                         <Clock className="w-3 h-3 text-burgundy/40" />
                         <span>Orario: {post.departure_time}</span>
                       </div>
@@ -292,7 +292,7 @@ export const LogisticsHub: React.FC = () => {
                       href={waUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold tracking-wider transition-all shadow-sm shrink-0"
+                      className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold tracking-wider transition-all shadow-sm shrink-0"
                     >
                       <MessageCircle className="w-4 h-4" />
                       <span>Scrivi su WhatsApp</span>

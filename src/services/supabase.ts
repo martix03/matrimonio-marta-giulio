@@ -341,7 +341,7 @@ export const weddingApi = {
         .insert([{ family_name: familyName, invite_code: inviteCode }])
         .select()
         .single();
-      
+
       if (clusterError || !clusterData) {
         console.error('Error creating cluster', clusterError);
         return false;
@@ -413,7 +413,7 @@ export const weddingApi = {
         .from('guests')
         .update(updates)
         .eq('id', guestId);
-      
+
       if (error) {
         console.error('Error updating guest', error);
         return false;
@@ -443,7 +443,7 @@ export const weddingApi = {
         .from('places')
         .update(updates)
         .eq('id', placeId);
-      
+
       if (error) {
         console.error('Error updating place', error);
         return false;

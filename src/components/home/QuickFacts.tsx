@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Navigation, MapPin, ExternalLink, Calendar, Clock, Church, Sparkles } from 'lucide-react';
 import { useSettings } from '../../contexts/SettingsContext';
-import { MiniWave,
-   TimeBolle,
-   Data,
-   TimeTitle,
-   HourTitle,
-   CascinaTitle,
-   Calla,
-   Orchidea
+import {
+  MiniWave,
+  TimeBolle,
+  Data,
+  TimeTitle,
+  HourTitle,
+  CascinaTitle,
+  Calla,
+  Orchidea
 } from './GraficaElements';
+import { SectionBanner } from '../common/SectionBanner';
 
 export const QuickFacts: React.FC = () => {
   const { settings } = useSettings();
@@ -37,36 +39,17 @@ export const QuickFacts: React.FC = () => {
   return (
     <section id="dettagli" className="bg-white border-y border-blush/20">
       <div className="pb-24 bg-[#fffcf7]">
-        
-        {/* 1. Deep Burgundy Banner from grafica.svg */}
-        <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-8 lg:pt-16 pb-16 lg:pb-32 ">
-         
-            {/* ONDA A 2 CURVE (sale e scende) */}
-  <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
-    <svg
-      className="relative block w-full h-12 sm:h-20 lg:h-28"
-      viewBox="0 0 1200 360"
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M 0,56 C 257,56 461,358 725,358 C 909,358 1106,206 1200,127 L 1200,360 L 0,360 Z"
-        fill="#fffcf7"
-      />
-    </svg>
-  </div>
-          {/* Organic soft pink blob at top right */}
-          <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
-
-          <div className="flex flex-col items-start lg:items-center mt-6">
-            <TimeTitle className="h-16 lg:h-20 w-auto mb-2" />
-            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-            <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
+        {/* Banner testata con titolo grafico e sottotitolo */}
+        <SectionBanner
+          title={TimeTitle}
+          subtitle={
+            <>
               Tutte le informazioni chiave a portata di tocco
               <br />
               per raggiungere le sedi dell'evento.
-            </p>
-          </div>
-        </div>
+            </>
+          }
+        />
 
         {/* 2. Timeline Card (Centered and enlarged for desktop) */}
         <div className="bg-[#fffcf7] rounded-3xl sm:rounded-4xl p-8 sm:p-12 lg:p-16 shadow-xs">
@@ -74,8 +57,8 @@ export const QuickFacts: React.FC = () => {
             <div className="w-full space-y-10 lg:space-y-14 my-2">
               {/* Stop 1: La Data */}
               <div className=" relative flex flex-col items-center text-center">
-                  <Orchidea className="absolute right-0 lg:-right-8 top-16 -translate-y-1/2 w-1/4 h-auto -scale-x-100 pointer-events-none" />
-                <span className="text-xs lg:text-sm uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <Orchidea className="absolute right-0 lg:-right-8 top-16 -translate-y-1/2 w-1/4 h-auto -scale-x-100 pointer-events-none" />
+                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
                   La data
                 </span>
                 <Data className="mt-2 h-7 sm:h-8 lg:h-12 w-auto mx-auto" />
@@ -83,22 +66,22 @@ export const QuickFacts: React.FC = () => {
 
               {/* Stop 2: Gli Orari */}
               <div className="flex flex-col items-center text-center">
-                <span className="text-xs lg:text-sm uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
                   Gli Orari
                 </span>
                 <HourTitle className="mt-2 mb-2 h-5 sm:h-6 lg:h-8 w-auto mx-auto" />
-                <p className="text-xs sm:text-sm lg:text-base text-[#4a151d]/75 mt-1 font-medium max-w-md">
+                <p className="body text-[#4a151d]/75 mt-1 max-w-md">
                   {settings.event.ceremonyTime || 'Arrivo gradito entro le 16:45'}
                 </p>
               </div>
 
               {/* Stop 3: La Cerimonia */}
               <div className="flex flex-col items-center text-center">
-                <span className="text-xs lg:text-sm uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
                   La cerimonia
                 </span>
                 <CascinaTitle className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
-                <p className="text-xs sm:text-sm lg:text-base text-[#4a151d]/75 mt-1 max-w-md">
+                <p className="body text-[#4a151d]/75 mt-1 max-w-md">
                   {settings.locations.ceremony.address.includes(', ') ? (
                     <>
                       <span>{settings.locations.ceremony.address.split(', ')[0]}</span>
@@ -113,7 +96,7 @@ export const QuickFacts: React.FC = () => {
                 {ceremonyNav && (
                   <button
                     onClick={() => setNavModalPlace(ceremonyNav)}
-                    className="mt-3.5 inline-flex items-center gap-2 px-5 py-2 lg:px-6 lg:py-2.5 rounded-xl bg-white hover:bg-[#e5edd8] border border-[#667b4e]/30 text-[#4a151d] text-xs lg:text-sm font-semibold tracking-wide transition-all shadow-xs hover:shadow-sm"
+                    className="mt-3.5 inline-flex items-center gap-2 px-5 py-2 lg:px-6 lg:py-2.5 rounded-xl bg-white hover:bg-[#e5edd8] border border-[#667b4e]/30 text-[#4a151d] body font-semibold tracking-wide transition-all shadow-xs hover:shadow-sm"
                   >
                     <Navigation className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#667b4e]" />
                     <span>Apri Navigatore</span>
@@ -125,11 +108,11 @@ export const QuickFacts: React.FC = () => {
               <div className="relative flex flex-col items-center text-center">
                 <Calla className="absolute -left-20 lg:-left-56 -translate-y-1/2 w-1/2 h-auto pointer-events-none" />
 
-                <span className="text-xs lg:text-sm uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
+                <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
                   La festa
                 </span>
                 <CascinaTitle className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
-                <p className="text-xs sm:text-sm lg:text-base text-[#4a151d]/75 mt-1 max-w-md">
+                <p className="body text-[#4a151d]/75 mt-1 max-w-md">
                   {(() => {
                     const text = settings.event.receptionTime || 'A seguire, aperitivo, cena e festa nello stesso luogo';
                     const target = 'cena';
@@ -152,7 +135,7 @@ export const QuickFacts: React.FC = () => {
                 {receptionNav && (
                   <button
                     onClick={() => setNavModalPlace(receptionNav)}
-                    className="mt-3.5 inline-flex items-center gap-2 px-5 py-2 lg:px-6 lg:py-2.5 rounded-xl bg-white hover:bg-[#e5edd8] border border-[#667b4e]/30 text-[#4a151d] text-xs lg:text-sm font-semibold tracking-wide transition-all shadow-xs hover:shadow-sm"
+                    className="mt-3.5 inline-flex items-center gap-2 px-5 py-2 lg:px-6 lg:py-2.5 rounded-xl bg-white hover:bg-[#e5edd8] border border-[#667b4e]/30 text-[#4a151d] body font-semibold tracking-wide transition-all shadow-xs hover:shadow-sm"
                   >
                     <Navigation className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#667b4e]" />
                     <span>Apri Navigatore</span>
@@ -172,10 +155,10 @@ export const QuickFacts: React.FC = () => {
             <div className="w-12 h-12 rounded-full bg-[#e5edd8] flex items-center justify-center mx-auto mb-3">
               <MapPin className="w-6 h-6 text-[#667b4e]" />
             </div>
-            <h3 className="font-serif text-xl text-[#4a151d] mb-1">
+            <h3 className="titolo font-semibold text-[#4a151d] mb-1">
               Naviga verso
             </h3>
-            <p className="text-xs text-[#4a151d]/80 mb-5 font-medium">
+            <p className="body text-[#4a151d]/80 mb-5 font-medium">
               {navModalPlace.name}
             </p>
 
@@ -185,7 +168,7 @@ export const QuickFacts: React.FC = () => {
                   href={navModalPlace.google}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] text-xs font-semibold flex items-center justify-between transition-colors"
+                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] body font-semibold flex items-center justify-between transition-colors"
                 >
                   <span>Apri in Google Maps</span>
                   <ExternalLink className="w-4 h-4 text-[#4a151d]/60" />
@@ -196,7 +179,7 @@ export const QuickFacts: React.FC = () => {
                   href={navModalPlace.apple}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] text-xs font-semibold flex items-center justify-between transition-colors"
+                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] body font-semibold flex items-center justify-between transition-colors"
                 >
                   <span>Apri in Apple Maps</span>
                   <ExternalLink className="w-4 h-4 text-[#4a151d]/60" />
@@ -207,7 +190,7 @@ export const QuickFacts: React.FC = () => {
                   href={navModalPlace.waze}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] text-xs font-semibold flex items-center justify-between transition-colors"
+                  className="w-full py-3 px-4 rounded-2xl bg-cream hover:bg-[#e5edd8] border border-blush/30 text-[#4a151d] body font-semibold flex items-center justify-between transition-colors"
                 >
                   <span>Apri in Waze</span>
                   <ExternalLink className="w-4 h-4 text-[#4a151d]/60" />
@@ -217,7 +200,7 @@ export const QuickFacts: React.FC = () => {
 
             <button
               onClick={() => setNavModalPlace(null)}
-              className="mt-5 text-xs text-[#4a151d]/60 hover:text-[#4a151d] underline transition-colors"
+              className="mt-5 body text-[#4a151d]/60 hover:text-[#4a151d] underline transition-colors"
             >
               Chiudi
             </button>

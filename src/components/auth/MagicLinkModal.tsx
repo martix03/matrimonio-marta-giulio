@@ -83,10 +83,10 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <div className="w-12 h-12 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-3">
             <UserSearch className="w-6 h-6 text-burgundy" />
           </div>
-          <h2 className="font-serif text-2xl sm:text-2xl text-burgundy">
+          <h2 className="titolo font-semibold text-burgundy">
             {currentFamily ? 'Il tuo Invito Personale' : 'Accedi al tuo Invito'}
           </h2>
-          <p className="text-xs sm:text-sm text-burgundy/70 mt-1">
+          <p className="sottotitolo text-burgundy/70 mt-1">
             {currentFamily
               ? `Attualmente connesso come: ${currentFamily}`
               : 'Inserisci il tuo nome e cognome per trovare il tuo invito.'}
@@ -95,12 +95,12 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
 
         {/* Feedback Messages */}
         {error && (
-          <div className="mb-4 p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+          <div className="mb-4 p-3 bg-red-50 text-red-700 body rounded-xl border border-red-200">
             {error}
           </div>
         )}
         {successMessage && (
-          <div className="mb-4 p-3 bg-blush-soft text-burgundy text-xs rounded-xl border border-blush/40 flex items-center gap-2">
+          <div className="mb-4 p-3 bg-blush-soft text-burgundy body rounded-xl border border-blush/40 flex items-center gap-2">
             <Check className="w-4 h-4 text-burgundy" strokeWidth={2.5} />
             {successMessage}
           </div>
@@ -109,7 +109,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
         {/* Form */}
         <form onSubmit={handleNameSubmit} className="space-y-3">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
+            <label className="block body font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
               Nome
             </label>
             <input
@@ -117,11 +117,11 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="es. Marco"
-              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-base sm:text-sm text-burgundy outline-none transition-all"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-burgundy outline-none transition-all"
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
+            <label className="block body font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
               Cognome
             </label>
             <input
@@ -129,13 +129,13 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="es. Rossi"
-              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 text-base sm:text-sm text-burgundy outline-none transition-all"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-burgundy outline-none transition-all"
             />
           </div>
           <button
             type="submit"
             disabled={isSubmitting || !firstName.trim() || !lastName.trim()}
-            className="w-full mt-4 py-3.5 px-6 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper font-semibold text-sm shadow-wedding hover:shadow-wedding-lg transition-all disabled:opacity-50"
+            className="btn-primary w-full mt-4 py-3 body sottotitolo"
           >
             {isSubmitting ? 'Ricerca in corso...' : 'Trova il mio Invito'}
           </button>
@@ -143,7 +143,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
 
         {/* Quick Demo Selector */}
         <div className="mt-6 pt-4 border-t border-blush/30 text-center">
-          <div className="flex items-center justify-center gap-1 text-[11px] text-burgundy/60 mb-2 font-medium">
+          <div className="flex items-center justify-center gap-1 body text-burgundy/60 mb-2 font-medium">
             <Sparkles className="w-3.5 h-3.5 text-accentGold" />
             <span>Vuoi testare subito un gruppo di esempio?</span>
           </div>
@@ -151,21 +151,21 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
             <button
               type="button"
               onClick={() => handleQuickDemo('Marco', 'Spalla')}
-              className="px-3 py-1 text-xs rounded-2xl bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
+              className="btn-secondary px-3 py-1 body"
             >
               Fam. Spalla
             </button>
             <button
               type="button"
               onClick={() => handleQuickDemo('Marta', 'Spalla')}
-              className="px-3 py-1 text-xs rounded-2xl bg-cream hover:bg-blush/20 text-burgundy font-medium border border-blush/40 transition-colors"
+              className="btn-secondary px-3 py-1 body"
             >
               Marta
             </button>
             <button
               type="button"
               onClick={() => handleQuickDemo('Carlo', 'Spalla Palomba')}
-              className="px-3 py-1 text-xs rounded-2xl bg-burgundy/10 hover:bg-burgundy/20 text-burgundy font-medium border border-burgundy/30 transition-colors"
+              className="btn-secondary px-3 py-1 body border-burgundy/40"
             >
               Admin
             </button>

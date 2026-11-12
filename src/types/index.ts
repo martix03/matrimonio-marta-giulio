@@ -1,4 +1,4 @@
-export type DietaryTag = 
+export type DietaryTag =
   | 'none'
   | 'gluten_free'
   | 'lactose_free'

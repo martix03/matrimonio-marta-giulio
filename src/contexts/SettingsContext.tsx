@@ -47,7 +47,7 @@ const SettingsContext = createContext<SettingsContextProps>({
     rsvp: { deadline: '2027-03-15' }
   },
   loading: true,
-  refreshSettings: async () => {},
+  refreshSettings: async () => { },
 });
 
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {

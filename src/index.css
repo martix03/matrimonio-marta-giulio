@@ -3,10 +3,200 @@
 @tailwind utilities;
 
 :root {
+  /* ========================================================
+     🎯 PUNTO UNICO DI CONFIGURAZIONE FONT PER TUTTO IL SITO
+     Modifica questa riga per cambiare il font in tutto il sito:
+     ======================================================== */
+  --font-site: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* ========================================================
+     🔘 PARAMETRI CENTRALIZZATI BOTTONI (Stile "Copia IBAN")
+     Modifica questi valori per cambiare lo stile di TUTTI i bottoni:
+     ======================================================== */
+  --btn-radius: 0.75rem;          /* Raggio angoli (12px = rounded-xl) */
+  --btn-py: 0.625rem;             /* Padding verticale (10px = py-2.5) */
+  --btn-px: 1.25rem;              /* Padding orizzontale (20px = px-5) */
+  --btn-bg: #4a151d;              /* Colore di sfondo primario (bordeaux) */
+  --btn-bg-hover: #6d1828;        /* Colore di sfondo all'hover */
+  --btn-text: #ffffff;            /* Colore del testo primario */
+  --btn-font-size: 0.75rem;       /* Dimensione testo (12px = text-xs) */
+  --btn-font-weight: 600;         /* Spessore testo (font-semibold) */
+
   --burgundy: #51101d;
   --blush: #d7b8af;
   --cream: #faf2f2;
   --paper: #ffffff;
+  --avorio: #fffcf7;
+  --lightRosa: #fbf5f4;
+
+  /* ========================================================
+     📝 PARAMETRI CENTRALIZZATI BODY / TESTO (Dimensione XS)
+     Modifica questi valori per cambiare lo stile del testo body:
+     ======================================================== */
+  --body-font-size: 0.75rem;            /* Dimensione (12px = text-xs) */
+  --body-line-height: 1.25rem;          /* Interlinea */
+
+  /* ========================================================
+     ✨ PARAMETRI CENTRALIZZATI SOTTOTITOLI
+     Modifica questi valori per cambiare lo stile dei sottotitoli:
+     ======================================================== */
+  --subtitle-font-size: 0.875rem;       /* Dimensione (14px = text-sm) */
+  --subtitle-line-height: 1.35rem;      /* Interlinea */
+
+  /* ========================================================
+     🏷️ PARAMETRI CENTRALIZZATI TITOLI
+     Modifica questi valori per cambiare lo stile di TUTTI i titoli:
+     ======================================================== */
+  --title-font-size: 1.125rem;          /* Dimensione (18px = text-lg) */
+  --title-font-weight: 600;             /* Spessore testo (600 = font-semibold) */
+  --title-color: #51101d;               /* Colore testo (bordeaux) */
+  --title-line-height: 1.4;             /* Interlinea */
+  --title-lg-font-size: var(--title-font-size);
+  --title-lg-font-weight: var(--title-font-weight);
+  --title-lg-color: var(--title-color);
+  --title-lg-line-height: var(--title-line-height);
+}
+
+/* Applica il font configurato a tutti gli elementi di base */
+html,
+body,
+button,
+input,
+select,
+textarea {
+  font-family: var(--font-site);
+}
+
+body {
+  font-size: var(--body-font-size);
+}
+
+@layer components {
+  /* ========================================================
+     📝 STILE TESTO: BODY / CORPO TESTO (Dimensione XS)
+     Font centralizzato (--font-site), text-xs (12px = 0.75rem).
+     Utilizzo: className="body", className="body-xs" oppure className="text-body"
+     ======================================================== */
+  .body,
+  .body-xs,
+  .text-body,
+  .text-body-xs {
+    font-family: var(--font-site);
+    font-size: var(--body-font-size); /* text-xs: 12px */
+    line-height: var(--body-line-height);
+  }
+
+  /* ========================================================
+     ✨ STILE TESTO: SOTTOTITOLO
+     Font centralizzato (--font-site), text-sm (14px).
+     Utilizzo: className="sottotitolo" oppure className="text-sottotitolo"
+     ======================================================== */
+  .sottotitolo,
+  .text-sottotitolo {
+    font-family: var(--font-site);
+    font-size: var(--subtitle-font-size); /* text-sm: 14px */
+    line-height: var(--subtitle-line-height);
+  }
+
+  /* ========================================================
+     🏷️ STILE TESTO: TITOLO
+     Font centralizzato (--font-site), text-lg (1.125rem / 18px),
+     peso, colore e interlinea configurati nei parametri :root.
+     Utilizzo: className="titolo" oppure className="text-titolo"
+     ======================================================== */
+  .titolo,
+  .text-titolo,
+  .titolo-lg,
+  .text-titolo-lg {
+    font-family: var(--font-site);
+    font-size: var(--title-font-size);
+    font-weight: var(--title-font-weight);
+    color: var(--title-color);
+    line-height: var(--title-line-height);
+  }
+
+  /* ========================================================
+     🔘 STILE BOTTONI (Copiato dallo stile del bottone "Copia IBAN")
+     Punto unico di stile per i bottoni:
+     - Primario: className="btn" oppure className="btn-primary"
+     - Secondario / Outline: className="btn-secondary" oppure className="btn-outline"
+     ======================================================== */
+  .btn,
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem; /* gap-1.5 */
+    padding: var(--btn-py) var(--btn-px);
+    border-radius: var(--btn-radius);
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    font-family: var(--font-site);
+    font-size: var(--btn-font-size);
+    font-weight: var(--btn-font-weight);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+    line-height: 1rem;
+    text-decoration: none;
+  }
+
+  .btn:hover,
+  .btn-primary:hover {
+    background-color: var(--btn-bg-hover);
+  }
+
+  .btn:active,
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn:disabled,
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .btn-secondary,
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: var(--btn-py) var(--btn-px);
+    border-radius: var(--btn-radius);
+    background-color: #fffcf7;
+    color: var(--btn-bg);
+    font-family: var(--font-site);
+    font-size: var(--btn-font-size);
+    font-weight: var(--btn-font-weight);
+    border: 1px solid rgba(223, 176, 176, 0.6); /* border-blush */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    cursor: pointer;
+    line-height: 1rem;
+    text-decoration: none;
+  }
+
+  .btn-secondary:hover,
+  .btn-outline:hover {
+    background-color: #faf2f2;
+    border-color: #4a151d;
+  }
+
+  .btn-secondary:active,
+  .btn-outline:active {
+    transform: translateY(1px);
+  }
+
+  .btn-secondary:disabled,
+  .btn-outline:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
 }
 
 /* Custom smooth scroll and scrollbar */
@@ -47,8 +237,7 @@ section[id] {
 
 ::-webkit-scrollbar-track {
   background: #faf2f2;
-    border-radius: 999px;
-
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb {

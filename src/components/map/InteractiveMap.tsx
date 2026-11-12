@@ -31,6 +31,7 @@ import {
   Orchidea,
   CarloCina
 } from '../home/GraficaElements';
+import { SectionBanner } from '../common/SectionBanner';
 import backgroundRed from '../../assets/background-red.svg';
 
 const DEFAULT_CATEGORIES: PlaceCategory[] = [
@@ -66,13 +67,13 @@ class MapErrorBoundary extends React.Component<{ children: React.ReactNode }, { 
       return (
         <div className="w-full h-full min-h-[360px] sm:min-h-[460px] flex flex-col items-center justify-center bg-cream/70 text-burgundy p-6 text-center rounded-2xl">
           <MapPin className="w-8 h-8 text-burgundy mb-2 opacity-60" />
-          <p className="font-serif text-lg font-medium mb-1">Mappa dei Luoghi</p>
-          <p className="text-xs text-burgundy/70 max-w-xs mb-4">
+          <p className="titolo mb-1">Mappa dei Luoghi</p>
+          <p className="body text-burgundy/70 max-w-xs mb-4">
             Puoi consultare tutti i dettagli dei luoghi nell'elenco laterale.
           </p>
           <button
             onClick={() => this.setState({ hasError: false })}
-            className="px-4 py-2 bg-burgundy text-paper text-xs rounded-2xl font-semibold uppercase tracking-wider"
+            className="btn-primary"
           >
             Ricarica mappa
           </button>
@@ -304,37 +305,10 @@ export const InteractiveMap: React.FC = () => {
   return (
     <section id="mappa" className="bg-[#fffcf7]">
       <div className="relative overflow-hidden">
-      
-
-  {/* 1. Deep Burgundy Banner from grafica.svg */}
-        <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-8 lg:pt-16 pb-16 lg:pb-32 ">
-         
-          {/* ONDA A 2 CURVE (sale e scende) */}
-  <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
-    <svg
-      className="relative block w-full h-12 sm:h-20 lg:h-28"
-      viewBox="0 0 1200 360"
-      preserveAspectRatio="none"
-    >
-      <path
-        d="M 0,56 C 257,56 461,358 725,358 C 909,358 1106,206 1200,127 L 1200,360 L 0,360 Z"
-        fill="#fffcf7"
-      />
-    </svg>
-  </div>
-          
-          <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
-
-          <div className="flex flex-col items-start lg:items-center mt-6">
-            <MappaTitle className="h-16 lg:h-20 w-auto mb-2" />
-            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
-            <p className="text-xs lg:text-lg text-white/80 leading-relaxed font-light mt-2 text-left lg:text-center">
-                              I luoghi della cerimonia, del ricevimento e una selezione curata per chi soggiorna nei dintorni.
-
-            </p>
-          </div>
-        </div>
-
+        <SectionBanner
+          title={MappaTitle}
+          subtitle="I luoghi della cerimonia, del ricevimento e una selezione curata per chi soggiorna nei dintorni."
+        />
 
         <div className=" relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
           {/* Category Filter Pills */}
@@ -343,9 +317,9 @@ export const InteractiveMap: React.FC = () => {
               <button
                 key={cat.id}
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${selectedCategory === cat.id
-                    ? 'bg-[#de868a] text-paper shadow-sm'
-                    : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'
+                className={`px-4 py-2 rounded-xl body font-semibold whitespace-nowrap transition-all cursor-pointer ${selectedCategory === cat.id
+                  ? 'bg-[#de868a] text-paper shadow-sm'
+                  : 'bg-paper text-burgundy border border-blush/40 hover:border-burgundy'
                   }`}
               >
                 {cleanLabel(cat.label)}
@@ -360,7 +334,7 @@ export const InteractiveMap: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               <div className="lg:col-span-7 rounded-4xl overflow-hidden shadow-wedding border border-blush/30 min-h-[360px] sm:min-h-[460px] relative bg-paper flex flex-col">
-                <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 text-xs font-semibold text-burgundy">
+                <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 body font-semibold text-burgundy">
                   <MapPin className="w-3.5 h-3.5 text-burgundy" />
                   <span>Mappa Google Maps</span>
                 </div>
@@ -397,14 +371,14 @@ export const InteractiveMap: React.FC = () => {
 
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-[#de868a] text-white font-semibold">
+                        <span className="body uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-[#de868a] text-white font-semibold">
                           {getPlaceCategoryBadge(activePlace)}
                         </span>
                       </div>
-                      <h3 className="font-serif text-2xl text-burgundy font-medium leading-tight">
+                      <h3 className="titolo text-burgundy font-semibold leading-tight">
                         {activePlace.name}
                       </h3>
-                      <p className="text-xs text-burgundy/70 mt-1 flex items-start gap-1">
+                      <p className="body text-burgundy/70 mt-1 flex items-start gap-1">
                         <span>{activePlace.address}</span>
                       </p>
                     </div>
@@ -414,7 +388,7 @@ export const InteractiveMap: React.FC = () => {
                         href={`https://maps.google.com/?q=${encodeURIComponent(activePlace.name + ' ' + activePlace.address)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex-1 py-2.5 z-10 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                        className="btn-primary flex-1 z-10"
                       >
                         <Navigation className="w-3.5 h-3.5" />
                         <span>Indicazioni</span>
@@ -424,7 +398,7 @@ export const InteractiveMap: React.FC = () => {
                           href={activePlace.website_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="py-2.5 z-10 px-3 rounded-2xl bg-cream hover:bg-blush-soft border border-blush/40 text-burgundy text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                          className="btn-secondary z-10 px-3"
                         >
                           <ExternalLink className="w-3.5 h-3.5" />
                         </a>
@@ -433,7 +407,7 @@ export const InteractiveMap: React.FC = () => {
                   </div>
 
                   <div className="flex flex-col min-h-0">
-                    <div className="text-[11px] font-semibold uppercase tracking-wider text-burgundy/60 px-1 mb-2">
+                    <div className="body font-semibold uppercase tracking-wider text-burgundy/60 px-1 mb-2">
                       Tutti i punti consigliati ({filteredPlaces.length}):
                     </div>
                     <div
@@ -445,11 +419,10 @@ export const InteractiveMap: React.FC = () => {
                           key={place.id}
                           ref={el => { itemRefs.current[place.id] = el; }}
                           onClick={() => handleSelectPlace(place)}
-                          className={`w-full p-3 rounded-xl text-left text-xs transition-all flex items-center justify-between ${
-                            activePlace.id === place.id
+                          className={`w-full p-3 rounded-xl text-left body transition-all flex items-center justify-between ${activePlace.id === place.id
                               ? 'bg-burgundy text-paper font-semibold shadow-sm'
                               : 'bg-paper hover:bg-cream border border-blush/30 text-burgundy'
-                          }`}
+                            }`}
                         >
                           <span className="flex items-center gap-2 truncate pr-2">
                             <span className={`shrink-0 ${activePlace.id === place.id ? 'text-blush' : 'text-burgundy'}`}>

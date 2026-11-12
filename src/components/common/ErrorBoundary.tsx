@@ -52,16 +52,16 @@ export class ErrorBoundary extends Component<Props, State> {
               <AlertTriangle className="w-8 h-8 text-[#4a151d]" />
             </div>
 
-            <h2 className="font-serif text-2xl font-bold text-[#4a151d] mb-2">
+            <h2 className="titolo font-bold text-[#4a151d] mb-2">
               Si è verificato un errore
             </h2>
 
-            <p className="text-xs sm:text-sm text-[#4a151d]/75 mb-6">
+            <p className="sottotitolo text-[#4a151d]/75 mb-6">
               Ci scusiamo per l'inconveniente. Puoi ricaricare la pagina o ripristinare la sessione per continuare.
             </p>
 
             {this.state.error && (
-              <div className="mb-6 p-3 bg-red-50 text-red-800 text-[11px] rounded-xl text-left font-mono overflow-auto max-h-32 border border-red-100">
+              <div className="mb-6 p-3 bg-red-50 text-red-800 body rounded-xl text-left font-mono overflow-auto max-h-32 border border-red-100">
                 {this.state.error.message || String(this.state.error)}
               </div>
             )}
@@ -69,7 +69,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={this.handleReload}
-                className="flex-1 py-3 px-4 rounded-2xl bg-[#4a151d] hover:bg-[#6d1828] text-white text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm"
+                className="btn-primary flex-1"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>Ricarica</span>
@@ -77,7 +77,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
               <button
                 onClick={this.handleResetSession}
-                className="flex-1 py-3 px-4 rounded-2xl bg-[#fbf5f4] hover:bg-[#e5edd8] text-[#4a151d] border border-blush/40 text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+                className="btn-secondary flex-1"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Reset Invito</span>

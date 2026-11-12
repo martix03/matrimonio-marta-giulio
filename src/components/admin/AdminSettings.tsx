@@ -6,10 +6,10 @@ import { Settings, Save, Plus, Trash2, Users, Calendar, MapPin, CreditCard } fro
 const InputField = ({ label, value, onChange, type = "text" }: { label: string, value: string, onChange: (v: string) => void, type?: string }) => (
   <div className="mb-3">
     <label className="block text-[10px] font-bold text-burgundy/60 uppercase tracking-wider mb-1">{label}</label>
-    <input 
-      type={type} 
-      value={value || ''} 
-      onChange={(e) => onChange(e.target.value)} 
+    <input
+      type={type}
+      value={value || ''}
+      onChange={(e) => onChange(e.target.value)}
       className="w-full p-2.5 rounded-xl border border-blush/40 text-sm bg-cream/50 outline-none focus:border-burgundy focus:bg-paper transition-colors"
     />
   </div>
@@ -19,9 +19,9 @@ export const AdminSettings: React.FC = () => {
   const { settings, refreshSettings } = useSettings();
   const [formData, setFormData] = useState<any>(null);
   const [saving, setSaving] = useState(false);
-  
-  
-  
+
+
+
   useEffect(() => {
     if (settings) {
       setFormData(JSON.parse(JSON.stringify(settings)));
@@ -64,15 +64,15 @@ export const AdminSettings: React.FC = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="bg-paper p-6 rounded-3xl border border-blush/30 shadow-sm">
-        <h2 className="text-xl font-serif font-bold text-burgundy mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-burgundy mb-6 flex items-center gap-2">
           <Settings className="w-5 h-5" /> Impostazioni Globali
         </h2>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-6">
-          
+
           {/* Gli Sposi */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+            <h3 className="titolo flex items-center gap-2 border-b border-blush/30 pb-2">
               <Users className="w-4 h-4 text-blush" /> Gli Sposi
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -80,17 +80,17 @@ export const AdminSettings: React.FC = () => {
               <InputField label="Sposo" value={formData?.couple?.groom} onChange={(v) => handleChange('couple', 'groom', v)} />
             </div>
           </div>
-          
+
           {/* Orari Evento */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+            <h3 className="titolo flex items-center gap-2 border-b border-blush/30 pb-2">
               <Calendar className="w-4 h-4 text-blush" /> Orari
             </h3>
             <div className="grid grid-cols-2 gap-4">
-              
+
               <InputField label="Info Orario (es. Arrivo gradito...)" value={formData?.event?.ceremonyTime} onChange={(v) => handleChange('event', 'ceremonyTime', v)} />
             </div>
-            
+
             <InputField label="Data e Ora dell'Evento (calcola in automatico scritte e conto alla rovescia)" type="datetime-local" value={formData?.event?.date ? formData.event.date.substring(0, 16) : ''} onChange={(v) => handleChange('event', 'date', v)} />
             <InputField label="Etichetta Card Orari (es. Arrivo ore 16:45)" value={formData?.event?.timeBadge} onChange={(v) => handleChange('event', 'timeBadge', v)} />
             <InputField label="Data Scadenza RSVP" value={formData?.event?.rsvpDeadline} onChange={(v) => handleChange('event', 'rsvpDeadline', v)} />
@@ -98,7 +98,7 @@ export const AdminSettings: React.FC = () => {
 
           {/* Sede Cerimonia */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+            <h3 className="titolo flex items-center gap-2 border-b border-blush/30 pb-2">
               <MapPin className="w-4 h-4 text-blush" /> Sede Cerimonia
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -113,7 +113,7 @@ export const AdminSettings: React.FC = () => {
 
           {/* Sede Ricevimento */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+            <h3 className="titolo flex items-center gap-2 border-b border-blush/30 pb-2">
               <MapPin className="w-4 h-4 text-blush" /> Sede Ricevimento
             </h3>
             <div className="grid grid-cols-2 gap-4">
@@ -128,7 +128,7 @@ export const AdminSettings: React.FC = () => {
 
           {/* Iban / Lista Nozze */}{/* Iban / Lista Nozze */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-burgundy flex items-center gap-2 border-b border-blush/30 pb-2">
+            <h3 className="titolo flex items-center gap-2 border-b border-blush/30 pb-2">
               <CreditCard className="w-4 h-4 text-blush" /> Lista Nozze & IBAN
             </h3>
             <InputField label="Intestatario IBAN" value={formData?.registry?.holder} onChange={(v) => handleChange('registry', 'holder', v)} />
@@ -141,11 +141,11 @@ export const AdminSettings: React.FC = () => {
           <button
             onClick={handleSaveSettings}
             disabled={saving}
-            className="px-8 py-3 bg-burgundy text-paper rounded-full text-sm font-semibold flex items-center gap-2 hover:bg-burgundy-light transition-all shadow-sm hover:shadow"
+            className="btn-primary px-8 py-3"
           >
             <Save className="w-4 h-4" /> {saving ? 'Salvataggio in corso...' : 'Salva Impostazioni'}
           </button>
-                </div>
+        </div>
       </div>
     </div>
   );

@@ -30,11 +30,14 @@ export default {
         },
         cream: '#faf2f2',
         paper: '#ffffff',
+        avorio: '#fffcf7',
+        lightRosa: '#fbf5f4',
         accentGold: '#c59d5f',
       },
       fontFamily: {
-        serif: ['"DM Serif Display"', 'Georgia', 'serif'],
-        sans: ['Montserrat', 'Arial', 'sans-serif'],
+        sans: ['var(--font-site)', 'sans-serif'],
+        serif: ['var(--font-site)', 'serif'],
+        heading: ['var(--font-site)', 'sans-serif'],
       },
       boxShadow: {
         'wedding': '0 20px 50px rgba(81, 16, 29, 0.08), 0 4px 16px rgba(81, 16, 29, 0.04)',
