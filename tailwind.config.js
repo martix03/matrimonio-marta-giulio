@@ -38,6 +38,8 @@ export default {
         paper: '#ffffff',
         avorio: '#fffcf7',
         lightRosa: '#fbf5f4',
+        RosaScuro: '#de868a',
+        rosaScuro: '#de868a',
         accentGold: '#c59d5f',
       },
       fontFamily: {

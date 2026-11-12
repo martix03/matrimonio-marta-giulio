@@ -31,7 +31,6 @@ import {
   MappaTitle,
   CascinaTitle,
   CoordinateTitle,
-  ViaggioTitle,
   Orchidea,
   CarloCina,
 } from "../home/GraficaElements";

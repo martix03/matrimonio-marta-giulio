@@ -4,6 +4,8 @@ import calla from "../../assets/calla.svg";
 import orchidea from "../../assets/orchidea.svg";
 import orchidea2 from "../../assets/orchidea-2.svg";
 import anthurium from "../../assets/anthurium.svg";
+import anthurium2 from "../../assets/anthurium2.svg";
+import anthurium3 from "../../assets/anthurium3.svg";
 
 import rombiAngolo from "../../assets/rombi-3.svg";
 import lineaRosa from "../../assets/linea.svg";
@@ -27,7 +29,7 @@ import stepperDate from "../../assets/stepper-date.svg";
 import stepperOnde from "../../assets/stepper-onde.svg";
 import stepperBolle from "../../assets/stepper-bolle.svg";
 import carloFace from "../../assets/carlo-face.svg";
-import viaggioTitle from "../../assets/viaggio-title.svg";
+import viaggio from "../../assets/viaggio.svg";
 import mappaTitle from "../../assets/mappa-title.svg";
 import coordinateTitle from "../../assets/coordinate.svg";
 
@@ -63,18 +65,6 @@ export const TimeBolle: React.FC<{ className?: string }> = ({
   return (
     <img
       src={timeBolle}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-
-export const Dettagli: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={dettagli}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -129,6 +119,30 @@ export const Anthurium: React.FC<{ className?: string }> = ({
   return (
     <img
       src={anthurium}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Anthurium2: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={anthurium2}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Anthurium3: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={anthurium3}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -229,14 +243,26 @@ export const StepperOnde: React.FC<{ className?: string }> = ({
   );
 };
 
-export const ViaggioTitle: React.FC<{ className?: string }> = ({
+export const Dettagli: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
   return (
     <img
-      src={viaggioTitle}
+      src={dettagli}
       alt=""
-      className={`pointer-events-none select-none -scale-x-100 ${className}`}
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Viaggio: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={viaggio}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
     />
   );
 };
@@ -329,8 +355,6 @@ export const BackgroundRed: React.FC<{ className?: string; alt?: string }> = ({
     />
   );
 };
-
-
 
 export const Data: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (

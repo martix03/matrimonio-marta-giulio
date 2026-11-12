@@ -10,11 +10,11 @@ import {
   Data,
   CascinaTitle,
   CoordinateTitle,
-  ViaggioTitle,
+  Viaggio,
   Orchidea,
   CarloCina,
 } from "../home/GraficaElements";
-import { SectionBanner } from "../common/SectionBanner";
+import { SectionBannerRosa } from "../common/SectionBannerRosa";
 
 interface WeddingRegistryProps {
   cluster: Cluster | null;
@@ -68,9 +68,14 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
 
   return (
     <section id="lista-nozze" className="bg-[#fffcf7]">
-      <SectionBanner
-        title={ViaggioTitle}
-        subtitle="Il nostro viaggio di nozze sarà tra la Grande Muraglia, antiche città imperiali e paesaggi mozzafiato."
+      <SectionBannerRosa
+        title={Viaggio}
+        subtitle={
+          <>
+            Il nostro viaggio sarà tra la Grande Muraglia,
+            <br /> panda e antiche città imperiali.
+          </>
+        }
       />
 
       <div className="max-w-3xl lg:max-w-6xl mx-auto px-4 sm:px-6">

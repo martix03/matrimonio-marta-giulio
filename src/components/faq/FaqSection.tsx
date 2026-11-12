@@ -8,7 +8,6 @@ import {
   Data,
   CascinaTitle,
   CoordinateTitle,
-  ViaggioTitle,
   Orchidea,
   CarloCina,
   MappaTitle,
