@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Gift, Copy, Check, Heart, Plane, Send, Sparkles } from 'lucide-react';
-import { useSettings } from '../../contexts/SettingsContext';
-import { mockRegistryStages } from '../../services/mockData';
-import { Cluster } from '../../types';
-import { weddingApi } from '../../services/supabase';
-import { MiniWave,
-   TimeBolle,
-   ConfermaBolle,
-   Data,
-   TimeTitle,
-   HourTitle,
-   CascinaTitle,
-   CoordinateTitle,
-   ViaggioTitle,
-   Orchidea,
-   CarloCina
-} from '../home/GraficaElements';
-import { SectionBanner } from '../common/SectionBanner';
+import React, { useState, useEffect } from "react";
+import { Gift, Copy, Check, Heart, Plane, Send, Sparkles } from "lucide-react";
+import { useSettings } from "../../contexts/SettingsContext";
+import { mockRegistryStages } from "../../services/mockData";
+import { Cluster } from "../../types";
+import { weddingApi } from "../../services/supabase";
+import {
+  MiniWave,
+  TimeBolle,
+  ConfermaBolle,
+  Data,
+  CascinaTitle,
+  CoordinateTitle,
+  ViaggioTitle,
+  Orchidea,
+  CarloCina,
+} from "../home/GraficaElements";
+import { SectionBanner } from "../common/SectionBanner";
 
 interface WeddingRegistryProps {
   cluster: Cluster | null;
 }
 
-export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => {
+export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
+  cluster,
+}) => {
   const { settings } = useSettings();
   const [copiedIban, setCopiedIban] = useState<boolean>(false);
-  const [transferSentMessage, setTransferSentMessage] = useState<boolean>(false);
+  const [transferSentMessage, setTransferSentMessage] =
+    useState<boolean>(false);
   const [hasSentAlready, setHasSentAlready] = useState<boolean>(false);
-  const [senderName, setSenderName] = useState<string>(cluster?.family_name || '');
-  const [amountNote, setAmountNote] = useState<string>('');
-  const [wishes, setWishes] = useState<string>('');
+  const [senderName, setSenderName] = useState<string>(
+    cluster?.family_name || "",
+  );
+  const [amountNote, setAmountNote] = useState<string>("");
+  const [wishes, setWishes] = useState<string>("");
 
   useEffect(() => {
     if (cluster?.family_name) {
@@ -55,13 +59,13 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
     setTransferSentMessage(true);
     setHasSentAlready(true);
     setTimeout(() => {
-      setAmountNote('');
-      setWishes('');
+      setAmountNote("");
+      setWishes("");
       setTransferSentMessage(false);
     }, 4000);
   };
 
-  const suggestedReason = `Regalo Matrimonio - ${cluster ? cluster.family_name : 'Marta e Giulio'}`;
+  const suggestedReason = `Regalo Matrimonio - ${cluster ? cluster.family_name : "Marta e Giulio"}`;
 
   return (
     <section id="lista-nozze" className="bg-[#fffcf7]">
@@ -93,29 +97,31 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({ cluster }) => 
                       </h3>
                     </div>
                   </div>
-
-                 
                 </div>
               </div>
             );
           })}
         </div>
       </div>
- <div className="bg-[#fbf5f4]">
-
-         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
+      <div className="bg-[#fbf5f4]">
+        <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
           {/* Organic soft pink blob at top right */}
           <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
           <div className="flex flex-col items-start lg:items-center mt-6">
             <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
-            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <MiniWave
+              color="#667b4e"
+              className="w-44 lg:w-60 h-auto my-2"
+              strokeWidth={1.5}
+              lgStrokeWidth={1}
+            />
             <p className="sottotitolo text-[#4a151d]/75 lg:text-center max-w-md mx-auto mb-8">
-                             Se volete contribuire al nostro viaggio di nozze, ecco le coordinate bancarie:
+              Se volete contribuire al nostro viaggio di nozze, ecco le
+              coordinate bancarie:
             </p>
-           
           </div>
-          </div>
+        </div>
 
         {/* Bank Details & Notification Card */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16">

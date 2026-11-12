@@ -10,7 +10,7 @@ import {
   MartaGiulio,
   CascinaRanverso,
   Data,
-  HomeCount,
+  Count,
   LineaRosa,
   HomeCountOnde,
   HomeCountBaffo,
@@ -203,7 +203,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
         <div className="max-w-md mx-auto bg-white rounded-2xl border border-blush/30 mb-5 relative overflow-hidden">
           {/* Card Header */}
           <div className="flex items-center mt-6 justify-center mb-4">
-            <HomeCount className="h-7 w-auto" color="#4a151d" />
+            <Count className="h-7 w-auto" />
           </div>
 
           {/* Decorative Baffo in top right (underneath countdown blocks layer) 
@@ -215,45 +215,45 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
           <div className="m-6">
             <div className="grid grid-cols-4 gap-2 sm:gap-3 text-center text-lightRosa relative z-10">
               {/* Days */}
-              <div className="bg-[#8c2035] text-lightRosa rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
-                <span className="titolo mt-2 mb-2 font-bold tracking-tigh">
+              <div className="bg-burgundy text-lightRosa rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
+                <span className="titolo text-lightRosa mt-2 mb-2 font-bold tracking-tight">
                   {timeLeft.days}
                 </span>
                 <LineaRosa className="w-full" strokeWidth={2} />
-                <span className="body mt-2 mb-2 tracking-wider uppercase font-semibold">
+                <span className="body text-lightRosa mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Giorni
                 </span>
               </div>
 
               {/* Hours */}
-              <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
-                <span className="font-sans titolo mt-2 mb-2  font-bold tracking-tight">
+              <div className="bg-burgundy text-lightRosa rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
+                <span className="font-sans titolo text-lightRosa mt-2 mb-2 font-bold tracking-tight">
                   {String(timeLeft.hours).padStart(2, "0")}
                 </span>
                 <LineaRosa className="w-full my-0.5" strokeWidth={2} />
-                <span className="body mt-2 mb-2  tracking-wider uppercase font-semibold">
+                <span className="body text-lightRosa mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Ore
                 </span>
               </div>
 
               {/* Minutes */}
-              <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
-                <span className="font-sans titolo mt-2 mb-2  font-bold tracking-tight">
+              <div className="bg-burgundy text-lightRosa rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
+                <span className="font-sans titolo text-lightRosa mt-2 mb-2 font-bold tracking-tight">
                   {String(timeLeft.minutes).padStart(2, "0")}
                 </span>
                 <LineaRosa className="w-full my-0.5" strokeWidth={2} />
-                <span className="body mt-2 mb-2 tracking-wider uppercase font-semibold">
+                <span className="body text-lightRosa mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Minuti
                 </span>
               </div>
 
               {/* Seconds */}
-              <div className="bg-[#8c2035] rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
-                <span className="font-sans titolo mt-2 mb-2 font-bold tracking-tight">
+              <div className="bg-burgundy text-lightRosa rounded-2xl p-2.5 sm:p-3 flex flex-col items-center justify-center">
+                <span className="font-sans titolo text-lightRosa mt-2 mb-2 font-bold tracking-tight">
                   {String(timeLeft.seconds).padStart(2, "0")}
                 </span>
                 <LineaRosa className="w-full my-0.5" strokeWidth={2} />
-                <span className="body mt-2 mb-2 tracking-wider uppercase font-semibold">
+                <span className="body text-lightRosa mt-2 mb-2 tracking-wider uppercase font-semibold">
                   Secondi
                 </span>
               </div>

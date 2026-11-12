@@ -1,17 +1,25 @@
-import React, { useState } from 'react';
-import { Navigation, MapPin, ExternalLink, Calendar, Clock, Church, Sparkles } from 'lucide-react';
-import { useSettings } from '../../contexts/SettingsContext';
+import React, { useState } from "react";
+import {
+  Navigation,
+  MapPin,
+  ExternalLink,
+  Calendar,
+  Clock,
+  Church,
+  Sparkles,
+} from "lucide-react";
+import { useSettings } from "../../contexts/SettingsContext";
 import {
   MiniWave,
   TimeBolle,
   Data,
-  TimeTitle,
-  HourTitle,
-  CascinaTitle,
+  Ore17,
+  CascinaRanverso,
   Calla,
-  Orchidea
-} from './GraficaElements';
-import { SectionBanner } from '../common/SectionBanner';
+  Orchidea,
+  Dettagli,
+} from "./GraficaElements";
+import { SectionBanner } from "../common/SectionBanner";
 
 export const QuickFacts: React.FC = () => {
   const { settings } = useSettings();
@@ -22,29 +30,39 @@ export const QuickFacts: React.FC = () => {
     waze: string;
   } | null>(null);
 
-  const ceremonyNav = (settings.locations.ceremony.googleMapsUrl || settings.locations.ceremony.appleMapsUrl || settings.locations.ceremony.wazeUrl) ? {
-    name: settings.locations.ceremony.name,
-    google: settings.locations.ceremony.googleMapsUrl,
-    apple: settings.locations.ceremony.appleMapsUrl,
-    waze: settings.locations.ceremony.wazeUrl,
-  } : undefined;
+  const ceremonyNav =
+    settings.locations.ceremony.googleMapsUrl ||
+    settings.locations.ceremony.appleMapsUrl ||
+    settings.locations.ceremony.wazeUrl
+      ? {
+          name: settings.locations.ceremony.name,
+          google: settings.locations.ceremony.googleMapsUrl,
+          apple: settings.locations.ceremony.appleMapsUrl,
+          waze: settings.locations.ceremony.wazeUrl,
+        }
+      : undefined;
 
-  const receptionNav = (settings.locations.reception.googleMapsUrl || settings.locations.reception.appleMapsUrl || settings.locations.reception.wazeUrl) ? {
-    name: settings.locations.reception.name,
-    google: settings.locations.reception.googleMapsUrl,
-    apple: settings.locations.reception.appleMapsUrl,
-    waze: settings.locations.reception.wazeUrl,
-  } : undefined;
+  const receptionNav =
+    settings.locations.reception.googleMapsUrl ||
+    settings.locations.reception.appleMapsUrl ||
+    settings.locations.reception.wazeUrl
+      ? {
+          name: settings.locations.reception.name,
+          google: settings.locations.reception.googleMapsUrl,
+          apple: settings.locations.reception.appleMapsUrl,
+          waze: settings.locations.reception.wazeUrl,
+        }
+      : undefined;
 
   return (
     <section id="dettagli" className="bg-white border-y border-blush/20">
       <div className="pb-24 bg-[#fffcf7]">
         {/* Banner testata con titolo grafico e sottotitolo */}
         <SectionBanner
-          title={TimeTitle}
+          title={Dettagli}
           subtitle={
             <>
-              Tutte le informazioni chiave a portata di tocco
+              Tutte le informazioni chiave
               <br />
               per raggiungere le sedi dell'evento.
             </>
@@ -52,7 +70,7 @@ export const QuickFacts: React.FC = () => {
         />
 
         {/* 2. Timeline Card (Centered and enlarged for desktop) */}
-        <div className="bg-[#fffcf7] rounded-3xl sm:rounded-4xl p-8 sm:p-12 lg:p-16 shadow-xs">
+        <div className="bg-avorio p-8 sm:p-12 lg:p-16">
           <div className="max-w-2xl mx-auto flex flex-col items-center text-center">
             <div className="w-full space-y-10 lg:space-y-14 my-2">
               {/* Stop 1: La Data */}
@@ -67,11 +85,12 @@ export const QuickFacts: React.FC = () => {
               {/* Stop 2: Gli Orari */}
               <div className="flex flex-col items-center text-center">
                 <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
-                  Gli Orari
+                  L'orari
                 </span>
-                <HourTitle className="mt-2 mb-2 h-5 sm:h-6 lg:h-8 w-auto mx-auto" />
+                <Ore17 className="mt-2 mb-2 h-5 sm:h-6 lg:h-8 w-auto mx-auto" />
                 <p className="body text-[#4a151d]/75 mt-1 max-w-md">
-                  {settings.event.ceremonyTime || 'Arrivo gradito entro le 16:45'}
+                  {settings.event.ceremonyTime ||
+                    "Arrivo gradito entro le 16:45"}
                 </p>
               </div>
 
@@ -80,14 +99,21 @@ export const QuickFacts: React.FC = () => {
                 <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
                   La cerimonia
                 </span>
-                <CascinaTitle className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
+                <CascinaRanverso className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
                 <p className="body text-[#4a151d]/75 mt-1 max-w-md">
-                  {settings.locations.ceremony.address.includes(', ') ? (
+                  {settings.locations.ceremony.address.includes(", ") ? (
                     <>
-                      <span>{settings.locations.ceremony.address.split(', ')[0]}</span>
+                      <span>
+                        {settings.locations.ceremony.address.split(", ")[0]}
+                      </span>
                       <span className="hidden sm:inline">, </span>
                       <br className="sm:hidden" />
-                      <span>{settings.locations.ceremony.address.split(', ').slice(1).join(', ')}</span>
+                      <span>
+                        {settings.locations.ceremony.address
+                          .split(", ")
+                          .slice(1)
+                          .join(", ")}
+                      </span>
                     </>
                   ) : (
                     settings.locations.ceremony.address
@@ -111,11 +137,13 @@ export const QuickFacts: React.FC = () => {
                 <span className="body uppercase tracking-widest text-[#4a151d]/70 font-semibold block mb-1">
                   La festa
                 </span>
-                <CascinaTitle className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
+                <CascinaRanverso className="mt-2 mb-2 h-6 sm:h-7 lg:h-10 w-auto mx-auto" />
                 <p className="body text-[#4a151d]/75 mt-1 max-w-md">
                   {(() => {
-                    const text = settings.event.receptionTime || 'A seguire, aperitivo, cena e festa nello stesso luogo';
-                    const target = 'cena';
+                    const text =
+                      settings.event.receptionTime ||
+                      "A seguire, aperitivo, cena e festa nello stesso luogo";
+                    const target = "cena";
                     const idx = text.indexOf(target);
                     if (idx !== -1) {
                       const before = text.slice(0, idx + target.length);
@@ -142,7 +170,6 @@ export const QuickFacts: React.FC = () => {
                   </button>
                 )}
               </div>
-
             </div>
           </div>
         </div>

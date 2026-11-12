@@ -1,48 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Search, ChevronDown, Phone, Mail, MessageCircle } from 'lucide-react';
-import { useSettings } from '../../contexts/SettingsContext';
-import { weddingApi } from '../../services/supabase';
+import React, { useState, useEffect } from "react";
+import { Search, ChevronDown, Phone, Mail, MessageCircle } from "lucide-react";
+import { useSettings } from "../../contexts/SettingsContext";
+import { weddingApi } from "../../services/supabase";
 import {
   MiniWave,
   TimeBolle,
   ConfermaBolle,
   Data,
-  TimeTitle,
-  HourTitle,
   CascinaTitle,
   CoordinateTitle,
   ViaggioTitle,
   Orchidea,
   CarloCina,
-  MappaTitle
-} from '../home/GraficaElements';
+  MappaTitle,
+} from "../home/GraficaElements";
 
 export const FaqSection: React.FC = () => {
   const { settings } = useSettings();
   const [faqs, setFaqs] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [selectedTag, setSelectedTag] = useState<string>('all');
-  const [openIds, setOpenIds] = useState<string[]>(['faq-dress-code']);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedTag, setSelectedTag] = useState<string>("all");
+  const [openIds, setOpenIds] = useState<string[]>(["faq-dress-code"]);
 
   useEffect(() => {
     weddingApi.getFaqs().then(setFaqs);
   }, []);
 
   const toggleAccordion = (id: string) => {
-    setOpenIds(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    setOpenIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
   const tags = [
-    { id: 'all', label: 'Tutti i Temi' },
-    { id: 'locations', label: 'Location & Orari' },
-    { id: 'info', label: 'Info Utili' },
-    { id: 'gifts', label: 'Regali' },
+    { id: "all", label: "Tutti i Temi" },
+    { id: "locations", label: "Location & Orari" },
+    { id: "info", label: "Info Utili" },
+    { id: "gifts", label: "Regali" },
   ];
 
-  const filteredFaqs = faqs.filter(faq => {
-    const matchesTag = selectedTag === 'all' || faq.category === selectedTag;
+  const filteredFaqs = faqs.filter((faq) => {
+    const matchesTag = selectedTag === "all" || faq.category === selectedTag;
     const matchesSearch =
       faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
       faq.answer.toLowerCase().includes(searchTerm.toLowerCase());
@@ -52,33 +50,36 @@ export const FaqSection: React.FC = () => {
   return (
     <section id="faq" className="bg-cream">
       <div className="">
-
-
         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
           {/* Organic soft pink blob at top right */}
           <ConfermaBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
           <div className="flex flex-col items-start lg:items-center mt-6">
             <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
-            <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+            <MiniWave
+              color="#667b4e"
+              className="w-44 lg:w-60 h-auto my-2"
+              strokeWidth={1.5}
+              lgStrokeWidth={1}
+            />
             <p className="sottotitolo text-[#4a151d]/75 text-left lg:text-center max-w-md lg:mx-auto mb-8">
-              Tutto quello che c'è da sapere per godersi la festa senza pensieri.
+              Tutto quello che c'è da sapere per godersi la festa senza
+              pensieri.
             </p>
-
           </div>
         </div>
 
-
         {/* Tag Filters */}
         <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-6 ml-6 no-scrollbar">
-          {tags.map(tag => (
+          {tags.map((tag) => (
             <button
               key={tag.id}
               onClick={() => setSelectedTag(tag.id)}
-              className={`px-3.5 py-1.5 rounded-lg body font-semibold whitespace-nowrap transition-all ${selectedTag === tag.id
-                  ? 'bg-[#de868a] text-paper shadow-sm'
-                  : 'bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy'
-                }`}
+              className={`px-3.5 py-1.5 rounded-lg body font-semibold whitespace-nowrap transition-all ${
+                selectedTag === tag.id
+                  ? "bg-[#de868a] text-paper shadow-sm"
+                  : "bg-paper text-burgundy/70 border border-blush/40 hover:border-burgundy"
+              }`}
             >
               {tag.label}
             </button>
@@ -88,7 +89,7 @@ export const FaqSection: React.FC = () => {
         {/* Accordion List */}
         <div className="space-y-3 ml-6 mr-6 mb-16">
           {filteredFaqs.length > 0 ? (
-            filteredFaqs.map(faq => {
+            filteredFaqs.map((faq) => {
               const isOpen = openIds.includes(faq.id);
               return (
                 <div
@@ -103,8 +104,9 @@ export const FaqSection: React.FC = () => {
                       {faq.question}
                     </span>
                     <div
-                      className={`w-8 h-8 rounded-full bg-cream text-burgundy flex items-center justify-center shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180 bg-blush-soft' : ''
-                        }`}
+                      className={`w-8 h-8 rounded-full bg-cream text-burgundy flex items-center justify-center shrink-0 transition-transform duration-300 ${
+                        isOpen ? "rotate-180 bg-blush-soft" : ""
+                      }`}
                     >
                       <ChevronDown className="w-4 h-4 text-burgundy" />
                     </div>
@@ -120,7 +122,8 @@ export const FaqSection: React.FC = () => {
             })
           ) : (
             <div className="p-8 text-center bg-paper rounded-3xl border border-blush/30 body text-burgundy/70">
-              Nessun risultato per la tua ricerca. Prova con altre parole chiave!
+              Nessun risultato per la tua ricerca. Prova con altre parole
+              chiave!
             </div>
           )}
         </div>
@@ -128,7 +131,6 @@ export const FaqSection: React.FC = () => {
         {/* 1. Deep Burgundy Banner from grafica.svg */}
         <div className="bg-[#fffcf7]">
           <div className="relative overflow-hidden bg-[#8c2035] text-white pl-8 pr-8 pt-8 lg:pt-16 pb-16 lg:pb-32 ">
-
             {/* ONDA A 2 CURVE (sale e scende) */}
             <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none pointer-events-none z-10">
               <svg
@@ -147,17 +149,21 @@ export const FaqSection: React.FC = () => {
 
             <div className="flex flex-col items-start lg:items-center mt-6">
               <MappaTitle className="h-16 lg:h-20 w-auto mb-2" />
-              <MiniWave color="#667b4e" className="w-44 lg:w-60 h-auto my-2" strokeWidth={1.5} lgStrokeWidth={1} />
+              <MiniWave
+                color="#667b4e"
+                className="w-44 lg:w-60 h-auto my-2"
+                strokeWidth={1.5}
+                lgStrokeWidth={1}
+              />
               <p className="sottotitolo text-white/80  text-left lg:text-center max-w-md lg:mx-auto mb-8">
-                Siamo a tua completa disposizione! Contattaci liberamente tramite telefono o email:
-
+                Siamo a tua completa disposizione! Contattaci liberamente
+                tramite telefono o email:
               </p>
             </div>
           </div>
 
           {/* Direct Contacts Box (Burgundy Style) */}
           <div className="p-6 sm:p-8 rounded-4xl bg-[#fffcf7] text-center max-w-xl mx-auto">
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mt-8  mb-8">
               {/* Marta Card */}
               <div className="p-4 rounded-2xl bg-white border border-blush/40 space-y-2.5">
@@ -165,7 +171,6 @@ export const FaqSection: React.FC = () => {
                   <span className="sottotitolo font-semibold text-burgundy">
                     Marta
                   </span>
-
                 </div>
                 <div className="space-y-1.5 body">
                   <a
@@ -198,7 +203,6 @@ export const FaqSection: React.FC = () => {
                   <span className="sottotitolo font-semibold text-burgundy">
                     Giulio
                   </span>
-
                 </div>
                 <div className="space-y-1.5 body">
                   <a
