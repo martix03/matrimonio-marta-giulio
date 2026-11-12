@@ -10,6 +10,7 @@ import {
   Data,
   CascinaTitle,
   CoordinateTitle,
+  Tappe,
   Viaggio,
   Orchidea,
   CarloCina,
@@ -78,34 +79,8 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
         }
       />
 
-      <div className="max-w-3xl lg:max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Stages Grid (No progress bars) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12 mb-12">
-          {mockRegistryStages.map((stage) => {
-            return (
-              <div
-                key={stage.id}
-                className="rounded-4xl overflow-hidden bg-[#fffcf7] transition-all flex flex-col justify-between"
-              >
-                <div>
-                  <div className="relative h-64 lg:h-80 overflow-hidden">
-                    <img
-                      src={stage.image_url}
-                      alt={stage.title}
-                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-burgundy/85 via-burgundy/20 to-transparent pointer-events-none" />
-                    <div className="absolute bottom-4 left-5 right-5 text-white z-10">
-                      <h3 className="titolo text-white font-semibold leading-tight">
-                        {stage.title}
-                      </h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+      <div className="mb-16 mt-4 max-w-6xl lg:max-w-7xl mx-auto px-2">
+        <Tappe className="w-full lg:w-1/2 h-auto mx-auto" />
       </div>
       <div className="bg-[#fbf5f4]">
         <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">

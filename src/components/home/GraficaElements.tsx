@@ -22,6 +22,7 @@ import rsvp from "../../assets/RSPV.svg";
 import carloCina from "../../assets/carlo-cina.svg";
 import carloBicchiere from "../../assets/carlo_bicchiere.svg";
 import martini from "../../assets/martini.svg";
+import tappe from "../../assets/tappe.svg";
 
 import timeBolle from "../../assets/time-bolle.svg";
 import cascina from "../../assets/cascina.svg";
@@ -34,6 +35,16 @@ import mappaTitle from "../../assets/mappa-title.svg";
 import coordinateTitle from "../../assets/coordinate.svg";
 
 import backgroundRed from "../../assets/background-red.svg";
+
+export const Tappe: React.FC<{ className?: string }> = ({ className = "" }) => {
+  return (
+    <img
+      src={tappe}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
 
 export const MartaGiulio: React.FC<{ className?: string }> = ({
   className = "",
