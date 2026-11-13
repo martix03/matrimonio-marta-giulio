@@ -9,13 +9,14 @@ import {
   TimeBolle,
   Data,
   CascinaTitle,
-  CoordinateTitle,
+  ListaNozze,
   Tappe,
   Viaggio,
   Orchidea,
   CarloCina,
 } from "../home/GraficaElements";
 import { SectionBannerRosa } from "../common/SectionBannerRosa";
+import { SectionBannerVerde } from "../common/SectionBannerVerde";
 
 interface WeddingRegistryProps {
   cluster: Cluster | null;
@@ -83,23 +84,15 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
         <Tappe className="w-full sm:w-[70%] lg:w-[70%] h-auto mx-auto" />
       </div>
       <div className="bg-[#fbf5f4]">
-        <div className="relative overflow-hidden text-white pl-8 pr-8 pt-16 lg:pt-32 ">
-          {/* Organic soft pink blob at top right */}
-
-          <div className="flex flex-col items-start lg:items-center mt-6">
-            <CoordinateTitle className="h-10 lg:h-20 w-auto mb-2 scale-x-100" />
-            <MiniWave
-              color="#667b4e"
-              className="w-44 lg:w-60 h-auto my-2"
-              strokeWidth={1.5}
-              lgStrokeWidth={1}
-            />
-            <p className="sottotitolo text-[#4a151d]/75 lg:text-center max-w-md mx-auto mb-8">
-              Se volete contribuire al nostro viaggio di nozze, ecco le
-              coordinate bancarie:
-            </p>
-          </div>
-        </div>
+        <SectionBannerVerde
+          title={ListaNozze}
+          subtitle={
+            <>
+              Se volete contribuire al nostro viaggio, <br /> ecco le coordinate
+              bancarie:
+            </>
+          }
+        />
 
         {/* Bank Details & Notification Card */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 pb-16">
@@ -107,31 +100,28 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
             {/* Orchidea on desktop right side, vertically centered */}
             <Orchidea className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-6 w-28 lg:w-32 h-auto -scale-x-100 pointer-events-none select-none z-0 opacity-80" />
 
-            {/* Carlo Cina: vertically centered on the right on mobile, and on the left on desktop */}
-            <CarloCina className="absolute -bottom-12 lg:top-1/2 -translate-y-1/2 right-3 sm:right-6 w-1/4 lg:w-1/6 lg:left-6 lg:right-auto lg:-scale-x-100 h-auto pointer-events-none select-none z-0" />
-
             {/* Bank Details Content - safe zone on mobile, perfectly centered on desktop (lg) */}
             <div className="relative z-10 space-y-3.5 text-left lg:text-center pr-4 sm:pr-28 lg:pr-0 lg:mx-auto lg:max-w-md">
               <div>
-                <div className="body uppercase tracking-wider font-semibold text-burgundy/60">
+                <div className="body uppercase tracking-wider font-semibold text-bordeaux/60">
                   Intestatario:
                 </div>
-                <div className="sottotitolo font-semibold text-burgundy">
+                <div className="sottotitolo font-semibold text-bordeaux">
                   {settings.registry.holder}
                 </div>
               </div>
 
               <div>
-                <div className="body uppercase tracking-wider font-semibold text-burgundy/60 pt-1">
+                <div className="body uppercase tracking-wider font-semibold text-bordeaux/60 pt-1">
                   IBAN:
                 </div>
                 <div className="flex flex-col gap-3 lg:items-center mt-1">
-                  <span className="font-mono w-fit pr-4 rounded-md sottotilo bg-[#fffcf7] font-bold text-burgundy break-all select-all">
+                  <span className="font-mono w-fit pr-4 rounded-md sottotilo bg-[#fffcf7] font-bold text-bordeaux break-all select-all">
                     {settings.registry.iban}
                   </span>
                   <button
                     onClick={handleCopyIban}
-                    className="w-fit px-5 py-2.5 rounded-xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm lg:mx-auto cursor-pointer"
+                    className="w-fit px-5 py-2.5 rounded-xl bg-bordeaux hover:bg-bordeaux-light text-paper body font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-sm lg:mx-auto cursor-pointer"
                     title="Copia negli appunti"
                   >
                     {copiedIban ? (
@@ -150,14 +140,17 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
               </div>
 
               <div>
-                <div className="body uppercase tracking-wider font-semibold text-burgundy/60 pt-1">
+                <div className="body uppercase tracking-wider font-semibold text-bordeaux/60 pt-1">
                   Causale suggerita:
                 </div>
-                <div className="body font-medium text-burgundy/80 italic mt-0.5">
+                <div className="body font-medium text-bordeaux/80 italic mt-0.5">
                   "{suggestedReason}"
                 </div>
               </div>
             </div>
+          </div>
+          <div className="flex justify-end">
+            <CarloCina className="mt-6 sm:mt-8 lg:mt-8 w-1/2 sm:w-1/3 lg:w-1/3 h-auto pointer-events-none select-none z-0" />
           </div>
         </div>
       </div>

@@ -105,7 +105,7 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
       className="relative pt-24 pb-16 sm:pt-28 sm:pb-24 overflow-hidden bg-lightRosa text-center"
     >
       {/* Anthurium in alto a destra nell'angolo (solo mobile) */}
-      <Anthurium className="block lg:hidden absolute -top-6 -right-6 sm:-right-2 w-1/2 sm:w-1/3 pointer-events-none z-0" />
+      <Anthurium className="block lg:hidden absolute -top-6 right-4 sm:-right-2 w-[30%] sm:w-[15%] pointer-events-none z-0 -rotate-[155deg]" />
 
       <div className="max-w-2xl lg:max-w-6xl xl:max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Mobile */}

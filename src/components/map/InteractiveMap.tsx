@@ -28,7 +28,7 @@ import {
   MiniWave,
   TimeBolle,
   Data,
-  MappaTitle,
+  LuoghiUtili,
   CascinaTitle,
   CoordinateTitle,
   Orchidea,
@@ -134,10 +134,10 @@ class MapErrorBoundary extends React.Component<
   render() {
     if (this.state.hasError) {
       return (
-        <div className="w-full h-full min-h-[360px] sm:min-h-[460px] flex flex-col items-center justify-center bg-cream/70 text-burgundy p-6 text-center rounded-2xl">
-          <MapPin className="w-8 h-8 text-burgundy mb-2 opacity-60" />
+        <div className="w-full h-full min-h-[360px] sm:min-h-[460px] flex flex-col items-center justify-center bg-cream/70 text-bordeaux p-6 text-center rounded-2xl">
+          <MapPin className="w-8 h-8 text-bordeaux mb-2 opacity-60" />
           <p className="titolo mb-1">Mappa dei Luoghi</p>
-          <p className="body text-burgundy/70 max-w-xs mb-4">
+          <p className="body text-bordeaux/70 max-w-xs mb-4">
             Puoi consultare tutti i dettagli dei luoghi nell'elenco laterale.
           </p>
           <button
@@ -413,11 +413,16 @@ export const InteractiveMap: React.FC = () => {
     <section id="mappa" className="bg-[#fffcf7]">
       <div className="relative overflow-hidden">
         <SectionBanner
-          title={MappaTitle}
-          subtitle="I luoghi della cerimonia, del ricevimento e una selezione curata per chi soggiorna nei dintorni."
+          title={LuoghiUtili}
+          subtitle={
+            <>
+              I luoghi della cerimonia, del
+              <br /> ricevimento e i nostri posti del cuore.
+            </>
+          }
         />
 
-        <div className=" relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <div className=" relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-14">
           {/* Category Filter Pills */}
           <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-3 mb-2 no-scrollbar mb-8">
             {primaryCategories.map((cat) => (
@@ -427,7 +432,7 @@ export const InteractiveMap: React.FC = () => {
                 className={`px-4 py-2 rounded-xl body font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === cat.id
                     ? "bg-[#de868a] text-paper shadow-sm"
-                    : "bg-paper text-burgundy border border-blush/40 hover:border-burgundy"
+                    : "bg-paper text-bordeaux border border-blush/40 hover:border-burgundy"
                 }`}
               >
                 {cleanLabel(cat.label)}
@@ -436,14 +441,14 @@ export const InteractiveMap: React.FC = () => {
           </div>
 
           {places.length === 0 ? (
-            <div className="text-center text-burgundy py-10">
+            <div className="text-center text-bordeaux py-10">
               Caricamento mappa in corso...
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
               <div className="lg:col-span-7 rounded-4xl overflow-hidden shadow-wedding border border-blush/30 min-h-[360px] sm:min-h-[460px] relative bg-paper flex flex-col">
-                <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 body font-semibold text-burgundy">
-                  <MapPin className="w-3.5 h-3.5 text-burgundy" />
+                <div className="absolute top-3 right-3 z-30 flex items-center gap-1.5 px-3 py-1.5 bg-paper/90 backdrop-blur-md rounded-full shadow-md border border-blush/40 body font-semibold text-bordeaux">
+                  <MapPin className="w-3.5 h-3.5 text-bordeaux" />
                   <span>Mappa Google Maps</span>
                 </div>
                 <div className="w-full h-full min-h-[360px] sm:min-h-[460px] z-10">
@@ -482,10 +487,10 @@ export const InteractiveMap: React.FC = () => {
                           {getPlaceCategoryBadge(activePlace)}
                         </span>
                       </div>
-                      <h3 className="titolo text-burgundy font-semibold leading-tight">
+                      <h3 className="titolo text-bordeaux font-semibold leading-tight">
                         {activePlace.name}
                       </h3>
-                      <p className="body text-burgundy/70 mt-1 flex items-start gap-1">
+                      <p className="body text-bordeaux/70 mt-1 flex items-start gap-1">
                         <span>{activePlace.address}</span>
                       </p>
                     </div>
@@ -514,7 +519,7 @@ export const InteractiveMap: React.FC = () => {
                   </div>
 
                   <div className="flex flex-col min-h-0">
-                    <div className="body font-semibold uppercase tracking-wider text-burgundy/60 px-1 mb-2">
+                    <div className="body font-semibold uppercase tracking-wider text-bordeaux/60 px-1 mb-2">
                       Tutti i punti consigliati ({filteredPlaces.length}):
                     </div>
                     <div

@@ -53,7 +53,7 @@ export const SectionBanner: React.FC<SectionBannerProps> = ({
   title,
   subtitle,
   titleClassName = "h-16 lg:h-20 w-auto mb-2 lg:mt-8 text-lightRosa",
-  subtitleClassName = "body text-lightRosa/70 text-center max-w-md mx-auto mb-10 lg:mb-16",
+  subtitleClassName = "body sm:sottotitolo lg:sottotitolo text-lightRosa/70 text-center max-w-md mx-auto mb-10 lg:mb-16",
   showWave = true,
   waveColor = "#fffcf7",
   bgColor = "bg-burgundy",

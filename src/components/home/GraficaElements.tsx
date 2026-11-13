@@ -1,6 +1,7 @@
 import React from "react";
 
 import calla from "../../assets/calla.svg";
+import callaBianca from "../../assets/calla-bianca.svg";
 import orchidea from "../../assets/orchidea.svg";
 import orchidea2 from "../../assets/orchidea-2.svg";
 import anthurium from "../../assets/anthurium.svg";
@@ -18,6 +19,8 @@ import count from "../../assets/count.svg";
 import dettagli from "../../assets/dettagli.svg";
 import ore17 from "../../assets/ore-17.svg";
 import rsvp from "../../assets/RSPV.svg";
+import lista from "../../assets/lista-nozze.svg";
+import luoghiUtili from "../../assets/luoghi-utili.svg";
 
 import carloCina from "../../assets/carlo-cina.svg";
 import carloBicchiere from "../../assets/carlo_bicchiere.svg";
@@ -31,7 +34,6 @@ import stepperOnde from "../../assets/stepper-onde.svg";
 import stepperBolle from "../../assets/stepper-bolle.svg";
 import carloFace from "../../assets/carlo-face.svg";
 import viaggio from "../../assets/viaggio.svg";
-import mappaTitle from "../../assets/mappa-title.svg";
 import coordinateTitle from "../../assets/coordinate.svg";
 
 import backgroundRed from "../../assets/background-red.svg";
@@ -92,6 +94,18 @@ export const Ore17: React.FC<{ className?: string }> = ({ className = "" }) => {
   );
 };
 
+export const ListaNozze: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={lista}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
 export const CascinaTitle: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
@@ -108,6 +122,18 @@ export const Calla: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <img
       src={calla}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const CallaBianca: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={callaBianca}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -290,12 +316,12 @@ export const CoordinateTitle: React.FC<{ className?: string }> = ({
   );
 };
 
-export const MappaTitle: React.FC<{ className?: string }> = ({
+export const LuoghiUtili: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
   return (
     <img
-      src={mappaTitle}
+      src={luoghiUtili}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />

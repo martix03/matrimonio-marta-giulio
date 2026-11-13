@@ -10,7 +10,6 @@ import {
   CoordinateTitle,
   Orchidea,
   CarloCina,
-  MappaTitle,
 } from "../home/GraficaElements";
 
 export const FaqSection: React.FC = () => {
@@ -145,7 +144,7 @@ export const FaqSection: React.FC = () => {
             <TimeBolle className="absolute top-0 right-0 w-1/3 lg:w-[15%]" />
 
             <div className="flex flex-col items-start lg:items-center mt-6">
-              <MappaTitle className="h-16 lg:h-20 w-auto mb-2" />
+              <CascinaTitle className="h-16 lg:h-20 w-auto mb-2" />
               <MiniWave
                 color="#667b4e"
                 className="w-44 lg:w-60 h-auto my-2"
