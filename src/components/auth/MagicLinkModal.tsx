@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { X, UserSearch, Sparkles, Check } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { X, UserSearch, Sparkles, Check } from "lucide-react";
 
 interface MagicLinkModalProps {
   isOpen: boolean;
@@ -18,19 +18,19 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
   currentFamily,
   error,
 }) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -44,7 +44,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
     const success = await onLoginName(firstName.trim(), lastName.trim());
     setIsSubmitting(false);
     if (success) {
-      setSuccessMessage('Invito trovato!');
+      setSuccessMessage("Invito trovato!");
       setTimeout(() => {
         onClose();
         setSuccessMessage(null);
@@ -57,7 +57,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
     setLastName(demoLastName);
     onLoginName(demoFirstName, demoLastName).then((ok) => {
       if (ok) {
-        setSuccessMessage('Accesso demo riuscito!');
+        setSuccessMessage("Accesso demo riuscito!");
         setTimeout(() => {
           onClose();
           setSuccessMessage(null);
@@ -68,11 +68,11 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-burgundy/60 backdrop-blur-sm animate-fade-in">
-      <div className="relative w-full max-w-md bg-paper rounded-4xl shadow-wedding-lg p-6 sm:p-8 border border-blush/30 text-burgundy">
+      <div className="relative w-full max-w-md bg-paper rounded-4xl shadow-wedding-lg p-6 sm:p-8 border border-blush/30 text-bordeaux">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-2xl text-burgundy/60 hover:text-burgundy hover:bg-cream transition-colors"
+          className="absolute top-5 right-5 p-2 rounded-2xl text-bordeaux/60 hover:text-bordeaux hover:bg-cream transition-colors"
           aria-label="Chiudi"
         >
           <X className="w-5 h-5" />
@@ -80,16 +80,16 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
 
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-full bg-blush-soft text-burgundy flex items-center justify-center mx-auto mb-3">
-            <UserSearch className="w-6 h-6 text-burgundy" />
+          <div className="w-12 h-12 rounded-full bg-blush-soft text-bordeaux flex items-center justify-center mx-auto mb-3">
+            <UserSearch className="w-6 h-6 text-bordeaux" />
           </div>
-          <h2 className="titolo font-semibold text-burgundy">
-            {currentFamily ? 'Il tuo Invito Personale' : 'Accedi al tuo Invito'}
+          <h2 className="titolo font-semibold text-bordeaux">
+            {currentFamily ? "Il tuo Invito Personale" : "Accedi al tuo Invito"}
           </h2>
-          <p className="sottotitolo text-burgundy/70 mt-1">
+          <p className="sottotitolo text-bordeaux/70 mt-1">
             {currentFamily
               ? `Attualmente connesso come: ${currentFamily}`
-              : 'Inserisci il tuo nome e cognome per trovare il tuo invito.'}
+              : "Inserisci il tuo nome e cognome per trovare il tuo invito."}
           </p>
         </div>
 
@@ -100,8 +100,8 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           </div>
         )}
         {successMessage && (
-          <div className="mb-4 p-3 bg-blush-soft text-burgundy body rounded-xl border border-blush/40 flex items-center gap-2">
-            <Check className="w-4 h-4 text-burgundy" strokeWidth={2.5} />
+          <div className="mb-4 p-3 bg-blush-soft text-bordeaux body rounded-xl border border-blush/40 flex items-center gap-2">
+            <Check className="w-4 h-4 text-bordeaux" strokeWidth={2.5} />
             {successMessage}
           </div>
         )}
@@ -109,7 +109,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
         {/* Form */}
         <form onSubmit={handleNameSubmit} className="space-y-3">
           <div>
-            <label className="block body font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
+            <label className="block body font-semibold uppercase tracking-wider text-bordeaux/80 mb-1">
               Nome
             </label>
             <input
@@ -117,11 +117,11 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="es. Marco"
-              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-burgundy outline-none transition-all"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-bordeaux outline-none transition-all"
             />
           </div>
           <div>
-            <label className="block body font-semibold uppercase tracking-wider text-burgundy/80 mb-1">
+            <label className="block body font-semibold uppercase tracking-wider text-bordeaux/80 mb-1">
               Cognome
             </label>
             <input
@@ -129,7 +129,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="es. Rossi"
-              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-burgundy outline-none transition-all"
+              className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-bordeaux outline-none transition-all"
             />
           </div>
           <button
@@ -137,34 +137,34 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
             disabled={isSubmitting || !firstName.trim() || !lastName.trim()}
             className="btn-primary w-full mt-4 py-3 body sottotitolo"
           >
-            {isSubmitting ? 'Ricerca in corso...' : 'Trova il mio Invito'}
+            {isSubmitting ? "Ricerca in corso..." : "Trova il mio Invito"}
           </button>
         </form>
 
         {/* Quick Demo Selector */}
         <div className="mt-6 pt-4 border-t border-blush/30 text-center">
-          <div className="flex items-center justify-center gap-1 body text-burgundy/60 mb-2 font-medium">
+          <div className="flex items-center justify-center gap-1 body text-bordeaux/60 mb-2 font-medium">
             <Sparkles className="w-3.5 h-3.5 text-accentGold" />
             <span>Vuoi testare subito un gruppo di esempio?</span>
           </div>
           <div className="flex justify-center gap-2">
             <button
               type="button"
-              onClick={() => handleQuickDemo('Marco', 'Spalla')}
+              onClick={() => handleQuickDemo("Marco", "Spalla")}
               className="btn-secondary px-3 py-1 body"
             >
               Fam. Spalla
             </button>
             <button
               type="button"
-              onClick={() => handleQuickDemo('Marta', 'Spalla')}
+              onClick={() => handleQuickDemo("Marta", "Spalla")}
               className="btn-secondary px-3 py-1 body"
             >
               Marta
             </button>
             <button
               type="button"
-              onClick={() => handleQuickDemo('Carlo', 'Spalla Palomba')}
+              onClick={() => handleQuickDemo("Carlo", "Spalla Palomba")}
               className="btn-secondary px-3 py-1 body border-burgundy/40"
             >
               Admin

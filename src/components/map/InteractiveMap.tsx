@@ -25,17 +25,12 @@ import { PlacePOI, PlaceCategory } from "../../types";
 import { weddingApi } from "../../services/supabase";
 import { mockPlaces } from "../../services/mockData";
 import {
-  MiniWave,
-  TimeBolle,
   Data,
   LuoghiUtili,
-  CascinaTitle,
-  CoordinateTitle,
   Orchidea,
   CarloCina,
 } from "../home/GraficaElements";
 import { SectionBanner } from "../common/SectionBanner";
-import backgroundRed from "../../assets/background-red.svg";
 
 const DEFAULT_CATEGORIES: PlaceCategory[] = [
   {
@@ -479,8 +474,6 @@ export const InteractiveMap: React.FC = () => {
               {activePlace && (
                 <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
                   <div className="relative overflow-hidden p-6 rounded-2xl bg-paper shadow-wedding border-1 border-blush/40 animate-fade-in space-y-4">
-                    <TimeBolle className="absolute bottom-0 -right-0 w-24 z-0 -scale-y-100 pointer-events-none" />
-
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span className="body uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-[#de868a] text-white font-semibold">

@@ -5,18 +5,26 @@ import { mockRegistryStages } from "../../services/mockData";
 import { Cluster } from "../../types";
 import { weddingApi } from "../../services/supabase";
 import {
-  MiniWave,
-  TimeBolle,
   Data,
-  CascinaTitle,
   ListaNozze,
   Tappe,
+  Citta1,
+  Citta2,
+  Citta3,
+  Citta4,
   Viaggio,
   Orchidea,
   CarloCina,
 } from "../home/GraficaElements";
 import { SectionBannerRosa } from "../common/SectionBannerRosa";
 import { SectionBannerVerde } from "../common/SectionBannerVerde";
+
+const TRIP_STAGES = [
+  { id: "pechino", name: "Pechino", Component: Citta2 },
+  { id: "chengdu", name: "Chengdu", Component: Citta3 },
+  { id: "xjanghjae", name: "Xjanghjae", Component: Citta4 },
+  { id: "shanghai", name: "Shanghai", Component: Citta1 },
+];
 
 interface WeddingRegistryProps {
   cluster: Cluster | null;
@@ -80,8 +88,26 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
         }
       />
 
-      <div className="mb-16 mt-4 max-w-6xl lg:max-w-7xl mx-auto px-2">
-        <Tappe className="w-full sm:w-[70%] lg:w-[70%] h-auto mx-auto" />
+      <div className="mb-16 mt-4 max-w-6xl lg:max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Solo su Mobile (< sm): 4 tappe del viaggio */}
+        <div className="block sm:hidden w-full max-w-lg mx-auto space-y-6">
+          {TRIP_STAGES.map((stage) => (
+            <div
+              key={stage.id}
+              className="relative rounded-2xl overflow-hidden shadow-xs"
+            >
+              <stage.Component className="w-full h-auto" />
+              <div className="absolute bottom-4 left-4 inset-x-0 text-start pointer-events-none select-none">
+                <span className="font-shabby font-bold text-white text-3xl tracking-wider drop-shadow-[0_2px_4px_rgba(74,21,29,0.35)]">
+                  {stage.name}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Da tablet in su (>= sm): Tappe */}
+        <Tappe className="hidden sm:block w-full sm:w-[80%] lg:w-[70%] h-auto mx-auto" />
       </div>
       <div className="bg-[#fbf5f4]">
         <SectionBannerVerde

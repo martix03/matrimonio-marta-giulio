@@ -18,12 +18,7 @@ import {
 import { Cluster, Guest, DietaryTag } from "../../types";
 import { weddingApi } from "../../services/supabase";
 import { useSettings } from "../../contexts/SettingsContext";
-import {
-  Rsvp,
-  StepperOnde,
-  StepperDate,
-  CarloFace,
-} from "../home/GraficaElements";
+import { Rsvp, Aprile15, CarloFace } from "../home/GraficaElements";
 import rombiBg from "../../assets/rombi.svg";
 
 interface RsvpStepperProps {
@@ -183,7 +178,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({
                 <strong className="font-semibold text-[#4a151d] block">
                   Vi chiediamo gentilmente di confermare entro il
                 </strong>
-                <StepperDate className="w-20 pt-2 block mx-0 lg:mx-auto" />
+                <Aprile15 className="w-20 pt-2 block mx-0 lg:mx-auto" />
               </p>
               <button
                 onClick={onOpenAuth}
@@ -227,7 +222,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({
                 {isSingleGuest ? "Ti" : "Vi"} chiediamo gentilmente di
                 confermare entro il
               </span>
-              <StepperDate className="w-20 pt-2 block mx-0 lg:mx-auto" />
+              <Aprile15 className="w-20 pt-2 block mx-0 lg:mx-auto" />
             </p>
           )}
         </div>
@@ -360,7 +355,6 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({
                     Modifica risposte
                   </button>
                 </div>
-                <StepperOnde className="absolute -bottom-8 -left-10 lg:-bottom-10 lg:-left-10 w-36 sm:w-44 pointer-events-none z-0 opacity-80" />
               </div>
             ) : hasAlreadyResponded && !isEditing ? (
               /* Already Responded Card */
@@ -620,7 +614,7 @@ export const RsvpStepper: React.FC<RsvpStepperProps> = ({
                                   dietary_notes: e.target.value,
                                 })
                               }
-                              placeholder="Altre allergie gravi o note particolari..."
+                              placeholder="Altre allergie o note particolari..."
                               className="w-[125%] origin-left scale-[0.8] sottotilo text-bordeaux bg-transparent border-0 outline-none p-0 placeholder:text-bordeaux/40"
                             />
                           </div>

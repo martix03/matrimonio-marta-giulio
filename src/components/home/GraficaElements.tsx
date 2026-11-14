@@ -21,27 +21,74 @@ import ore17 from "../../assets/ore-17.svg";
 import rsvp from "../../assets/RSPV.svg";
 import lista from "../../assets/lista-nozze.svg";
 import luoghiUtili from "../../assets/luoghi-utili.svg";
+import faq from "../../assets/FAQ.svg";
+import viaggio from "../../assets/viaggio.svg";
+import aprile15 from "../../assets/15-aprile.svg";
+import contatti from "../../assets/contatti.svg";
 
 import carloCina from "../../assets/carlo-cina.svg";
 import carloBicchiere from "../../assets/carlo_bicchiere.svg";
+import carloFace from "../../assets/carlo-face.svg";
+
 import martini from "../../assets/martini.svg";
 import tappe from "../../assets/tappe.svg";
-
-import timeBolle from "../../assets/time-bolle.svg";
-import cascina from "../../assets/cascina.svg";
-import stepperDate from "../../assets/stepper-date.svg";
-import stepperOnde from "../../assets/stepper-onde.svg";
-import stepperBolle from "../../assets/stepper-bolle.svg";
-import carloFace from "../../assets/carlo-face.svg";
-import viaggio from "../../assets/viaggio.svg";
-import coordinateTitle from "../../assets/coordinate.svg";
-
-import backgroundRed from "../../assets/background-red.svg";
+import citta1 from "../../assets/citta1.svg";
+import citta2 from "../../assets/citta2.svg";
+import citta3 from "../../assets/citta3.svg";
+import citta4 from "../../assets/citta4.svg";
 
 export const Tappe: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <img
       src={tappe}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Citta1: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={citta1}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Citta2: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={citta2}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Citta3: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={citta3}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Citta4: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={citta4}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -60,6 +107,18 @@ export const MartaGiulio: React.FC<{ className?: string }> = ({
   );
 };
 
+export const Contatti: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={contatti}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
 export const CascinaRanverso: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
@@ -72,22 +131,22 @@ export const CascinaRanverso: React.FC<{ className?: string }> = ({
   );
 };
 
-export const TimeBolle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
+export const Ore17: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <img
-      src={timeBolle}
+      src={ore17}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
   );
 };
 
-export const Ore17: React.FC<{ className?: string }> = ({ className = "" }) => {
+export const Aprile15: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
   return (
     <img
-      src={ore17}
+      src={aprile15}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -106,12 +165,10 @@ export const ListaNozze: React.FC<{ className?: string }> = ({
   );
 };
 
-export const CascinaTitle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
+export const Faq: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
     <img
-      src={cascina}
+      src={faq}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
@@ -245,41 +302,6 @@ export const Rsvp: React.FC<{ className?: string }> = ({ className = "" }) => {
   );
 };
 
-export const StepperBolle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={stepperBolle}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-
-export const StepperDate: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={stepperDate}
-      alt=""
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-export const StepperOnde: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={stepperOnde}
-      alt=""
-      className={`pointer-events-none select-none -scale-x-100 ${className}`}
-    />
-  );
-};
-
 export const Dettagli: React.FC<{ className?: string }> = ({
   className = "",
 }) => {
@@ -300,18 +322,6 @@ export const Viaggio: React.FC<{ className?: string }> = ({
       src={viaggio}
       alt=""
       className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-
-export const CoordinateTitle: React.FC<{ className?: string }> = ({
-  className = "",
-}) => {
-  return (
-    <img
-      src={coordinateTitle}
-      alt=""
-      className={`pointer-events-none select-none -scale-x-100 ${className}`}
     />
   );
 };
@@ -374,19 +384,6 @@ export const Martini: React.FC<{ className?: string; alt?: string }> = ({
   return (
     <img
       src={martini}
-      alt={alt}
-      className={`pointer-events-none select-none ${className}`}
-    />
-  );
-};
-
-export const BackgroundRed: React.FC<{ className?: string; alt?: string }> = ({
-  className = "",
-  alt = "Carlo",
-}) => {
-  return (
-    <img
-      src={backgroundRed}
       alt={alt}
       className={`pointer-events-none select-none ${className}`}
     />
@@ -486,5 +483,3 @@ export const TimelineTargetNode: React.FC<{
     </div>
   );
 };
-
-export { backgroundRed };

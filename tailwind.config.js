@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -46,6 +47,7 @@ export default {
         sans: ['var(--font-site)', 'sans-serif'],
         serif: ['var(--font-site)', 'serif'],
         heading: ['var(--font-site)', 'sans-serif'],
+        shabby: ["'Another Shabby'", 'cursive', 'sans-serif'],
       },
       boxShadow: {
         'wedding': '0 20px 50px rgba(81, 16, 29, 0.08), 0 4px 16px rgba(81, 16, 29, 0.04)',

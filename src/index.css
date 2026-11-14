@@ -2,7 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Another Shabby';
+  src: url('/fonts/AnotherShabby.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'anothershabby';
+  src: url('/fonts/AnotherShabby.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-shabby {
+  font-family: 'Another Shabby', 'anothershabby', cursive, sans-serif;
+}
+
 :root {
+  color-scheme: light;
+
   /* ========================================================
      🎯 PUNTO UNICO DI CONFIGURAZIONE FONT PER TUTTO IL SITO
      Modifica questa riga per cambiare il font in tutto il sito:
@@ -60,7 +82,14 @@
   --title-lg-line-height: var(--title-line-height);
 }
 
-/* Applica il font configurato a tutti gli elementi di base */
+/* Disabilita la modalità notte ed applica il tema chiaro a tutti gli elementi */
+html,
+body {
+  color-scheme: light !important;
+  background-color: #faf2f2;
+  color: #4a151d;
+}
+
 html,
 body,
 button,
@@ -68,6 +97,7 @@ input,
 select,
 textarea {
   font-family: var(--font-site);
+  color-scheme: light !important;
 }
 
 body {
