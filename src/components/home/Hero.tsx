@@ -147,7 +147,10 @@ export const Hero: React.FC<HeroProps> = ({ cluster, onOpenRsvp }) => {
 
         {/* Contextual Cluster Greeting Card (when guest is logged in) */}
         {cluster && (
-          <div className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-2xl bg-white/95 border border-blush/40 animate-fade-in text-left">
+          <div
+            id="banner-benvenuto"
+            className="max-w-md mx-auto mb-8 p-4 sm:p-5 rounded-2xl bg-white/95 border border-blush/40 animate-fade-in text-left scroll-mt-20 sm:scroll-mt-24"
+          >
             <div className="flex items-center gap-2 text-[#4a151d] sottotitolo font-semibold mb-1">
               <div className="w-2 h-2 rounded-full bg-[#667b4e]" />
               <span className="sottotitolo">

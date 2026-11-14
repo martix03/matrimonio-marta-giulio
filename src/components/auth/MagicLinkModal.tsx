@@ -48,7 +48,13 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
       setTimeout(() => {
         onClose();
         setSuccessMessage(null);
-      }, 1000);
+        setTimeout(() => {
+          const banner = document.getElementById("banner-benvenuto");
+          if (banner) {
+            banner.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 120);
+      }, 750);
     }
   };
 
