@@ -52,7 +52,7 @@ export const FaqSection: React.FC = () => {
         />
 
         {/* Tag Filters */}
-        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-6 ml-6 no-scrollbar">
+        <div className="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-6 px-4 sm:px-6 no-scrollbar lg:pt-10">
           {tags.map((tag) => (
             <button
               key={tag.id}
@@ -69,7 +69,7 @@ export const FaqSection: React.FC = () => {
         </div>
 
         {/* Accordion List */}
-        <div className="space-y-3 ml-6 mr-6 mb-16">
+        <div className="space-y-3 px-4 sm:px-6 lg:px-0 lg:w-2/3 mx-auto mb-16">
           {filteredFaqs.length > 0 ? (
             filteredFaqs.map((faq) => {
               const isOpen = openIds.includes(faq.id);
@@ -123,71 +123,85 @@ export const FaqSection: React.FC = () => {
             }
           />
 
-          {/* Direct Contacts Box (Burgundy Style) */}
-          <div className="p-6 sm:p-8 rounded-4xl bg-[#fffcf7] text-center max-w-xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mt-8  mb-8">
+          {/* Direct Contacts Box */}
+          <div className="p-6 sm:p-8 rounded-4xl bg-[#fffcf7] text-center max-w-2xl mx-auto">
+            <div className="flex flex-col gap-5 sm:gap-6 text-left mt-6 mb-8">
               {/* Marta Card */}
-              <div className="p-4 rounded-2xl bg-white border border-blush/40 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="sottotitolo font-semibold text-bordeaux">
-                    Marta
-                  </span>
-                </div>
-                <div className="space-y-1.5 body">
+              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-blush/40 shadow-xs transition-all hover:shadow-md">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+                  <div className="space-y-2">
+                    <span className="titolo  font-bold text-bordeaux">
+                      Marta
+                    </span>
+                    <div className="sottotitolo space-y-1.5 body pt-1">
+                      <a
+                        href="tel:+393466121512"
+                        className=" sottotitolo flex items-center gap-2.5 text-bordeaux hover:text-burgundy font-medium transition-colors"
+                      >
+                        <Phone className="sottotitolo w-4 h-4 text-bordeaux shrink-0" />
+                        <span>346 612 1512</span>
+                      </a>
+                      <a
+                        href="mailto:spalla.marta@gmail.com"
+                        className="flex items-center gap-2.5 text-bordeaux hover:text-burgundy transition-colors"
+                        title="Invia email a Marta"
+                      >
+                        <Mail className="w-4 h-4 text-burgundy shrink-0" />
+                        <span className="break-all sm:break-normal">
+                          spalla.marta@gmail.com
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                   <a
-                    href="tel:+393466121512"
-                    className="flex items-center gap-2 text-bordeaux hover:text-burgundy-light font-medium transition-colors"
+                    href="https://wa.me/393466121512"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm shrink-0 cursor-pointer"
                   >
-                    <span>346 612 1512</span>
-                  </a>
-                  <a
-                    href="mailto:spalla.marta@gmail.com"
-                    className="flex items-center gap-2 text-bordeaux/80 hover:text-bordeaux body truncate transition-colors"
-                    title="Invia email a Marta"
-                  >
-                    <span className="truncate">spalla.marta@gmail.com</span>
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Scrivi a Marta</span>
                   </a>
                 </div>
-                <a
-                  href="https://wa.me/393466121512"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 w-full py-2 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
-                >
-                  <span>Scrivi a Marta</span>
-                </a>
               </div>
 
               {/* Giulio Card */}
-              <div className="p-4 rounded-2xl bg-white border border-blush/40 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="sottotitolo font-semibold text-bordeaux">
-                    Giulio
-                  </span>
-                </div>
-                <div className="space-y-1.5 body">
+              <div className="p-6 sm:p-7 rounded-3xl bg-white border border-blush/40 shadow-xs transition-all hover:shadow-md">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+                  <div className="space-y-2">
+                    <span className="titolo font-bold text-bordeaux">
+                      Giulio
+                    </span>
+                    <div className="sottotitolo space-y-1.5 body pt-1">
+                      <a
+                        href="tel:+393492481715"
+                        className="flex items-center gap-2.5 text-bordeaux hover:text-burgundy font-medium transition-colors"
+                      >
+                        <Phone className="w-4 h-4 text-burgundy shrink-0" />
+                        <span>349 248 1715</span>
+                      </a>
+                      <a
+                        href="mailto:giulio.palomba@gmail.com"
+                        className="flex items-center gap-2.5 text-bordeaux hover:text-burgundy transition-colors"
+                        title="Invia email a Giulio"
+                      >
+                        <Mail className="w-4 h-4 text-burgundy shrink-0" />
+                        <span className="break-all sm:break-normal">
+                          giulio.palomba@gmail.com
+                        </span>
+                      </a>
+                    </div>
+                  </div>
                   <a
-                    href="tel:+393492481715"
-                    className="flex items-center gap-2 text-bordeaux hover:text-burgundy-light font-medium transition-colors"
+                    href="https://wa.me/393492481715"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm shrink-0 cursor-pointer"
                   >
-                    <span>349 248 1715</span>
-                  </a>
-                  <a
-                    href="mailto:giulio.palomba@gmail.com"
-                    className="flex items-center gap-2 text-bordeaux/80 hover:text-bordeaux body truncate transition-colors"
-                    title="Invia email a Giulio"
-                  >
-                    <span className="truncate">giulio.palomba@gmail.com</span>
+                    <MessageCircle className="w-4 h-4" />
+                    <span>Scrivi a Giulio</span>
                   </a>
                 </div>
-                <a
-                  href="https://wa.me/393492481715"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2 w-full py-2 px-3 rounded-2xl bg-burgundy hover:bg-burgundy-light text-paper body font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-sm"
-                >
-                  <span>Scrivi a Giulio</span>
-                </a>
               </div>
             </div>
           </div>
