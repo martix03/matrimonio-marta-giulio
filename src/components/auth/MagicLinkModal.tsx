@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { X, UserSearch, Sparkles, Check } from "lucide-react";
+import { X, UserSearch, Check } from "lucide-react";
 
 interface MagicLinkModalProps {
   isOpen: boolean;
@@ -52,20 +52,6 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
     }
   };
 
-  const handleQuickDemo = (demoFirstName: string, demoLastName: string) => {
-    setFirstName(demoFirstName);
-    setLastName(demoLastName);
-    onLoginName(demoFirstName, demoLastName).then((ok) => {
-      if (ok) {
-        setSuccessMessage("Accesso demo riuscito!");
-        setTimeout(() => {
-          onClose();
-          setSuccessMessage(null);
-        }, 1000);
-      }
-    });
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-burgundy/60 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-md bg-paper rounded-4xl shadow-wedding-lg p-6 sm:p-8 border border-blush/30 text-bordeaux">
@@ -107,8 +93,8 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
         )}
 
         {/* Form */}
-        <form onSubmit={handleNameSubmit} className="space-y-3">
-          <div>
+        <form onSubmit={handleNameSubmit} className="flex flex-col">
+          <div className="mb-3.5">
             <label className="block body font-semibold uppercase tracking-wider text-bordeaux/80 mb-1">
               Nome
             </label>
@@ -135,42 +121,11 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
           <button
             type="submit"
             disabled={isSubmitting || !firstName.trim() || !lastName.trim()}
-            className="btn-primary w-full mt-4 py-3 body sottotitolo"
+            className="btn-primary w-full mt-6 lg:mt-8 sm:mt-8 py-3 body sottotitolo cursor-pointer"
           >
             {isSubmitting ? "Ricerca in corso..." : "Trova il mio Invito"}
           </button>
         </form>
-
-        {/* Quick Demo Selector */}
-        <div className="mt-6 pt-4 border-t border-blush/30 text-center">
-          <div className="flex items-center justify-center gap-1 body text-bordeaux/60 mb-2 font-medium">
-            <Sparkles className="w-3.5 h-3.5 text-accentGold" />
-            <span>Vuoi testare subito un gruppo di esempio?</span>
-          </div>
-          <div className="flex justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemo("Marco", "Spalla")}
-              className="btn-secondary px-3 py-1 body"
-            >
-              Fam. Spalla
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo("Marta", "Spalla")}
-              className="btn-secondary px-3 py-1 body"
-            >
-              Marta
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemo("Carlo", "Spalla Palomba")}
-              className="btn-secondary px-3 py-1 body border-burgundy/40"
-            >
-              Admin
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );
