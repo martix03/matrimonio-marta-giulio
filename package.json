@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "python3 scripts/deploy.py"
+    "deploy": "bash scripts/deploy-gh-pages.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
