@@ -7,6 +7,9 @@ import hashlib
 import mimetypes
 import urllib.request
 import urllib.error
+import ssl
+
+ssl_context = ssl._create_unverified_context()
 
 API_KEY = os.environ.get('SHIP_TOKEN', 'ship-0fad9b8f3f00a624b43c6d6a20b1ea88')
 DOMAIN = os.environ.get('SHIP_DOMAIN', 'martaegiulio2027.shipstatic.com')
@@ -70,7 +73,7 @@ req = urllib.request.Request(
 )
 
 try:
-    with urllib.request.urlopen(req) as resp:
+    with urllib.request.urlopen(req, context=ssl_context) as resp:
         res = json.loads(resp.read().decode('utf-8'))
         deployment_id = res.get('deployment')
         live_url = res.get('url')
@@ -94,7 +97,7 @@ put_req = urllib.request.Request(
 )
 
 try:
-    with urllib.request.urlopen(put_req) as resp:
+    with urllib.request.urlopen(put_req, context=ssl_context) as resp:
         print(f"🎉 Successo! Il sito è ora attivo su https://{DOMAIN}/")
 except urllib.error.HTTPError as e:
     print(f"❌ Errore collegamento dominio ({e.code}): {e.read().decode('utf-8')}")

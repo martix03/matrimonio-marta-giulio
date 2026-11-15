@@ -36,6 +36,7 @@ import citta1 from "../../assets/citta1.svg";
 import citta2 from "../../assets/citta2.svg";
 import citta3 from "../../assets/citta3.svg";
 import citta4 from "../../assets/citta4.svg";
+import francobollo1 from "../../assets/francobollo1.png";
 
 export const Tappe: React.FC<{ className?: string }> = ({ className = "" }) => {
   return (
@@ -89,6 +90,18 @@ export const Citta4: React.FC<{ className?: string }> = ({
   return (
     <img
       src={citta4}
+      alt=""
+      className={`pointer-events-none select-none ${className}`}
+    />
+  );
+};
+
+export const Francobollo1: React.FC<{ className?: string }> = ({
+  className = "",
+}) => {
+  return (
+    <img
+      src={francobollo1}
       alt=""
       className={`pointer-events-none select-none ${className}`}
     />
