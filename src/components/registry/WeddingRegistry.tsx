@@ -19,13 +19,6 @@ import {
 import { SectionBannerRosa } from "../common/SectionBannerRosa";
 import { SectionBannerVerde } from "../common/SectionBannerVerde";
 
-const TRIP_STAGES = [
-  { id: "pechino", name: "Pechino", Component: Citta2 },
-  { id: "chengdu", name: "Chengdu", Component: Citta3 },
-  { id: "xjanghjae", name: "Xjanghjae", Component: Citta4 },
-  { id: "shanghai", name: "Shanghai", Component: Citta1 },
-];
-
 interface WeddingRegistryProps {
   cluster: Cluster | null;
 }
@@ -91,19 +84,49 @@ export const WeddingRegistry: React.FC<WeddingRegistryProps> = ({
       <div className="mb-16 mt-4 max-w-6xl lg:max-w-7xl mx-auto px-4 sm:px-6">
         {/* Solo su Mobile (< sm): 4 tappe del viaggio */}
         <div className="block sm:hidden w-full max-w-lg mx-auto space-y-6">
-          {TRIP_STAGES.map((stage) => (
-            <div
-              key={stage.id}
-              className="relative rounded-2xl overflow-hidden shadow-xs"
-            >
-              <stage.Component className="w-full h-auto" />
-              <div className="absolute bottom-4 left-4 inset-x-0 text-start pointer-events-none select-none">
-                <span className="font-shabby font-bold text-white text-3xl tracking-wider drop-shadow-[0_2px_4px_rgba(74,21,29,0.35)]">
-                  {stage.name}
-                </span>
-              </div>
+          {/* Tappa 1: Pechino */}
+          <div className="flex flex-col items-center">
+            <div className="relative w-40 h-40 sm:w-72 sm:h-72 aspect-square rounded-full overflow-hidden mx-auto  shadow-md border-4 border-white/80 bg-[#d8e8ef] ">
+              <Citta2 className="w-full h-full object-cover object-center" />
             </div>
-          ))}
+            <div className="mt-3 text-center pointer-events-none select-none">
+              <span className="font-shabby font-bold text-bordeaux text-3xl tracking-wider">
+                Pechino
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 aspect-square rounded-full overflow-hidden mx-auto bg-[#d8e8ef]">
+              <Citta3 className="w-full h-full object-cover translate-y-4 object-center" />
+            </div>
+            <div className="mt-3 text-center pointer-events-none select-none">
+              <span className="font-shabby font-bold text-bordeaux text-3xl tracking-wider">
+                Chengdu
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <div className="relative w-64 h-64 sm:w-72 sm:h-72 aspect-square rounded-full overflow-hidden mx-auto">
+              <Citta4 className="w-full h-full object-cover object-center" />
+            </div>
+            <div className="mt-3 text-center pointer-events-none select-none">
+              <span className="font-shabby font-bold text-bordeaux text-3xl tracking-wider">
+                Zhangjiajie
+              </span>
+            </div>
+          </div>
+
+          {/* Tappa 4: Shanghai */}
+          <div className="relative w-64 h-64 sm:w-72 sm:h-72 aspect-square rounded-full overflow-hidden mx-auto shadow-md border-4 border-white/80 ">
+            <Citta1 className="w-full h-full object-cover object-center" />
+            <div className="absolute bottom-4 inset-x-0 text-center pointer-events-none select-none">
+              <span className="font-shabby font-bold text-white text-3xl tracking-wider drop-shadow-[0_2px_4px_rgba(74,21,29,0.5)]">
+                Shanghai
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Da tablet in su (>= sm): Tappe */}
