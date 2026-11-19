@@ -112,18 +112,30 @@ export function useAuth() {
     }
   }, []);
 
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
+
   const loginWithName = useCallback(async (firstName: string, lastName: string): Promise<boolean> => {
+    const fn = (firstName || '').trim().replace(/\s+/g, ' ');
+    const ln = (lastName || '').trim().replace(/\s+/g, ' ');
+
+    if (!fn || !ln) {
+      setError('Inserisci sia il nome che il cognome per accedere.');
+      return false;
+    }
+
     setLoading(true);
     setError(null);
     try {
-      const found = await weddingApi.searchClusterByName(firstName, lastName);
+      const found = await weddingApi.searchClusterByName(fn, ln);
       if (found) {
         setCluster(found);
         saveSession(found);
         setLoading(false);
         return true;
       } else {
-        setError('Nessun invito trovato con questo nome e cognome.');
+        setError('Nessun invito trovato con questo nome e cognome. Verifica i dati inseriti.');
         setLoading(false);
         return false;
       }
@@ -156,6 +168,7 @@ export function useAuth() {
     cluster,
     loading,
     error,
+    clearError,
     isAuthenticated: Boolean(cluster),
     loginWithCode,
     loginWithName,

@@ -117,23 +117,55 @@ export const weddingApi = {
   },
 
   async searchClusterByName(firstName: string, lastName: string): Promise<Cluster | null> {
-    const fn = firstName.trim().toLowerCase();
-    const ln = lastName.trim().toLowerCase();
+    const fn = (firstName || '').trim().replace(/\s+/g, ' ');
+    const ln = (lastName || '').trim().replace(/\s+/g, ' ');
 
-    if (isSupabaseConfigured && supabase) {
-      const { data: guests } = await supabase
+    if (!fn || !ln) {
+      return null;
+    }
+
+    const executeSearch = async (f: string, l: string): Promise<string | null> => {
+      // Escape SQL wildcards to enforce exact matching
+      const safeFn = f.replace(/[%_\\]/g, '\\$&');
+      const safeLn = l.replace(/[%_\\]/g, '\\$&');
+
+      const { data: guests, error } = await supabase!
         .from('guests')
         .select('cluster_id')
-        .ilike('first_name', `%${fn}%`)
-        .ilike('last_name', `%${ln}%`)
+        .ilike('first_name', safeFn)
+        .ilike('last_name', safeLn)
         .limit(1);
 
-      if (guests && guests.length > 0) {
-        const { data: cluster } = await supabase
+      if (error) {
+        console.error('Error searching guest by name:', error);
+        return null;
+      }
+      return guests && guests.length > 0 ? guests[0].cluster_id : null;
+    };
+
+    if (isSupabaseConfigured && supabase) {
+      // 1. Exact case-insensitive match
+      let clusterId = await executeSearch(fn, ln);
+
+      // 2. Accented fallback if user typed apostrophe (e.g. Dalo' -> Dalò)
+      if (!clusterId && (/[aeiou]'/i.test(fn) || /[aeiou]'/i.test(ln))) {
+        const normFn = fn.replace(/a'/gi, 'à').replace(/e'/gi, 'è').replace(/i'/gi, 'ì').replace(/o'/gi, 'ò').replace(/u'/gi, 'ù');
+        const normLn = ln.replace(/a'/gi, 'à').replace(/e'/gi, 'è').replace(/i'/gi, 'ì').replace(/o'/gi, 'ò').replace(/u'/gi, 'ù');
+        clusterId = await executeSearch(normFn, normLn);
+      }
+
+      if (clusterId) {
+        const { data: cluster, error: clusterError } = await supabase
           .from('clusters')
           .select('*, guests(*)')
-          .eq('id', guests[0].cluster_id)
+          .eq('id', clusterId)
           .single();
+
+        if (clusterError) {
+          console.error('Error fetching cluster for guest:', clusterError);
+          return null;
+        }
+
         return normalizeCluster(cluster);
       }
       return null;
@@ -141,9 +173,19 @@ export const weddingApi = {
 
     // Local fallback
     const clusters = getLocalClusters();
+    const matchFn = (gFirst: string, gLast: string, targetF: string, targetL: string) =>
+      gFirst.trim().toLowerCase() === targetF.toLowerCase() &&
+      gLast.trim().toLowerCase() === targetL.toLowerCase();
+
     for (const cluster of clusters) {
-      const match = (cluster.guests || []).some(
-        g => g.first_name.toLowerCase().includes(fn) && g.last_name.toLowerCase().includes(ln)
+      const match = (cluster.guests || []).some(g =>
+        matchFn(g.first_name, g.last_name, fn, ln) ||
+        matchFn(
+          g.first_name,
+          g.last_name,
+          fn.replace(/a'/gi, 'à').replace(/e'/gi, 'è').replace(/i'/gi, 'ì').replace(/o'/gi, 'ò').replace(/u'/gi, 'ù'),
+          ln.replace(/a'/gi, 'à').replace(/e'/gi, 'è').replace(/i'/gi, 'ì').replace(/o'/gi, 'ò').replace(/u'/gi, 'ù')
+        )
       );
       if (match) return normalizeCluster(cluster);
     }

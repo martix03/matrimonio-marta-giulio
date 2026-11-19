@@ -19,6 +19,7 @@ export function App() {
     cluster,
     loading,
     error,
+    clearError,
     loginWithCode,
     loginWithName,
     logout,
@@ -86,6 +87,7 @@ export function App() {
         onLoginName={loginWithName}
         currentFamily={cluster?.family_name}
         error={error}
+        clearError={clearError}
       />
     </div>
   );

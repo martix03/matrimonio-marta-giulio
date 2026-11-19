@@ -8,6 +8,7 @@ interface MagicLinkModalProps {
   onLoginName: (firstName: string, lastName: string) => Promise<boolean>;
   currentFamily?: string;
   error?: string | null;
+  clearError?: () => void;
 }
 
 export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
@@ -17,6 +18,7 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
   onLoginName,
   currentFamily,
   error,
+  clearError,
 }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -26,8 +28,13 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      setSuccessMessage(null);
+      if (clearError) clearError();
     } else {
       document.body.style.overflow = "";
+      setFirstName("");
+      setLastName("");
+      if (clearError) clearError();
     }
     return () => {
       document.body.style.overflow = "";
@@ -38,10 +45,12 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
 
   const handleNameSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firstName.trim() || !lastName.trim()) return;
+    const cleanFirst = firstName.trim().replace(/\s+/g, " ");
+    const cleanLast = lastName.trim().replace(/\s+/g, " ");
+    if (!cleanFirst || !cleanLast) return;
     setIsSubmitting(true);
     setSuccessMessage(null);
-    const success = await onLoginName(firstName.trim(), lastName.trim());
+    const success = await onLoginName(cleanFirst, cleanLast);
     setIsSubmitting(false);
     if (success) {
       setSuccessMessage("Invito trovato!");
@@ -107,7 +116,10 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
             <input
               type="text"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={(e) => {
+                setFirstName(e.target.value);
+                if (error && clearError) clearError();
+              }}
               placeholder="es. Marco"
               className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-bordeaux outline-none transition-all"
             />
@@ -119,7 +131,10 @@ export const MagicLinkModal: React.FC<MagicLinkModalProps> = ({
             <input
               type="text"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={(e) => {
+                setLastName(e.target.value);
+                if (error && clearError) clearError();
+              }}
               placeholder="es. Rossi"
               className="w-full px-4 py-2.5 rounded-2xl border border-blush/60 focus:border-burgundy focus:ring-2 focus:ring-burgundy/10 sottotitolo text-bordeaux outline-none transition-all"
             />
