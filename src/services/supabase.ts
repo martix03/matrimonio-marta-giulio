@@ -313,11 +313,22 @@ export const weddingApi = {
     if (isSupabaseConfigured && supabase) {
       const { data, error } = await supabase
         .from('guests')
-        .select(`*, clusters(family_name)`);
+        .select(`*, clusters(id, family_name, invite_code)`);
       if (error) console.error('Error fetching admin guests', error);
       else if (data) return data;
     }
-    return [];
+    const clusters = getLocalClusters();
+    const allGuests: any[] = [];
+    clusters.forEach(c => {
+      (c.guests || []).forEach(g => {
+        allGuests.push({
+          ...g,
+          cluster_id: c.id,
+          clusters: { id: c.id, family_name: c.family_name, invite_code: c.invite_code },
+        });
+      });
+    });
+    return allGuests;
   },
 
   async getAllGiftMessages(): Promise<any[]> {
@@ -418,6 +429,40 @@ export const weddingApi = {
         console.error('Error updating guest', error);
         return false;
       }
+      return true;
+    }
+
+    const clusters = getLocalClusters();
+    for (const c of clusters) {
+      const g = (c.guests || []).find(guest => guest.id === guestId);
+      if (g) {
+        Object.assign(g, updates);
+        saveLocalClusters(clusters);
+        return true;
+      }
+    }
+    return false;
+  },
+
+  async updateCluster(clusterId: string, familyName: string): Promise<boolean> {
+    if (isSupabaseConfigured && supabase) {
+      const { error } = await supabase
+        .from('clusters')
+        .update({ family_name: familyName })
+        .eq('id', clusterId);
+
+      if (error) {
+        console.error('Error updating cluster', error);
+        return false;
+      }
+      return true;
+    }
+
+    const clusters = getLocalClusters();
+    const cluster = clusters.find(c => c.id === clusterId);
+    if (cluster) {
+      cluster.family_name = familyName;
+      saveLocalClusters(clusters);
       return true;
     }
     return false;
